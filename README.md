@@ -37,6 +37,12 @@ npm run preview
 
 The build copies the current consoles and replay artifacts into `dist/`, and generates a landing-shell `dist/index.html` from the latest `final_map.json` + `final_map.svg`.
 
+
+### 3) Deploy to Vercel or any static host
+
+- `vercel.json` points Vercel at `npm run build` and the `dist/` output directory.
+- `docs/frontend-qa-checklist.md` captures the recommended manual browser QA pass before sharing or deployment.
+
 ## Frontend replay
 
 Open either static console directly in a browser, or use the packaged copies in `dist/`:

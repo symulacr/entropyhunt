@@ -373,6 +373,7 @@ The two HTML files in this directory are **UI prototypes**, not the production i
 - Both HTML consoles can now load a real simulation replay payload via **Load replay** and clearly distinguish `synthetic demo` from `replay snapshot` mode.
 - The repo now includes the missing spec-alignment modules: `failure/injector.py`, `auction/voronoi.py`, `simulation/webots_bridge.py`, `README.md`, and `requirements.txt`.
 - A packaged frontend entrypoint now exists via `package.json` + `scripts/build_frontend.py`, producing a deployable static shell in `dist/`.
+- `vercel.json` now wires Vercel to `npm run build` with `dist/` as the output directory, and `docs/frontend-qa-checklist.md` documents the recommended manual browser QA pass.
 
 ### Concrete Review Findings
 
