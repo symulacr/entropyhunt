@@ -24,8 +24,9 @@ The coordination problem is genuine: when two drones simultaneously lock onto th
 
 This repository currently contains a **working local prototype**, not the full live stack described in the handoff:
 
-- runnable Python simulation: `main.py` -> `simulation/stub.py`
-- certainty/entropy scoring, local mesh bus, heartbeat, and simplified BFT-style claim resolution
+- runnable Python stub simulation: `main.py --mode stub` -> `simulation/stub.py`
+- runnable local multi-process peer runtime: `main.py --mode peer` / `scripts/run_local_peers.py`
+- certainty/entropy scoring, local UDP peer transport, heartbeat, and simplified BFT-style claim resolution
 - ASCII CLI heatmap output and JSON summary/final-map output
 - a packaged static app shell source (`frontend/index.template.html`) that builds into `dist/`
 - two static HTML operator consoles: `entropy_hunt_v2.html` and `entropy_hunt_mockup.html`
@@ -372,6 +373,7 @@ The two HTML files in this directory are **UI prototypes**, not the production i
 - `final_map.json` now carries replay-friendly metadata: config, events, Voronoi partitions, partition boundaries, and a dependency-free Webots bridge snapshot.
 - Both HTML consoles can now load a real simulation replay payload via **Load replay** and clearly distinguish `synthetic demo` from `replay snapshot` mode.
 - The repo now includes the missing spec-alignment modules: `failure/injector.py`, `auction/voronoi.py`, `simulation/webots_bridge.py`, `README.md`, and `requirements.txt`.
+- A real local peer runtime now exists via `simulation/peer_runtime.py` + `scripts/run_local_peers.py`, so heartbeat/claim/BFT/survivor flows can run across separate local processes even though the transport is not yet Vertex/FoxMQ.
 - A packaged frontend entrypoint now exists via `package.json` + `scripts/build_frontend.py`, producing a deployable static shell in `dist/`.
 - `vercel.json` now wires Vercel to `npm run build` with `dist/` as the output directory, `docs/frontend-qa-checklist.md` documents the recommended manual browser QA pass, and `docs/vercel-deploy.md` documents first-time setup plus one-command preview/production deploys.
 
