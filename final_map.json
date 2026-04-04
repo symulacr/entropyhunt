@@ -1,14 +1,16 @@
 {
   "summary": {
     "duration_elapsed": 180,
-    "coverage": 0.59,
-    "average_entropy": 0.581,
-    "bft_rounds": 63,
-    "auctions": 13,
+    "coverage": 1.0,
+    "coverage_completed": 1.0,
+    "coverage_current": 0.89,
+    "average_entropy": 0.272,
+    "bft_rounds": 136,
+    "auctions": 9,
     "dropouts": 1,
     "survivor_found": true,
-    "survivor_receipts": 3,
-    "mesh_messages": 1706,
+    "survivor_receipts": 4,
+    "mesh_messages": 1850,
     "target": [
       7,
       3
@@ -18,70 +20,89 @@
         "id": "drone_1",
         "alive": true,
         "position": [
-          2,
-          5
+          4,
+          1
         ],
         "target": [
-          2,
-          5
+          0,
+          2
         ],
-        "status": "searching",
-        "searched_cells": 163
+        "status": "claim_won",
+        "searched_cells": 103
       },
       {
         "id": "drone_2",
         "alive": false,
         "position": [
           6,
-          1
+          3
         ],
         "target": null,
         "status": "stale",
-        "searched_cells": 53
+        "searched_cells": 47
       },
       {
         "id": "drone_3",
         "alive": true,
         "position": [
-          3,
-          6
+          9,
+          1
         ],
         "target": [
-          3,
-          6
+          9,
+          2
         ],
-        "status": "searching",
-        "searched_cells": 162
+        "status": "transiting",
+        "searched_cells": 99
       },
       {
         "id": "drone_4",
         "alive": true,
         "position": [
-          8,
-          2
+          3,
+          1
         ],
         "target": [
-          8,
+          3,
           2
         ],
-        "status": "searching",
-        "searched_cells": 164
+        "status": "transiting",
+        "searched_cells": 98
       },
       {
         "id": "drone_5",
         "alive": true,
         "position": [
-          2,
+          1,
           5
         ],
         "target": [
-          2,
-          5
+          0,
+          3
         ],
-        "status": "searching",
-        "searched_cells": 163
+        "status": "transiting",
+        "searched_cells": 96
       }
     ]
+  },
+  "config": {
+    "drones": 5,
+    "grid": 10,
+    "duration": 180,
+    "tick_seconds": 1,
+    "search_increment": 0.12,
+    "completion_certainty": 0.92,
+    "decay_rate": 0.001,
+    "stale_after_seconds": 3,
+    "target": [
+      7,
+      3
+    ],
+    "fail_drone": "drone_2",
+    "fail_at": 60,
+    "stop_on_survivor": false,
+    "seed": 7,
+    "final_map_path": "final_map.json"
   },
   "events": [
     {
@@ -212,42 +233,42 @@
       "subzone": null
     },
     {
-      "t": 10,
+      "t": 4,
       "type": "zone_complete",
       "message": "drone_1 completed (0, 0)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 10,
+      "t": 4,
       "type": "zone_complete",
       "message": "drone_2 completed (9, 0)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 10,
+      "t": 4,
       "type": "zone_complete",
       "message": "drone_3 completed (0, 9)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 10,
+      "t": 4,
       "type": "zone_complete",
       "message": "drone_4 completed (9, 9)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 10,
+      "t": 4,
       "type": "zone_complete",
       "message": "drone_5 completed (5, 5)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 10,
+      "t": 4,
       "type": "bft",
       "message": "round 6 resolved (0, 8) via single-claim quorum",
       "assignments": [
@@ -263,7 +284,7 @@
       ]
     },
     {
-      "t": 10,
+      "t": 4,
       "type": "bft",
       "message": "round 7 resolved (1, 0) via single-claim quorum",
       "assignments": [
@@ -279,7 +300,7 @@
       ]
     },
     {
-      "t": 10,
+      "t": 4,
       "type": "bft",
       "message": "round 8 resolved (5, 4) via single-claim quorum",
       "assignments": [
@@ -295,7 +316,7 @@
       ]
     },
     {
-      "t": 10,
+      "t": 4,
       "type": "bft",
       "message": "round 9 resolved (8, 0) via single-claim quorum",
       "assignments": [
@@ -311,7 +332,7 @@
       ]
     },
     {
-      "t": 10,
+      "t": 4,
       "type": "bft",
       "message": "round 10 resolved (9, 8) via single-claim quorum",
       "assignments": [
@@ -327,77 +348,77 @@
       ]
     },
     {
-      "t": 10,
+      "t": 4,
       "type": "claim",
       "message": "drone_3 assigned (0, 8)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 10,
+      "t": 4,
       "type": "claim",
       "message": "drone_1 assigned (1, 0)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 10,
+      "t": 4,
       "type": "claim",
       "message": "drone_5 assigned (5, 4)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 10,
+      "t": 4,
       "type": "claim",
       "message": "drone_2 assigned (8, 0)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 10,
+      "t": 4,
       "type": "claim",
       "message": "drone_4 assigned (9, 8)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 21,
+      "t": 9,
       "type": "zone_complete",
       "message": "drone_1 completed (1, 0)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 21,
+      "t": 9,
       "type": "zone_complete",
       "message": "drone_2 completed (8, 0)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 21,
+      "t": 9,
       "type": "zone_complete",
       "message": "drone_3 completed (0, 8)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 21,
+      "t": 9,
       "type": "zone_complete",
       "message": "drone_4 completed (9, 8)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 21,
+      "t": 9,
       "type": "zone_complete",
       "message": "drone_5 completed (5, 4)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 21,
+      "t": 9,
       "type": "bft",
       "message": "round 11 resolved (0, 7) via single-claim quorum",
       "assignments": [
@@ -413,7 +434,7 @@
       ]
     },
     {
-      "t": 21,
+      "t": 9,
       "type": "bft",
       "message": "round 12 resolved (2, 0) via single-claim quorum",
       "assignments": [
@@ -429,7 +450,7 @@
       ]
     },
     {
-      "t": 21,
+      "t": 9,
       "type": "bft",
       "message": "round 13 resolved (5, 3) via single-claim quorum",
       "assignments": [
@@ -445,7 +466,7 @@
       ]
     },
     {
-      "t": 21,
+      "t": 9,
       "type": "bft",
       "message": "round 14 resolved (7, 0) via single-claim quorum",
       "assignments": [
@@ -461,7 +482,7 @@
       ]
     },
     {
-      "t": 21,
+      "t": 9,
       "type": "bft",
       "message": "round 15 resolved (9, 7) via single-claim quorum",
       "assignments": [
@@ -477,77 +498,77 @@
       ]
     },
     {
-      "t": 21,
+      "t": 9,
       "type": "claim",
       "message": "drone_3 assigned (0, 7)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 21,
+      "t": 9,
       "type": "claim",
       "message": "drone_1 assigned (2, 0)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 21,
+      "t": 9,
       "type": "claim",
       "message": "drone_5 assigned (5, 3)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 21,
+      "t": 9,
       "type": "claim",
       "message": "drone_2 assigned (7, 0)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 21,
+      "t": 9,
       "type": "claim",
       "message": "drone_4 assigned (9, 7)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 32,
+      "t": 14,
       "type": "zone_complete",
       "message": "drone_1 completed (2, 0)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 32,
+      "t": 14,
       "type": "zone_complete",
       "message": "drone_2 completed (7, 0)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 32,
+      "t": 14,
       "type": "zone_complete",
       "message": "drone_3 completed (0, 7)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 32,
+      "t": 14,
       "type": "zone_complete",
       "message": "drone_4 completed (9, 7)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 32,
+      "t": 14,
       "type": "zone_complete",
       "message": "drone_5 completed (5, 3)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 32,
+      "t": 14,
       "type": "bft",
       "message": "round 16 resolved (0, 6) via single-claim quorum",
       "assignments": [
@@ -563,7 +584,7 @@
       ]
     },
     {
-      "t": 32,
+      "t": 14,
       "type": "bft",
       "message": "round 17 resolved (3, 0) via single-claim quorum",
       "assignments": [
@@ -579,7 +600,7 @@
       ]
     },
     {
-      "t": 32,
+      "t": 14,
       "type": "bft",
       "message": "round 18 resolved (5, 2) via single-claim quorum",
       "assignments": [
@@ -595,7 +616,7 @@
       ]
     },
     {
-      "t": 32,
+      "t": 14,
       "type": "bft",
       "message": "round 19 resolved (6, 0) via single-claim quorum",
       "assignments": [
@@ -611,7 +632,7 @@
       ]
     },
     {
-      "t": 32,
+      "t": 14,
       "type": "bft",
       "message": "round 20 resolved (9, 6) via single-claim quorum",
       "assignments": [
@@ -627,77 +648,77 @@
       ]
     },
     {
-      "t": 32,
+      "t": 14,
       "type": "claim",
       "message": "drone_3 assigned (0, 6)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 32,
+      "t": 14,
       "type": "claim",
       "message": "drone_1 assigned (3, 0)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 32,
+      "t": 14,
       "type": "claim",
       "message": "drone_5 assigned (5, 2)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 32,
+      "t": 14,
       "type": "claim",
       "message": "drone_2 assigned (6, 0)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 32,
+      "t": 14,
       "type": "claim",
       "message": "drone_4 assigned (9, 6)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 43,
+      "t": 19,
       "type": "zone_complete",
       "message": "drone_1 completed (3, 0)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 43,
+      "t": 19,
       "type": "zone_complete",
       "message": "drone_2 completed (6, 0)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 43,
+      "t": 19,
       "type": "zone_complete",
       "message": "drone_3 completed (0, 6)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 43,
+      "t": 19,
       "type": "zone_complete",
       "message": "drone_4 completed (9, 6)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 43,
+      "t": 19,
       "type": "zone_complete",
       "message": "drone_5 completed (5, 2)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 43,
+      "t": 19,
       "type": "bft",
       "message": "round 21 resolved (0, 5) via single-claim quorum",
       "assignments": [
@@ -713,7 +734,7 @@
       ]
     },
     {
-      "t": 43,
+      "t": 19,
       "type": "bft",
       "message": "round 22 resolved (4, 0) via single-claim quorum",
       "assignments": [
@@ -729,7 +750,7 @@
       ]
     },
     {
-      "t": 43,
+      "t": 19,
       "type": "bft",
       "message": "round 23 resolved (5, 0) via single-claim quorum",
       "assignments": [
@@ -745,7 +766,7 @@
       ]
     },
     {
-      "t": 43,
+      "t": 19,
       "type": "bft",
       "message": "round 24 resolved (5, 1) via single-claim quorum",
       "assignments": [
@@ -761,7 +782,7 @@
       ]
     },
     {
-      "t": 43,
+      "t": 19,
       "type": "bft",
       "message": "round 25 resolved (9, 5) via single-claim quorum",
       "assignments": [
@@ -777,77 +798,77 @@
       ]
     },
     {
-      "t": 43,
+      "t": 19,
       "type": "claim",
       "message": "drone_3 assigned (0, 5)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 43,
+      "t": 19,
       "type": "claim",
       "message": "drone_1 assigned (4, 0)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 43,
+      "t": 19,
       "type": "claim",
       "message": "drone_2 assigned (5, 0)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 43,
+      "t": 19,
       "type": "claim",
       "message": "drone_5 assigned (5, 1)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 43,
+      "t": 19,
       "type": "claim",
       "message": "drone_4 assigned (9, 5)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 54,
+      "t": 24,
       "type": "zone_complete",
       "message": "drone_1 completed (4, 0)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 54,
+      "t": 24,
       "type": "zone_complete",
       "message": "drone_2 completed (5, 0)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 54,
+      "t": 24,
       "type": "zone_complete",
       "message": "drone_3 completed (0, 5)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 54,
+      "t": 24,
       "type": "zone_complete",
       "message": "drone_4 completed (9, 5)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 54,
+      "t": 24,
       "type": "zone_complete",
       "message": "drone_5 completed (5, 1)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 54,
+      "t": 24,
       "type": "bft",
       "message": "round 26 resolved (0, 4) via single-claim quorum",
       "assignments": [
@@ -863,7 +884,7 @@
       ]
     },
     {
-      "t": 54,
+      "t": 24,
       "type": "bft",
       "message": "round 27 resolved (4, 1) via distance tie -> split zone",
       "assignments": [
@@ -897,7 +918,7 @@
       ]
     },
     {
-      "t": 54,
+      "t": 24,
       "type": "bft",
       "message": "round 28 resolved (9, 4) via single-claim quorum",
       "assignments": [
@@ -913,130 +934,95 @@
       ]
     },
     {
-      "t": 54,
+      "t": 24,
       "type": "claim",
       "message": "drone_3 assigned (0, 4)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 54,
+      "t": 24,
       "type": "claim",
       "message": "drone_1 assigned (4, 1)",
       "reason": "split",
       "subzone": "left"
     },
     {
-      "t": 54,
+      "t": 24,
       "type": "claim",
       "message": "drone_5 assigned (4, 1)",
       "reason": "split",
       "subzone": "right"
     },
     {
-      "t": 54,
+      "t": 24,
       "type": "claim",
       "message": "drone_2 assigned (6, 1)",
       "reason": "fallback",
       "subzone": null
     },
     {
-      "t": 54,
+      "t": 24,
       "type": "claim",
       "message": "drone_4 assigned (9, 4)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 60,
-      "type": "failure",
-      "message": "drone_2 dropped off-mesh; waiting 3s for stale release",
-      "zone": [
-        6,
-        1
-      ]
-    },
-    {
-      "t": 63,
-      "type": "bft",
-      "message": "round 29 released (6, 1) after drone_2 heartbeat timeout"
-    },
-    {
-      "t": 63,
-      "type": "stale",
-      "message": "drone_2 marked stale"
-    },
-    {
-      "t": 64,
-      "type": "zone_complete",
-      "message": "drone_1 completed (4, 1)",
-      "certainty": 0.938,
-      "subzone": "left"
-    },
-    {
-      "t": 64,
+      "t": 28,
       "type": "zone_complete",
       "message": "drone_5 completed (4, 1)",
-      "certainty": 0.963,
+      "certainty": 0.89,
       "subzone": "right"
     },
     {
-      "t": 64,
+      "t": 28,
       "type": "bft",
-      "message": "round 30 resolved (3, 1) via distance tie -> split zone",
+      "message": "round 29 resolved (3, 1) via single-claim quorum",
       "assignments": [
-        {
-          "drone_id": "drone_1",
-          "cell": [
-            3,
-            1
-          ],
-          "reason": "split",
-          "subzone": "left"
-        },
         {
           "drone_id": "drone_5",
           "cell": [
             3,
             1
           ],
-          "reason": "split",
-          "subzone": "right"
+          "reason": "winner",
+          "subzone": null
         }
       ]
     },
     {
-      "t": 64,
+      "t": 28,
       "type": "claim",
-      "message": "drone_1 assigned (3, 1)",
-      "reason": "split",
+      "message": "drone_5 assigned (3, 1)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 29,
+      "type": "zone_complete",
+      "message": "drone_1 completed (4, 1)",
+      "certainty": 0.95,
       "subzone": "left"
     },
     {
-      "t": 64,
-      "type": "claim",
-      "message": "drone_5 assigned (3, 1)",
-      "reason": "split",
-      "subzone": "right"
-    },
-    {
-      "t": 65,
+      "t": 29,
       "type": "zone_complete",
       "message": "drone_3 completed (0, 4)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 65,
+      "t": 29,
       "type": "zone_complete",
       "message": "drone_4 completed (9, 4)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 65,
+      "t": 29,
       "type": "bft",
-      "message": "round 31 resolved (0, 3) via single-claim quorum",
+      "message": "round 30 resolved (0, 3) via single-claim quorum",
       "assignments": [
         {
           "drone_id": "drone_3",
@@ -1050,7 +1036,23 @@
       ]
     },
     {
-      "t": 65,
+      "t": 29,
+      "type": "bft",
+      "message": "round 31 resolved (4, 2) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_1",
+          "cell": [
+            4,
+            2
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 29,
       "type": "bft",
       "message": "round 32 resolved (9, 3) via single-claim quorum",
       "assignments": [
@@ -1066,90 +1068,111 @@
       ]
     },
     {
-      "t": 65,
+      "t": 29,
       "type": "claim",
       "message": "drone_3 assigned (0, 3)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 65,
+      "t": 29,
+      "type": "claim",
+      "message": "drone_1 assigned (4, 2)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 29,
       "type": "claim",
       "message": "drone_4 assigned (9, 3)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 74,
+      "t": 30,
       "type": "zone_complete",
-      "message": "drone_1 completed (3, 1)",
-      "certainty": 0.938,
-      "subzone": "left"
+      "message": "drone_2 completed (6, 1)",
+      "certainty": 0.979,
+      "subzone": null
     },
     {
-      "t": 74,
-      "type": "zone_complete",
-      "message": "drone_5 completed (3, 1)",
-      "certainty": 0.963,
-      "subzone": "right"
-    },
-    {
-      "t": 74,
+      "t": 30,
       "type": "bft",
-      "message": "round 33 resolved (2, 1) via distance tie -> split zone",
+      "message": "round 33 resolved (7, 1) via single-claim quorum",
       "assignments": [
         {
-          "drone_id": "drone_1",
+          "drone_id": "drone_2",
           "cell": [
-            2,
+            7,
             1
           ],
-          "reason": "split",
-          "subzone": "left"
-        },
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 30,
+      "type": "claim",
+      "message": "drone_2 assigned (7, 1)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 33,
+      "type": "zone_complete",
+      "message": "drone_5 completed (3, 1)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 33,
+      "type": "bft",
+      "message": "round 34 resolved (2, 1) via single-claim quorum",
+      "assignments": [
         {
           "drone_id": "drone_5",
           "cell": [
             2,
             1
           ],
-          "reason": "split",
-          "subzone": "right"
+          "reason": "winner",
+          "subzone": null
         }
       ]
     },
     {
-      "t": 74,
-      "type": "claim",
-      "message": "drone_1 assigned (2, 1)",
-      "reason": "split",
-      "subzone": "left"
-    },
-    {
-      "t": 74,
+      "t": 33,
       "type": "claim",
       "message": "drone_5 assigned (2, 1)",
-      "reason": "split",
-      "subzone": "right"
+      "reason": "winner",
+      "subzone": null
     },
     {
-      "t": 76,
+      "t": 34,
+      "type": "zone_complete",
+      "message": "drone_1 completed (4, 2)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 34,
       "type": "zone_complete",
       "message": "drone_3 completed (0, 3)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 76,
+      "t": 34,
       "type": "zone_complete",
       "message": "drone_4 completed (9, 3)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 76,
+      "t": 34,
       "type": "bft",
-      "message": "round 34 resolved (0, 2) via single-claim quorum",
+      "message": "round 35 resolved (0, 2) via single-claim quorum",
       "assignments": [
         {
           "drone_id": "drone_3",
@@ -1163,9 +1186,25 @@
       ]
     },
     {
-      "t": 76,
+      "t": 34,
       "type": "bft",
-      "message": "round 35 resolved (9, 2) via single-claim quorum",
+      "message": "round 36 resolved (3, 2) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_1",
+          "cell": [
+            3,
+            2
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 34,
+      "type": "bft",
+      "message": "round 37 resolved (9, 2) via single-claim quorum",
       "assignments": [
         {
           "drone_id": "drone_4",
@@ -1179,90 +1218,111 @@
       ]
     },
     {
-      "t": 76,
+      "t": 34,
       "type": "claim",
       "message": "drone_3 assigned (0, 2)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 76,
+      "t": 34,
+      "type": "claim",
+      "message": "drone_1 assigned (3, 2)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 34,
       "type": "claim",
       "message": "drone_4 assigned (9, 2)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 84,
+      "t": 35,
       "type": "zone_complete",
-      "message": "drone_1 completed (2, 1)",
-      "certainty": 0.938,
-      "subzone": "left"
+      "message": "drone_2 completed (7, 1)",
+      "certainty": 0.979,
+      "subzone": null
     },
     {
-      "t": 84,
-      "type": "zone_complete",
-      "message": "drone_5 completed (2, 1)",
-      "certainty": 0.963,
-      "subzone": "right"
-    },
-    {
-      "t": 84,
+      "t": 35,
       "type": "bft",
-      "message": "round 36 resolved (1, 1) via distance tie -> split zone",
+      "message": "round 38 resolved (8, 1) via single-claim quorum",
       "assignments": [
         {
-          "drone_id": "drone_1",
+          "drone_id": "drone_2",
           "cell": [
-            1,
+            8,
             1
           ],
-          "reason": "split",
-          "subzone": "left"
-        },
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 35,
+      "type": "claim",
+      "message": "drone_2 assigned (8, 1)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 38,
+      "type": "zone_complete",
+      "message": "drone_5 completed (2, 1)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 38,
+      "type": "bft",
+      "message": "round 39 resolved (1, 1) via single-claim quorum",
+      "assignments": [
         {
           "drone_id": "drone_5",
           "cell": [
             1,
             1
           ],
-          "reason": "split",
-          "subzone": "right"
+          "reason": "winner",
+          "subzone": null
         }
       ]
     },
     {
-      "t": 84,
-      "type": "claim",
-      "message": "drone_1 assigned (1, 1)",
-      "reason": "split",
-      "subzone": "left"
-    },
-    {
-      "t": 84,
+      "t": 38,
       "type": "claim",
       "message": "drone_5 assigned (1, 1)",
-      "reason": "split",
-      "subzone": "right"
+      "reason": "winner",
+      "subzone": null
     },
     {
-      "t": 87,
+      "t": 39,
+      "type": "zone_complete",
+      "message": "drone_1 completed (3, 2)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 39,
       "type": "zone_complete",
       "message": "drone_3 completed (0, 2)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 87,
+      "t": 39,
       "type": "zone_complete",
       "message": "drone_4 completed (9, 2)",
-      "certainty": 0.998,
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 87,
+      "t": 39,
       "type": "bft",
-      "message": "round 37 resolved (0, 1) via single-claim quorum",
+      "message": "round 40 resolved (0, 1) via single-claim quorum",
       "assignments": [
         {
           "drone_id": "drone_3",
@@ -1276,9 +1336,25 @@
       ]
     },
     {
-      "t": 87,
+      "t": 39,
       "type": "bft",
-      "message": "round 38 resolved (9, 1) via single-claim quorum",
+      "message": "round 41 resolved (2, 2) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_1",
+          "cell": [
+            2,
+            2
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 39,
+      "type": "bft",
+      "message": "round 42 resolved (9, 1) via single-claim quorum",
       "assignments": [
         {
           "drone_id": "drone_4",
@@ -1292,112 +1368,43 @@
       ]
     },
     {
-      "t": 87,
+      "t": 39,
       "type": "claim",
       "message": "drone_3 assigned (0, 1)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 87,
+      "t": 39,
+      "type": "claim",
+      "message": "drone_1 assigned (2, 2)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 39,
       "type": "claim",
       "message": "drone_4 assigned (9, 1)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 94,
+      "t": 40,
       "type": "zone_complete",
-      "message": "drone_1 completed (1, 1)",
-      "certainty": 0.938,
-      "subzone": "left"
-    },
-    {
-      "t": 94,
-      "type": "zone_complete",
-      "message": "drone_5 completed (1, 1)",
-      "certainty": 0.963,
-      "subzone": "right"
-    },
-    {
-      "t": 94,
-      "type": "bft",
-      "message": "round 39 resolved (1, 2) via distance tie -> split zone",
-      "assignments": [
-        {
-          "drone_id": "drone_1",
-          "cell": [
-            1,
-            2
-          ],
-          "reason": "split",
-          "subzone": "left"
-        },
-        {
-          "drone_id": "drone_5",
-          "cell": [
-            1,
-            2
-          ],
-          "reason": "split",
-          "subzone": "right"
-        }
-      ]
-    },
-    {
-      "t": 94,
-      "type": "claim",
-      "message": "drone_1 assigned (1, 2)",
-      "reason": "split",
-      "subzone": "left"
-    },
-    {
-      "t": 94,
-      "type": "claim",
-      "message": "drone_5 assigned (1, 2)",
-      "reason": "split",
-      "subzone": "right"
-    },
-    {
-      "t": 98,
-      "type": "zone_complete",
-      "message": "drone_3 completed (0, 1)",
-      "certainty": 0.998,
+      "message": "drone_2 completed (8, 1)",
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 98,
-      "type": "zone_complete",
-      "message": "drone_4 completed (9, 1)",
-      "certainty": 0.998,
-      "subzone": null
-    },
-    {
-      "t": 98,
+      "t": 40,
       "type": "bft",
-      "message": "round 40 resolved (2, 2) via single-claim quorum",
+      "message": "round 43 resolved (8, 2) via single-claim quorum",
       "assignments": [
         {
-          "drone_id": "drone_3",
-          "cell": [
-            2,
-            2
-          ],
-          "reason": "winner",
-          "subzone": null
-        }
-      ]
-    },
-    {
-      "t": 98,
-      "type": "bft",
-      "message": "round 41 resolved (8, 1) via single-claim quorum",
-      "assignments": [
-        {
-          "drone_id": "drone_4",
+          "drone_id": "drone_2",
           "cell": [
             8,
-            1
+            2
           ],
           "reason": "winner",
           "subzone": null
@@ -1405,89 +1412,29 @@
       ]
     },
     {
-      "t": 98,
+      "t": 40,
       "type": "claim",
-      "message": "drone_3 assigned (2, 2)",
+      "message": "drone_2 assigned (8, 2)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 98,
-      "type": "claim",
-      "message": "drone_4 assigned (8, 1)",
-      "reason": "winner",
+      "t": 43,
+      "type": "zone_complete",
+      "message": "drone_5 completed (1, 1)",
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 104,
-      "type": "zone_complete",
-      "message": "drone_1 completed (1, 2)",
-      "certainty": 0.938,
-      "subzone": "left"
-    },
-    {
-      "t": 104,
-      "type": "zone_complete",
-      "message": "drone_5 completed (1, 2)",
-      "certainty": 0.963,
-      "subzone": "right"
-    },
-    {
-      "t": 104,
+      "t": 43,
       "type": "bft",
-      "message": "round 42 resolved (1, 3) via distance tie -> split zone",
+      "message": "round 44 resolved (1, 2) via single-claim quorum",
       "assignments": [
-        {
-          "drone_id": "drone_1",
-          "cell": [
-            1,
-            3
-          ],
-          "reason": "split",
-          "subzone": "left"
-        },
         {
           "drone_id": "drone_5",
           "cell": [
             1,
-            3
-          ],
-          "reason": "split",
-          "subzone": "right"
-        }
-      ]
-    },
-    {
-      "t": 104,
-      "type": "claim",
-      "message": "drone_1 assigned (1, 3)",
-      "reason": "split",
-      "subzone": "left"
-    },
-    {
-      "t": 104,
-      "type": "claim",
-      "message": "drone_5 assigned (1, 3)",
-      "reason": "split",
-      "subzone": "right"
-    },
-    {
-      "t": 109,
-      "type": "zone_complete",
-      "message": "drone_4 completed (8, 1)",
-      "certainty": 0.998,
-      "subzone": null
-    },
-    {
-      "t": 109,
-      "type": "bft",
-      "message": "round 43 resolved (7, 1) via single-claim quorum",
-      "assignments": [
-        {
-          "drone_id": "drone_4",
-          "cell": [
-            7,
-            1
+            2
           ],
           "reason": "winner",
           "subzone": null
@@ -1495,29 +1442,43 @@
       ]
     },
     {
-      "t": 109,
+      "t": 43,
       "type": "claim",
-      "message": "drone_4 assigned (7, 1)",
+      "message": "drone_5 assigned (1, 2)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 111,
+      "t": 44,
       "type": "zone_complete",
-      "message": "drone_3 completed (2, 2)",
-      "certainty": 0.998,
+      "message": "drone_1 completed (2, 2)",
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 111,
+      "t": 44,
+      "type": "zone_complete",
+      "message": "drone_3 completed (0, 1)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 44,
+      "type": "zone_complete",
+      "message": "drone_4 completed (9, 1)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 44,
       "type": "bft",
-      "message": "round 44 resolved (3, 2) via single-claim quorum",
+      "message": "round 45 resolved (1, 3) via single-claim quorum",
       "assignments": [
         {
           "drone_id": "drone_3",
           "cell": [
-            3,
-            2
+            1,
+            3
           ],
           "reason": "winner",
           "subzone": null
@@ -1525,30 +1486,9 @@
       ]
     },
     {
-      "t": 111,
-      "type": "claim",
-      "message": "drone_3 assigned (3, 2)",
-      "reason": "winner",
-      "subzone": null
-    },
-    {
-      "t": 114,
-      "type": "zone_complete",
-      "message": "drone_1 completed (1, 3)",
-      "certainty": 0.938,
-      "subzone": "left"
-    },
-    {
-      "t": 114,
-      "type": "zone_complete",
-      "message": "drone_5 completed (1, 3)",
-      "certainty": 0.963,
-      "subzone": "right"
-    },
-    {
-      "t": 114,
+      "t": 44,
       "type": "bft",
-      "message": "round 45 resolved (2, 3) via distance tie -> split zone",
+      "message": "round 46 resolved (2, 3) via single-claim quorum",
       "assignments": [
         {
           "drone_id": "drone_1",
@@ -1556,45 +1496,15 @@
             2,
             3
           ],
-          "reason": "split",
-          "subzone": "left"
-        },
-        {
-          "drone_id": "drone_5",
-          "cell": [
-            2,
-            3
-          ],
-          "reason": "split",
-          "subzone": "right"
+          "reason": "winner",
+          "subzone": null
         }
       ]
     },
     {
-      "t": 114,
-      "type": "claim",
-      "message": "drone_1 assigned (2, 3)",
-      "reason": "split",
-      "subzone": "left"
-    },
-    {
-      "t": 114,
-      "type": "claim",
-      "message": "drone_5 assigned (2, 3)",
-      "reason": "split",
-      "subzone": "right"
-    },
-    {
-      "t": 120,
-      "type": "zone_complete",
-      "message": "drone_4 completed (7, 1)",
-      "certainty": 0.998,
-      "subzone": null
-    },
-    {
-      "t": 120,
+      "t": 44,
       "type": "bft",
-      "message": "round 46 resolved (7, 2) via single-claim quorum",
+      "message": "round 47 resolved (7, 2) via single-claim quorum",
       "assignments": [
         {
           "drone_id": "drone_4",
@@ -1608,29 +1518,43 @@
       ]
     },
     {
-      "t": 120,
+      "t": 44,
+      "type": "claim",
+      "message": "drone_3 assigned (1, 3)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 44,
+      "type": "claim",
+      "message": "drone_1 assigned (2, 3)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 44,
       "type": "claim",
       "message": "drone_4 assigned (7, 2)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 122,
+      "t": 45,
       "type": "zone_complete",
-      "message": "drone_3 completed (3, 2)",
-      "certainty": 0.998,
+      "message": "drone_2 completed (8, 2)",
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 122,
+      "t": 45,
       "type": "bft",
-      "message": "round 47 resolved (4, 2) via single-claim quorum",
+      "message": "round 48 resolved (8, 3) via single-claim quorum",
       "assignments": [
         {
-          "drone_id": "drone_3",
+          "drone_id": "drone_2",
           "cell": [
-            4,
-            2
+            8,
+            3
           ],
           "reason": "winner",
           "subzone": null
@@ -1638,30 +1562,53 @@
       ]
     },
     {
-      "t": 122,
+      "t": 45,
       "type": "claim",
-      "message": "drone_3 assigned (4, 2)",
+      "message": "drone_2 assigned (8, 3)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 124,
+      "t": 48,
+      "type": "zone_complete",
+      "message": "drone_5 completed (1, 2)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 48,
+      "type": "bft",
+      "message": "round 49 resolved (1, 4) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_5",
+          "cell": [
+            1,
+            4
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 48,
+      "type": "claim",
+      "message": "drone_5 assigned (1, 4)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 49,
       "type": "zone_complete",
       "message": "drone_1 completed (2, 3)",
-      "certainty": 0.938,
-      "subzone": "left"
+      "certainty": 0.979,
+      "subzone": null
     },
     {
-      "t": 124,
-      "type": "zone_complete",
-      "message": "drone_5 completed (2, 3)",
-      "certainty": 0.963,
-      "subzone": "right"
-    },
-    {
-      "t": 124,
+      "t": 49,
       "type": "bft",
-      "message": "round 48 resolved (3, 3) via distance tie -> split zone",
+      "message": "round 50 resolved (3, 3) via single-claim quorum",
       "assignments": [
         {
           "drone_id": "drone_1",
@@ -1669,274 +1616,32 @@
             3,
             3
           ],
-          "reason": "split",
-          "subzone": "left"
-        },
-        {
-          "drone_id": "drone_5",
-          "cell": [
-            3,
-            3
-          ],
-          "reason": "split",
-          "subzone": "right"
+          "reason": "winner",
+          "subzone": null
         }
       ]
     },
     {
-      "t": 124,
+      "t": 49,
       "type": "claim",
       "message": "drone_1 assigned (3, 3)",
-      "reason": "split",
-      "subzone": "left"
-    },
-    {
-      "t": 124,
-      "type": "claim",
-      "message": "drone_5 assigned (3, 3)",
-      "reason": "split",
-      "subzone": "right"
-    },
-    {
-      "t": 131,
-      "type": "zone_complete",
-      "message": "drone_4 completed (7, 2)",
-      "certainty": 0.998,
-      "subzone": null
-    },
-    {
-      "t": 131,
-      "type": "bft",
-      "message": "round 49 resolved (6, 2) via single-claim quorum",
-      "assignments": [
-        {
-          "drone_id": "drone_4",
-          "cell": [
-            6,
-            2
-          ],
-          "reason": "winner",
-          "subzone": null
-        }
-      ]
-    },
-    {
-      "t": 131,
-      "type": "claim",
-      "message": "drone_4 assigned (6, 2)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 133,
+      "t": 50,
       "type": "zone_complete",
-      "message": "drone_3 completed (4, 2)",
-      "certainty": 0.998,
+      "message": "drone_2 completed (8, 3)",
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 133,
+      "t": 50,
       "type": "bft",
-      "message": "round 50 resolved (4, 3) via single-claim quorum",
+      "message": "round 51 resolved (7, 3) via single-claim quorum",
       "assignments": [
         {
-          "drone_id": "drone_3",
-          "cell": [
-            4,
-            3
-          ],
-          "reason": "winner",
-          "subzone": null
-        }
-      ]
-    },
-    {
-      "t": 133,
-      "type": "claim",
-      "message": "drone_3 assigned (4, 3)",
-      "reason": "winner",
-      "subzone": null
-    },
-    {
-      "t": 134,
-      "type": "zone_complete",
-      "message": "drone_1 completed (3, 3)",
-      "certainty": 0.938,
-      "subzone": "left"
-    },
-    {
-      "t": 134,
-      "type": "zone_complete",
-      "message": "drone_5 completed (3, 3)",
-      "certainty": 0.963,
-      "subzone": "right"
-    },
-    {
-      "t": 134,
-      "type": "bft",
-      "message": "round 51 resolved (3, 4) via distance tie -> split zone",
-      "assignments": [
-        {
-          "drone_id": "drone_1",
-          "cell": [
-            3,
-            4
-          ],
-          "reason": "split",
-          "subzone": "left"
-        },
-        {
-          "drone_id": "drone_5",
-          "cell": [
-            3,
-            4
-          ],
-          "reason": "split",
-          "subzone": "right"
-        }
-      ]
-    },
-    {
-      "t": 134,
-      "type": "claim",
-      "message": "drone_1 assigned (3, 4)",
-      "reason": "split",
-      "subzone": "left"
-    },
-    {
-      "t": 134,
-      "type": "claim",
-      "message": "drone_5 assigned (3, 4)",
-      "reason": "split",
-      "subzone": "right"
-    },
-    {
-      "t": 142,
-      "type": "zone_complete",
-      "message": "drone_4 completed (6, 2)",
-      "certainty": 0.998,
-      "subzone": null
-    },
-    {
-      "t": 142,
-      "type": "bft",
-      "message": "round 52 resolved (6, 3) via single-claim quorum",
-      "assignments": [
-        {
-          "drone_id": "drone_4",
-          "cell": [
-            6,
-            3
-          ],
-          "reason": "winner",
-          "subzone": null
-        }
-      ]
-    },
-    {
-      "t": 142,
-      "type": "claim",
-      "message": "drone_4 assigned (6, 3)",
-      "reason": "winner",
-      "subzone": null
-    },
-    {
-      "t": 144,
-      "type": "zone_complete",
-      "message": "drone_1 completed (3, 4)",
-      "certainty": 0.938,
-      "subzone": "left"
-    },
-    {
-      "t": 144,
-      "type": "zone_complete",
-      "message": "drone_3 completed (4, 3)",
-      "certainty": 0.998,
-      "subzone": null
-    },
-    {
-      "t": 144,
-      "type": "zone_complete",
-      "message": "drone_5 completed (3, 4)",
-      "certainty": 0.963,
-      "subzone": "right"
-    },
-    {
-      "t": 144,
-      "type": "bft",
-      "message": "round 53 resolved (2, 4) via distance tie -> split zone",
-      "assignments": [
-        {
-          "drone_id": "drone_1",
-          "cell": [
-            2,
-            4
-          ],
-          "reason": "split",
-          "subzone": "left"
-        },
-        {
-          "drone_id": "drone_5",
-          "cell": [
-            2,
-            4
-          ],
-          "reason": "split",
-          "subzone": "right"
-        }
-      ]
-    },
-    {
-      "t": 144,
-      "type": "bft",
-      "message": "round 54 resolved (4, 4) via single-claim quorum",
-      "assignments": [
-        {
-          "drone_id": "drone_3",
-          "cell": [
-            4,
-            4
-          ],
-          "reason": "winner",
-          "subzone": null
-        }
-      ]
-    },
-    {
-      "t": 144,
-      "type": "claim",
-      "message": "drone_1 assigned (2, 4)",
-      "reason": "split",
-      "subzone": "left"
-    },
-    {
-      "t": 144,
-      "type": "claim",
-      "message": "drone_5 assigned (2, 4)",
-      "reason": "split",
-      "subzone": "right"
-    },
-    {
-      "t": 144,
-      "type": "claim",
-      "message": "drone_3 assigned (4, 4)",
-      "reason": "winner",
-      "subzone": null
-    },
-    {
-      "t": 153,
-      "type": "zone_complete",
-      "message": "drone_4 completed (6, 3)",
-      "certainty": 0.998,
-      "subzone": null
-    },
-    {
-      "t": 153,
-      "type": "bft",
-      "message": "round 55 resolved (7, 3) via single-claim quorum",
-      "assignments": [
-        {
-          "drone_id": "drone_4",
+          "drone_id": "drone_2",
           "cell": [
             7,
             3
@@ -1947,81 +1652,95 @@
       ]
     },
     {
-      "t": 153,
+      "t": 50,
       "type": "claim",
-      "message": "drone_4 assigned (7, 3)",
+      "message": "drone_2 assigned (7, 3)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 154,
+      "t": 51,
       "type": "zone_complete",
-      "message": "drone_1 completed (2, 4)",
-      "certainty": 0.938,
-      "subzone": "left"
-    },
-    {
-      "t": 154,
-      "type": "zone_complete",
-      "message": "drone_5 completed (2, 4)",
-      "certainty": 0.963,
-      "subzone": "right"
-    },
-    {
-      "t": 154,
-      "type": "bft",
-      "message": "round 56 resolved (1, 4) via distance tie -> split zone",
-      "assignments": [
-        {
-          "drone_id": "drone_1",
-          "cell": [
-            1,
-            4
-          ],
-          "reason": "split",
-          "subzone": "left"
-        },
-        {
-          "drone_id": "drone_5",
-          "cell": [
-            1,
-            4
-          ],
-          "reason": "split",
-          "subzone": "right"
-        }
-      ]
-    },
-    {
-      "t": 154,
-      "type": "claim",
-      "message": "drone_1 assigned (1, 4)",
-      "reason": "split",
-      "subzone": "left"
-    },
-    {
-      "t": 154,
-      "type": "claim",
-      "message": "drone_5 assigned (1, 4)",
-      "reason": "split",
-      "subzone": "right"
-    },
-    {
-      "t": 155,
-      "type": "zone_complete",
-      "message": "drone_3 completed (4, 4)",
-      "certainty": 0.998,
+      "message": "drone_3 completed (1, 3)",
+      "certainty": 0.979,
       "subzone": null
     },
     {
-      "t": 155,
+      "t": 51,
+      "type": "zone_complete",
+      "message": "drone_4 completed (7, 2)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 51,
       "type": "bft",
-      "message": "round 57 resolved (4, 5) via single-claim quorum",
+      "message": "round 52 resolved (2, 4) via single-claim quorum",
       "assignments": [
         {
           "drone_id": "drone_3",
           "cell": [
-            4,
+            2,
+            4
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 51,
+      "type": "bft",
+      "message": "round 53 resolved (6, 2) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_4",
+          "cell": [
+            6,
+            2
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 51,
+      "type": "claim",
+      "message": "drone_3 assigned (2, 4)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 51,
+      "type": "claim",
+      "message": "drone_4 assigned (6, 2)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 54,
+      "type": "zone_complete",
+      "message": "drone_1 completed (3, 3)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 54,
+      "type": "zone_complete",
+      "message": "drone_5 completed (1, 4)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 54,
+      "type": "bft",
+      "message": "round 54 resolved (1, 5) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_5",
+          "cell": [
+            1,
             5
           ],
           "reason": "winner",
@@ -2030,91 +1749,14 @@
       ]
     },
     {
-      "t": 155,
-      "type": "claim",
-      "message": "drone_3 assigned (4, 5)",
-      "reason": "winner",
-      "subzone": null
-    },
-    {
-      "t": 164,
-      "type": "zone_complete",
-      "message": "drone_1 completed (1, 4)",
-      "certainty": 0.938,
-      "subzone": "left"
-    },
-    {
-      "t": 164,
-      "type": "survivor",
-      "message": "survivor found by drone_4 at (7, 3)",
-      "confidence": 0.998
-    },
-    {
-      "t": 164,
-      "type": "survivor_ack",
-      "message": "drone_1 received survivor event for (7, 3)",
-      "source_drone_id": "drone_4"
-    },
-    {
-      "t": 164,
-      "type": "survivor_ack",
-      "message": "drone_3 received survivor event for (7, 3)",
-      "source_drone_id": "drone_4"
-    },
-    {
-      "t": 164,
-      "type": "survivor_ack",
-      "message": "drone_5 received survivor event for (7, 3)",
-      "source_drone_id": "drone_4"
-    },
-    {
-      "t": 164,
-      "type": "zone_complete",
-      "message": "drone_4 completed (7, 3)",
-      "certainty": 0.998,
-      "subzone": null
-    },
-    {
-      "t": 164,
-      "type": "zone_complete",
-      "message": "drone_5 completed (1, 4)",
-      "certainty": 0.963,
-      "subzone": "right"
-    },
-    {
-      "t": 164,
+      "t": 54,
       "type": "bft",
-      "message": "round 58 resolved (1, 5) via distance tie -> split zone",
+      "message": "round 55 resolved (4, 3) via single-claim quorum",
       "assignments": [
         {
           "drone_id": "drone_1",
           "cell": [
-            1,
-            5
-          ],
-          "reason": "split",
-          "subzone": "left"
-        },
-        {
-          "drone_id": "drone_5",
-          "cell": [
-            1,
-            5
-          ],
-          "reason": "split",
-          "subzone": "right"
-        }
-      ]
-    },
-    {
-      "t": 164,
-      "type": "bft",
-      "message": "round 59 resolved (8, 3) via single-claim quorum",
-      "assignments": [
-        {
-          "drone_id": "drone_4",
-          "cell": [
-            8,
+            4,
             3
           ],
           "reason": "winner",
@@ -2123,37 +1765,227 @@
       ]
     },
     {
-      "t": 164,
-      "type": "claim",
-      "message": "drone_1 assigned (1, 5)",
-      "reason": "split",
-      "subzone": "left"
-    },
-    {
-      "t": 164,
+      "t": 54,
       "type": "claim",
       "message": "drone_5 assigned (1, 5)",
-      "reason": "split",
-      "subzone": "right"
-    },
-    {
-      "t": 164,
-      "type": "claim",
-      "message": "drone_4 assigned (8, 3)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 166,
-      "type": "zone_complete",
-      "message": "drone_3 completed (4, 5)",
-      "certainty": 0.998,
+      "t": 54,
+      "type": "claim",
+      "message": "drone_1 assigned (4, 3)",
+      "reason": "winner",
       "subzone": null
     },
     {
-      "t": 166,
+      "t": 55,
+      "type": "survivor",
+      "message": "survivor found by drone_2 at (7, 3)",
+      "confidence": 0.979
+    },
+    {
+      "t": 55,
+      "type": "survivor_ack",
+      "message": "drone_1 received survivor event for (7, 3)",
+      "source_drone_id": "drone_2"
+    },
+    {
+      "t": 55,
+      "type": "survivor_ack",
+      "message": "drone_3 received survivor event for (7, 3)",
+      "source_drone_id": "drone_2"
+    },
+    {
+      "t": 55,
+      "type": "survivor_ack",
+      "message": "drone_4 received survivor event for (7, 3)",
+      "source_drone_id": "drone_2"
+    },
+    {
+      "t": 55,
+      "type": "survivor_ack",
+      "message": "drone_5 received survivor event for (7, 3)",
+      "source_drone_id": "drone_2"
+    },
+    {
+      "t": 55,
+      "type": "zone_complete",
+      "message": "drone_2 completed (7, 3)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 55,
       "type": "bft",
-      "message": "round 60 resolved (3, 5) via single-claim quorum",
+      "message": "round 56 resolved (6, 3) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_2",
+          "cell": [
+            6,
+            3
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 55,
+      "type": "claim",
+      "message": "drone_2 assigned (6, 3)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 56,
+      "type": "zone_complete",
+      "message": "drone_4 completed (6, 2)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 56,
+      "type": "bft",
+      "message": "round 57 resolved (6, 4) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_4",
+          "cell": [
+            6,
+            4
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 56,
+      "type": "claim",
+      "message": "drone_4 assigned (6, 4)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 57,
+      "type": "zone_complete",
+      "message": "drone_3 completed (2, 4)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 57,
+      "type": "bft",
+      "message": "round 58 resolved (3, 4) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_3",
+          "cell": [
+            3,
+            4
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 57,
+      "type": "claim",
+      "message": "drone_3 assigned (3, 4)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 59,
+      "type": "zone_complete",
+      "message": "drone_1 completed (4, 3)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 59,
+      "type": "zone_complete",
+      "message": "drone_5 completed (1, 5)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 59,
+      "type": "bft",
+      "message": "round 59 resolved (2, 5) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_5",
+          "cell": [
+            2,
+            5
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 59,
+      "type": "bft",
+      "message": "round 60 resolved (4, 4) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_1",
+          "cell": [
+            4,
+            4
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 59,
+      "type": "claim",
+      "message": "drone_5 assigned (2, 5)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 59,
+      "type": "claim",
+      "message": "drone_1 assigned (4, 4)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 60,
+      "type": "failure",
+      "message": "drone_2 dropped off-mesh; waiting 3s for stale release",
+      "zone": [
+        6,
+        3
+      ],
+      "mode": "scheduled"
+    },
+    {
+      "t": 62,
+      "type": "zone_complete",
+      "message": "drone_3 completed (3, 4)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 62,
+      "type": "zone_complete",
+      "message": "drone_4 completed (6, 4)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 62,
+      "type": "bft",
+      "message": "round 61 resolved (3, 5) via single-claim quorum",
       "assignments": [
         {
           "drone_id": "drone_3",
@@ -2167,82 +1999,15 @@
       ]
     },
     {
-      "t": 166,
-      "type": "claim",
-      "message": "drone_3 assigned (3, 5)",
-      "reason": "winner",
-      "subzone": null
-    },
-    {
-      "t": 174,
-      "type": "zone_complete",
-      "message": "drone_1 completed (1, 5)",
-      "certainty": 0.938,
-      "subzone": "left"
-    },
-    {
-      "t": 174,
-      "type": "zone_complete",
-      "message": "drone_5 completed (1, 5)",
-      "certainty": 0.963,
-      "subzone": "right"
-    },
-    {
-      "t": 174,
+      "t": 62,
       "type": "bft",
-      "message": "round 61 resolved (2, 5) via distance tie -> split zone",
-      "assignments": [
-        {
-          "drone_id": "drone_1",
-          "cell": [
-            2,
-            5
-          ],
-          "reason": "split",
-          "subzone": "left"
-        },
-        {
-          "drone_id": "drone_5",
-          "cell": [
-            2,
-            5
-          ],
-          "reason": "split",
-          "subzone": "right"
-        }
-      ]
-    },
-    {
-      "t": 174,
-      "type": "claim",
-      "message": "drone_1 assigned (2, 5)",
-      "reason": "split",
-      "subzone": "left"
-    },
-    {
-      "t": 174,
-      "type": "claim",
-      "message": "drone_5 assigned (2, 5)",
-      "reason": "split",
-      "subzone": "right"
-    },
-    {
-      "t": 175,
-      "type": "zone_complete",
-      "message": "drone_4 completed (8, 3)",
-      "certainty": 0.998,
-      "subzone": null
-    },
-    {
-      "t": 175,
-      "type": "bft",
-      "message": "round 62 resolved (8, 2) via single-claim quorum",
+      "message": "round 62 resolved (7, 4) via single-claim quorum",
       "assignments": [
         {
           "drone_id": "drone_4",
           "cell": [
-            8,
-            2
+            7,
+            4
           ],
           "reason": "winner",
           "subzone": null
@@ -2250,23 +2015,107 @@
       ]
     },
     {
-      "t": 175,
+      "t": 62,
       "type": "claim",
-      "message": "drone_4 assigned (8, 2)",
+      "message": "drone_3 assigned (3, 5)",
       "reason": "winner",
       "subzone": null
     },
     {
-      "t": 177,
-      "type": "zone_complete",
-      "message": "drone_3 completed (3, 5)",
-      "certainty": 0.998,
+      "t": 62,
+      "type": "claim",
+      "message": "drone_4 assigned (7, 4)",
+      "reason": "winner",
       "subzone": null
     },
     {
-      "t": 177,
+      "t": 63,
       "type": "bft",
-      "message": "round 63 resolved (3, 6) via single-claim quorum",
+      "message": "round 63 released (6, 3) after drone_2 heartbeat timeout"
+    },
+    {
+      "t": 63,
+      "type": "stale",
+      "message": "drone_2 marked stale"
+    },
+    {
+      "t": 64,
+      "type": "zone_complete",
+      "message": "drone_1 completed (4, 4)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 64,
+      "type": "zone_complete",
+      "message": "drone_5 completed (2, 5)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 64,
+      "type": "bft",
+      "message": "round 64 resolved (2, 6) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_5",
+          "cell": [
+            2,
+            6
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 64,
+      "type": "bft",
+      "message": "round 65 resolved (4, 5) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_1",
+          "cell": [
+            4,
+            5
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 64,
+      "type": "claim",
+      "message": "drone_5 assigned (2, 6)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 64,
+      "type": "claim",
+      "message": "drone_1 assigned (4, 5)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 67,
+      "type": "zone_complete",
+      "message": "drone_3 completed (3, 5)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 67,
+      "type": "zone_complete",
+      "message": "drone_4 completed (7, 4)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 67,
+      "type": "bft",
+      "message": "round 66 resolved (3, 6) via single-claim quorum",
       "assignments": [
         {
           "drone_id": "drone_3",
@@ -2280,9 +2129,2309 @@
       ]
     },
     {
-      "t": 177,
+      "t": 67,
+      "type": "bft",
+      "message": "round 67 resolved (8, 4) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_4",
+          "cell": [
+            8,
+            4
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 67,
       "type": "claim",
       "message": "drone_3 assigned (3, 6)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 67,
+      "type": "claim",
+      "message": "drone_4 assigned (8, 4)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 69,
+      "type": "zone_complete",
+      "message": "drone_1 completed (4, 5)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 69,
+      "type": "zone_complete",
+      "message": "drone_5 completed (2, 6)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 69,
+      "type": "bft",
+      "message": "round 68 resolved (1, 6) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_5",
+          "cell": [
+            1,
+            6
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 69,
+      "type": "bft",
+      "message": "round 69 resolved (4, 6) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_1",
+          "cell": [
+            4,
+            6
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 69,
+      "type": "claim",
+      "message": "drone_5 assigned (1, 6)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 69,
+      "type": "claim",
+      "message": "drone_1 assigned (4, 6)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 72,
+      "type": "zone_complete",
+      "message": "drone_3 completed (3, 6)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 72,
+      "type": "zone_complete",
+      "message": "drone_4 completed (8, 4)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 72,
+      "type": "bft",
+      "message": "round 70 resolved (3, 7) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_3",
+          "cell": [
+            3,
+            7
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 72,
+      "type": "bft",
+      "message": "round 71 resolved (8, 5) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_4",
+          "cell": [
+            8,
+            5
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 72,
+      "type": "claim",
+      "message": "drone_3 assigned (3, 7)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 72,
+      "type": "claim",
+      "message": "drone_4 assigned (8, 5)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 74,
+      "type": "zone_complete",
+      "message": "drone_1 completed (4, 6)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 74,
+      "type": "zone_complete",
+      "message": "drone_5 completed (1, 6)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 74,
+      "type": "bft",
+      "message": "round 72 resolved (1, 7) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_5",
+          "cell": [
+            1,
+            7
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 74,
+      "type": "bft",
+      "message": "round 73 resolved (5, 6) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_1",
+          "cell": [
+            5,
+            6
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 74,
+      "type": "claim",
+      "message": "drone_5 assigned (1, 7)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 74,
+      "type": "claim",
+      "message": "drone_1 assigned (5, 6)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 77,
+      "type": "zone_complete",
+      "message": "drone_3 completed (3, 7)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 77,
+      "type": "zone_complete",
+      "message": "drone_4 completed (8, 5)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 77,
+      "type": "bft",
+      "message": "round 74 resolved (2, 7) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_3",
+          "cell": [
+            2,
+            7
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 77,
+      "type": "bft",
+      "message": "round 75 resolved (7, 5) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_4",
+          "cell": [
+            7,
+            5
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 77,
+      "type": "claim",
+      "message": "drone_3 assigned (2, 7)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 77,
+      "type": "claim",
+      "message": "drone_4 assigned (7, 5)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 79,
+      "type": "zone_complete",
+      "message": "drone_1 completed (5, 6)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 79,
+      "type": "zone_complete",
+      "message": "drone_5 completed (1, 7)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 79,
+      "type": "bft",
+      "message": "round 76 resolved (1, 8) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_5",
+          "cell": [
+            1,
+            8
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 79,
+      "type": "bft",
+      "message": "round 77 resolved (6, 6) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_1",
+          "cell": [
+            6,
+            6
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 79,
+      "type": "claim",
+      "message": "drone_5 assigned (1, 8)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 79,
+      "type": "claim",
+      "message": "drone_1 assigned (6, 6)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 82,
+      "type": "zone_complete",
+      "message": "drone_3 completed (2, 7)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 82,
+      "type": "zone_complete",
+      "message": "drone_4 completed (7, 5)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 82,
+      "type": "bft",
+      "message": "round 78 resolved (2, 8) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_3",
+          "cell": [
+            2,
+            8
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 82,
+      "type": "bft",
+      "message": "round 79 resolved (6, 5) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_4",
+          "cell": [
+            6,
+            5
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 82,
+      "type": "claim",
+      "message": "drone_3 assigned (2, 8)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 82,
+      "type": "claim",
+      "message": "drone_4 assigned (6, 5)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 84,
+      "type": "zone_complete",
+      "message": "drone_1 completed (6, 6)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 84,
+      "type": "zone_complete",
+      "message": "drone_5 completed (1, 8)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 84,
+      "type": "bft",
+      "message": "round 80 resolved (1, 9) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_5",
+          "cell": [
+            1,
+            9
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 84,
+      "type": "bft",
+      "message": "round 81 resolved (7, 6) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_1",
+          "cell": [
+            7,
+            6
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 84,
+      "type": "claim",
+      "message": "drone_5 assigned (1, 9)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 84,
+      "type": "claim",
+      "message": "drone_1 assigned (7, 6)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 87,
+      "type": "zone_complete",
+      "message": "drone_3 completed (2, 8)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 87,
+      "type": "zone_complete",
+      "message": "drone_4 completed (6, 5)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 87,
+      "type": "bft",
+      "message": "round 82 resolved (3, 8) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_3",
+          "cell": [
+            3,
+            8
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 87,
+      "type": "bft",
+      "message": "round 83 resolved (6, 7) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_4",
+          "cell": [
+            6,
+            7
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 87,
+      "type": "claim",
+      "message": "drone_3 assigned (3, 8)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 87,
+      "type": "claim",
+      "message": "drone_4 assigned (6, 7)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 89,
+      "type": "zone_complete",
+      "message": "drone_1 completed (7, 6)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 89,
+      "type": "zone_complete",
+      "message": "drone_5 completed (1, 9)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 89,
+      "type": "bft",
+      "message": "round 84 resolved (2, 9) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_5",
+          "cell": [
+            2,
+            9
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 89,
+      "type": "bft",
+      "message": "round 85 resolved (8, 6) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_1",
+          "cell": [
+            8,
+            6
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 89,
+      "type": "claim",
+      "message": "drone_5 assigned (2, 9)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 89,
+      "type": "claim",
+      "message": "drone_1 assigned (8, 6)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 92,
+      "type": "zone_complete",
+      "message": "drone_3 completed (3, 8)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 92,
+      "type": "bft",
+      "message": "round 86 resolved (4, 8) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_3",
+          "cell": [
+            4,
+            8
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 92,
+      "type": "claim",
+      "message": "drone_3 assigned (4, 8)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 93,
+      "type": "zone_complete",
+      "message": "drone_4 completed (6, 7)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 93,
+      "type": "bft",
+      "message": "round 87 resolved (5, 7) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_4",
+          "cell": [
+            5,
+            7
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 93,
+      "type": "claim",
+      "message": "drone_4 assigned (5, 7)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 94,
+      "type": "zone_complete",
+      "message": "drone_1 completed (8, 6)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 94,
+      "type": "zone_complete",
+      "message": "drone_5 completed (2, 9)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 94,
+      "type": "bft",
+      "message": "round 88 resolved (3, 9) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_5",
+          "cell": [
+            3,
+            9
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 94,
+      "type": "bft",
+      "message": "round 89 resolved (8, 7) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_1",
+          "cell": [
+            8,
+            7
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 94,
+      "type": "claim",
+      "message": "drone_5 assigned (3, 9)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 94,
+      "type": "claim",
+      "message": "drone_1 assigned (8, 7)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 97,
+      "type": "zone_complete",
+      "message": "drone_3 completed (4, 8)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 97,
+      "type": "bft",
+      "message": "round 90 resolved (4, 7) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_3",
+          "cell": [
+            4,
+            7
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 97,
+      "type": "claim",
+      "message": "drone_3 assigned (4, 7)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 98,
+      "type": "zone_complete",
+      "message": "drone_4 completed (5, 7)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 98,
+      "type": "bft",
+      "message": "round 91 resolved (5, 8) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_4",
+          "cell": [
+            5,
+            8
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 98,
+      "type": "claim",
+      "message": "drone_4 assigned (5, 8)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 99,
+      "type": "zone_complete",
+      "message": "drone_1 completed (8, 7)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 99,
+      "type": "zone_complete",
+      "message": "drone_5 completed (3, 9)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 99,
+      "type": "bft",
+      "message": "round 92 resolved (4, 9) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_5",
+          "cell": [
+            4,
+            9
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 99,
+      "type": "bft",
+      "message": "round 93 resolved (7, 7) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_1",
+          "cell": [
+            7,
+            7
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 99,
+      "type": "claim",
+      "message": "drone_5 assigned (4, 9)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 99,
+      "type": "claim",
+      "message": "drone_1 assigned (7, 7)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 102,
+      "type": "zone_complete",
+      "message": "drone_3 completed (4, 7)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 102,
+      "type": "bft",
+      "message": "round 94 resolved (6, 8) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_3",
+          "cell": [
+            6,
+            8
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 102,
+      "type": "claim",
+      "message": "drone_3 assigned (6, 8)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 103,
+      "type": "zone_complete",
+      "message": "drone_4 completed (5, 8)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 103,
+      "type": "bft",
+      "message": "round 95 resolved (5, 9) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_4",
+          "cell": [
+            5,
+            9
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 103,
+      "type": "claim",
+      "message": "drone_4 assigned (5, 9)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 104,
+      "type": "zone_complete",
+      "message": "drone_1 completed (7, 7)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 104,
+      "type": "zone_complete",
+      "message": "drone_5 completed (4, 9)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 104,
+      "type": "bft",
+      "message": "round 96 resolved (6, 9) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_5",
+          "cell": [
+            6,
+            9
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 104,
+      "type": "bft",
+      "message": "round 97 resolved (7, 8) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_1",
+          "cell": [
+            7,
+            8
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 104,
+      "type": "claim",
+      "message": "drone_5 assigned (6, 9)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 104,
+      "type": "claim",
+      "message": "drone_1 assigned (7, 8)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 108,
+      "type": "zone_complete",
+      "message": "drone_4 completed (5, 9)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 108,
+      "type": "bft",
+      "message": "round 98 resolved (7, 9) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_4",
+          "cell": [
+            7,
+            9
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 108,
+      "type": "claim",
+      "message": "drone_4 assigned (7, 9)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 109,
+      "type": "zone_complete",
+      "message": "drone_1 completed (7, 8)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 109,
+      "type": "zone_complete",
+      "message": "drone_3 completed (6, 8)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 109,
+      "type": "bft",
+      "message": "round 99 resolved (8, 8) via timestamp precedence + proximity tiebreak",
+      "assignments": [
+        {
+          "drone_id": "drone_1",
+          "cell": [
+            8,
+            8
+          ],
+          "reason": "winner",
+          "subzone": null
+        },
+        {
+          "drone_id": "drone_3",
+          "cell": [
+            8,
+            9
+          ],
+          "reason": "fallback",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 109,
+      "type": "claim",
+      "message": "drone_1 assigned (8, 8)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 109,
+      "type": "claim",
+      "message": "drone_3 assigned (8, 9)",
+      "reason": "fallback",
+      "subzone": null
+    },
+    {
+      "t": 110,
+      "type": "zone_complete",
+      "message": "drone_5 completed (6, 9)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 110,
+      "type": "bft",
+      "message": "round 100 resolved (6, 3) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_5",
+          "cell": [
+            6,
+            3
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 110,
+      "type": "claim",
+      "message": "drone_5 assigned (6, 3)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 114,
+      "type": "zone_complete",
+      "message": "drone_1 completed (8, 8)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 114,
+      "type": "zone_complete",
+      "message": "drone_4 completed (7, 9)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 114,
+      "type": "bft",
+      "message": "round 101 resolved (4, 1) via timestamp precedence + proximity tiebreak",
+      "assignments": [
+        {
+          "drone_id": "drone_1",
+          "cell": [
+            4,
+            1
+          ],
+          "reason": "winner",
+          "subzone": null
+        },
+        {
+          "drone_id": "drone_4",
+          "cell": [
+            9,
+            9
+          ],
+          "reason": "fallback",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 114,
+      "type": "claim",
+      "message": "drone_1 assigned (4, 1)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 114,
+      "type": "claim",
+      "message": "drone_4 assigned (9, 9)",
+      "reason": "fallback",
+      "subzone": null
+    },
+    {
+      "t": 116,
+      "type": "zone_complete",
+      "message": "drone_3 completed (8, 9)",
+      "certainty": 0.979,
+      "subzone": null
+    },
+    {
+      "t": 116,
+      "type": "bft",
+      "message": "round 102 resolved (5, 5) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_3",
+          "cell": [
+            5,
+            5
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 116,
+      "type": "claim",
+      "message": "drone_3 assigned (5, 5)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 117,
+      "type": "zone_complete",
+      "message": "drone_4 completed (9, 9)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 117,
+      "type": "zone_complete",
+      "message": "drone_5 completed (6, 3)",
+      "certainty": 0.959,
+      "subzone": null
+    },
+    {
+      "t": 117,
+      "type": "bft",
+      "message": "round 103 resolved (9, 0) via timestamp precedence + proximity tiebreak",
+      "assignments": [
+        {
+          "drone_id": "drone_5",
+          "cell": [
+            9,
+            0
+          ],
+          "reason": "winner",
+          "subzone": null
+        },
+        {
+          "drone_id": "drone_4",
+          "cell": [
+            0,
+            9
+          ],
+          "reason": "fallback",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 117,
+      "type": "claim",
+      "message": "drone_5 assigned (9, 0)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 117,
+      "type": "claim",
+      "message": "drone_4 assigned (0, 9)",
+      "reason": "fallback",
+      "subzone": null
+    },
+    {
+      "t": 124,
+      "type": "zone_complete",
+      "message": "drone_3 completed (5, 5)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 124,
+      "type": "zone_complete",
+      "message": "drone_5 completed (9, 0)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 124,
+      "type": "bft",
+      "message": "round 104 resolved (0, 0) via timestamp precedence + proximity tiebreak",
+      "assignments": [
+        {
+          "drone_id": "drone_3",
+          "cell": [
+            0,
+            0
+          ],
+          "reason": "winner",
+          "subzone": null
+        },
+        {
+          "drone_id": "drone_5",
+          "cell": [
+            8,
+            0
+          ],
+          "reason": "fallback",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 124,
+      "type": "claim",
+      "message": "drone_3 assigned (0, 0)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 124,
+      "type": "claim",
+      "message": "drone_5 assigned (8, 0)",
+      "reason": "fallback",
+      "subzone": null
+    },
+    {
+      "t": 126,
+      "type": "zone_complete",
+      "message": "drone_1 completed (4, 1)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 126,
+      "type": "zone_complete",
+      "message": "drone_5 completed (8, 0)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 126,
+      "type": "bft",
+      "message": "round 105 resolved (1, 0) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_1",
+          "cell": [
+            1,
+            0
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 126,
+      "type": "bft",
+      "message": "round 106 resolved (5, 4) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_5",
+          "cell": [
+            5,
+            4
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 126,
+      "type": "claim",
+      "message": "drone_1 assigned (1, 0)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 126,
+      "type": "claim",
+      "message": "drone_5 assigned (5, 4)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 127,
+      "type": "zone_complete",
+      "message": "drone_4 completed (0, 9)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 127,
+      "type": "bft",
+      "message": "round 107 resolved (4, 1) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_4",
+          "cell": [
+            4,
+            1
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 127,
+      "type": "claim",
+      "message": "drone_4 assigned (4, 1)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 131,
+      "type": "zone_complete",
+      "message": "drone_1 completed (1, 0)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 131,
+      "type": "bft",
+      "message": "round 108 resolved (0, 8) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_1",
+          "cell": [
+            0,
+            8
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 131,
+      "type": "claim",
+      "message": "drone_1 assigned (0, 8)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 134,
+      "type": "zone_complete",
+      "message": "drone_5 completed (5, 4)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 134,
+      "type": "bft",
+      "message": "round 109 resolved (9, 8) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_5",
+          "cell": [
+            9,
+            8
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 134,
+      "type": "claim",
+      "message": "drone_5 assigned (9, 8)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 135,
+      "type": "zone_complete",
+      "message": "drone_3 completed (0, 0)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 135,
+      "type": "bft",
+      "message": "round 110 resolved (2, 0) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_3",
+          "cell": [
+            2,
+            0
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 135,
+      "type": "claim",
+      "message": "drone_3 assigned (2, 0)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 138,
+      "type": "zone_complete",
+      "message": "drone_3 completed (2, 0)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 138,
+      "type": "bft",
+      "message": "round 111 resolved (5, 3) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_3",
+          "cell": [
+            5,
+            3
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 138,
+      "type": "claim",
+      "message": "drone_3 assigned (5, 3)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 140,
+      "type": "zone_complete",
+      "message": "drone_4 completed (4, 1)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 140,
+      "type": "bft",
+      "message": "round 112 resolved (7, 0) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_4",
+          "cell": [
+            7,
+            0
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 140,
+      "type": "claim",
+      "message": "drone_4 assigned (7, 0)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 141,
+      "type": "zone_complete",
+      "message": "drone_1 completed (0, 8)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 141,
+      "type": "bft",
+      "message": "round 113 resolved (4, 1) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_1",
+          "cell": [
+            4,
+            1
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 141,
+      "type": "claim",
+      "message": "drone_1 assigned (4, 1)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 143,
+      "type": "zone_complete",
+      "message": "drone_5 completed (9, 8)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 143,
+      "type": "bft",
+      "message": "round 114 resolved (9, 7) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_5",
+          "cell": [
+            9,
+            7
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 143,
+      "type": "claim",
+      "message": "drone_5 assigned (9, 7)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 145,
+      "type": "zone_complete",
+      "message": "drone_3 completed (5, 3)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 145,
+      "type": "zone_complete",
+      "message": "drone_4 completed (7, 0)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 145,
+      "type": "zone_complete",
+      "message": "drone_5 completed (9, 7)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 145,
+      "type": "bft",
+      "message": "round 115 resolved (0, 7) via timestamp precedence + proximity tiebreak",
+      "assignments": [
+        {
+          "drone_id": "drone_3",
+          "cell": [
+            0,
+            7
+          ],
+          "reason": "winner",
+          "subzone": null
+        },
+        {
+          "drone_id": "drone_5",
+          "cell": [
+            9,
+            6
+          ],
+          "reason": "fallback",
+          "subzone": null
+        },
+        {
+          "drone_id": "drone_4",
+          "cell": [
+            6,
+            0
+          ],
+          "reason": "fallback",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 145,
+      "type": "claim",
+      "message": "drone_3 assigned (0, 7)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 145,
+      "type": "claim",
+      "message": "drone_5 assigned (9, 6)",
+      "reason": "fallback",
+      "subzone": null
+    },
+    {
+      "t": 145,
+      "type": "claim",
+      "message": "drone_4 assigned (6, 0)",
+      "reason": "fallback",
+      "subzone": null
+    },
+    {
+      "t": 147,
+      "type": "zone_complete",
+      "message": "drone_4 completed (6, 0)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 147,
+      "type": "zone_complete",
+      "message": "drone_5 completed (9, 6)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 147,
+      "type": "bft",
+      "message": "round 116 resolved (5, 2) via timestamp precedence + proximity tiebreak",
+      "assignments": [
+        {
+          "drone_id": "drone_4",
+          "cell": [
+            5,
+            2
+          ],
+          "reason": "winner",
+          "subzone": null
+        },
+        {
+          "drone_id": "drone_5",
+          "cell": [
+            3,
+            0
+          ],
+          "reason": "fallback",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 147,
+      "type": "claim",
+      "message": "drone_4 assigned (5, 2)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 147,
+      "type": "claim",
+      "message": "drone_5 assigned (3, 0)",
+      "reason": "fallback",
+      "subzone": null
+    },
+    {
+      "t": 151,
+      "type": "zone_complete",
+      "message": "drone_4 completed (5, 2)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 151,
+      "type": "bft",
+      "message": "round 117 resolved (0, 6) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_4",
+          "cell": [
+            0,
+            6
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 151,
+      "type": "claim",
+      "message": "drone_4 assigned (0, 6)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 153,
+      "type": "zone_complete",
+      "message": "drone_1 completed (4, 1)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 153,
+      "type": "bft",
+      "message": "round 118 resolved (4, 0) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_1",
+          "cell": [
+            4,
+            0
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 153,
+      "type": "claim",
+      "message": "drone_1 assigned (4, 0)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 155,
+      "type": "zone_complete",
+      "message": "drone_1 completed (4, 0)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 155,
+      "type": "zone_complete",
+      "message": "drone_3 completed (0, 7)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 155,
+      "type": "bft",
+      "message": "round 119 resolved (4, 1) via timestamp precedence + proximity tiebreak",
+      "assignments": [
+        {
+          "drone_id": "drone_1",
+          "cell": [
+            4,
+            1
+          ],
+          "reason": "winner",
+          "subzone": null
+        },
+        {
+          "drone_id": "drone_3",
+          "cell": [
+            0,
+            5
+          ],
+          "reason": "fallback",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 155,
+      "type": "claim",
+      "message": "drone_1 assigned (4, 1)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 155,
+      "type": "claim",
+      "message": "drone_3 assigned (0, 5)",
+      "reason": "fallback",
+      "subzone": null
+    },
+    {
+      "t": 157,
+      "type": "zone_complete",
+      "message": "drone_1 completed (4, 1)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 157,
+      "type": "bft",
+      "message": "round 120 resolved (5, 1) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_1",
+          "cell": [
+            5,
+            1
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 157,
+      "type": "claim",
+      "message": "drone_1 assigned (5, 1)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 158,
+      "type": "zone_complete",
+      "message": "drone_3 completed (0, 5)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 158,
+      "type": "bft",
+      "message": "round 121 resolved (4, 1) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_3",
+          "cell": [
+            4,
+            1
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 158,
+      "type": "claim",
+      "message": "drone_3 assigned (4, 1)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 159,
+      "type": "zone_complete",
+      "message": "drone_1 completed (5, 1)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 159,
+      "type": "bft",
+      "message": "round 122 resolved (5, 0) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_1",
+          "cell": [
+            5,
+            0
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 159,
+      "type": "claim",
+      "message": "drone_1 assigned (5, 0)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 160,
+      "type": "zone_complete",
+      "message": "drone_5 completed (3, 0)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 160,
+      "type": "bft",
+      "message": "round 123 resolved (9, 5) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_5",
+          "cell": [
+            9,
+            5
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 160,
+      "type": "claim",
+      "message": "drone_5 assigned (9, 5)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 161,
+      "type": "zone_complete",
+      "message": "drone_1 completed (5, 0)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 161,
+      "type": "zone_complete",
+      "message": "drone_4 completed (0, 6)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 161,
+      "type": "bft",
+      "message": "round 124 resolved (0, 4) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_4",
+          "cell": [
+            0,
+            4
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 161,
+      "type": "bft",
+      "message": "round 125 resolved (9, 4) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_1",
+          "cell": [
+            9,
+            4
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 161,
+      "type": "claim",
+      "message": "drone_4 assigned (0, 4)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 161,
+      "type": "claim",
+      "message": "drone_1 assigned (9, 4)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 164,
+      "type": "zone_complete",
+      "message": "drone_4 completed (0, 4)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 164,
+      "type": "bft",
+      "message": "round 126 resolved (6, 1) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_4",
+          "cell": [
+            6,
+            1
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 164,
+      "type": "claim",
+      "message": "drone_4 assigned (6, 1)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 167,
+      "type": "zone_complete",
+      "message": "drone_3 completed (4, 1)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 167,
+      "type": "bft",
+      "message": "round 127 resolved (3, 1) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_3",
+          "cell": [
+            3,
+            1
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 167,
+      "type": "claim",
+      "message": "drone_3 assigned (3, 1)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 169,
+      "type": "zone_complete",
+      "message": "drone_3 completed (3, 1)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 169,
+      "type": "bft",
+      "message": "round 128 resolved (4, 1) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_3",
+          "cell": [
+            4,
+            1
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 169,
+      "type": "claim",
+      "message": "drone_3 assigned (4, 1)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 170,
+      "type": "zone_complete",
+      "message": "drone_1 completed (9, 4)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 170,
+      "type": "bft",
+      "message": "round 129 resolved (9, 3) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_1",
+          "cell": [
+            9,
+            3
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 170,
+      "type": "claim",
+      "message": "drone_1 assigned (9, 3)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 171,
+      "type": "zone_complete",
+      "message": "drone_3 completed (4, 1)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 171,
+      "type": "bft",
+      "message": "round 130 resolved (4, 2) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_3",
+          "cell": [
+            4,
+            2
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 171,
+      "type": "claim",
+      "message": "drone_3 assigned (4, 2)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 172,
+      "type": "zone_complete",
+      "message": "drone_1 completed (9, 3)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 172,
+      "type": "zone_complete",
+      "message": "drone_5 completed (9, 5)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 172,
+      "type": "bft",
+      "message": "round 131 resolved (4, 1) via timestamp precedence + proximity tiebreak",
+      "assignments": [
+        {
+          "drone_id": "drone_1",
+          "cell": [
+            4,
+            1
+          ],
+          "reason": "winner",
+          "subzone": null
+        },
+        {
+          "drone_id": "drone_5",
+          "cell": [
+            0,
+            3
+          ],
+          "reason": "fallback",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 172,
+      "type": "claim",
+      "message": "drone_1 assigned (4, 1)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 172,
+      "type": "claim",
+      "message": "drone_5 assigned (0, 3)",
+      "reason": "fallback",
+      "subzone": null
+    },
+    {
+      "t": 173,
+      "type": "zone_complete",
+      "message": "drone_3 completed (4, 2)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 173,
+      "type": "bft",
+      "message": "round 132 resolved (7, 1) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_3",
+          "cell": [
+            7,
+            1
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 173,
+      "type": "claim",
+      "message": "drone_3 assigned (7, 1)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 174,
+      "type": "zone_complete",
+      "message": "drone_4 completed (6, 1)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 174,
+      "type": "bft",
+      "message": "round 133 resolved (2, 1) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_4",
+          "cell": [
+            2,
+            1
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 174,
+      "type": "claim",
+      "message": "drone_4 assigned (2, 1)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 178,
+      "type": "zone_complete",
+      "message": "drone_3 completed (7, 1)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 178,
+      "type": "bft",
+      "message": "round 134 resolved (9, 2) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_3",
+          "cell": [
+            9,
+            2
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 178,
+      "type": "claim",
+      "message": "drone_3 assigned (9, 2)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 179,
+      "type": "zone_complete",
+      "message": "drone_4 completed (2, 1)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 179,
+      "type": "bft",
+      "message": "round 135 resolved (3, 2) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_4",
+          "cell": [
+            3,
+            2
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 179,
+      "type": "claim",
+      "message": "drone_4 assigned (3, 2)",
+      "reason": "winner",
+      "subzone": null
+    },
+    {
+      "t": 180,
+      "type": "zone_complete",
+      "message": "drone_1 completed (4, 1)",
+      "certainty": 1.0,
+      "subzone": null
+    },
+    {
+      "t": 180,
+      "type": "bft",
+      "message": "round 136 resolved (0, 2) via single-claim quorum",
+      "assignments": [
+        {
+          "drone_id": "drone_1",
+          "cell": [
+            0,
+            2
+          ],
+          "reason": "winner",
+          "subzone": null
+        }
+      ]
+    },
+    {
+      "t": 180,
+      "type": "claim",
+      "message": "drone_1 assigned (0, 2)",
       "reason": "winner",
       "subzone": null
     }
@@ -2292,367 +4441,367 @@
       {
         "x": 0,
         "y": 0,
-        "certainty": 0.9199,
-        "entropy": 0.4025,
+        "certainty": 0.978,
+        "entropy": 0.1526,
         "last_updated_ms": 180000,
-        "updated_by": "drone_1",
+        "updated_by": "drone_3",
         "decay_rate": 0.001
       },
       {
         "x": 1,
         "y": 0,
+        "certainty": 0.9761,
+        "entropy": 0.1629,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_1",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 2,
+        "y": 0,
+        "certainty": 0.9794,
+        "entropy": 0.1447,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_3",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 3,
+        "y": 0,
+        "certainty": 0.9901,
+        "entropy": 0.0802,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_5",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 4,
+        "y": 0,
+        "certainty": 0.9876,
+        "entropy": 0.096,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_1",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 5,
+        "y": 0,
+        "certainty": 0.9906,
+        "entropy": 0.0769,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_1",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 6,
+        "y": 0,
+        "certainty": 0.9838,
+        "entropy": 0.1198,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_4",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 7,
+        "y": 0,
+        "certainty": 0.9828,
+        "entropy": 0.1255,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_4",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 8,
+        "y": 0,
+        "certainty": 0.9737,
+        "entropy": 0.1755,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_5",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 9,
+        "y": 0,
+        "certainty": 0.9728,
+        "entropy": 0.1804,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_5",
+        "decay_rate": 0.001
+      }
+    ],
+    [
+      {
+        "x": 0,
+        "y": 1,
+        "certainty": 0.9183,
+        "entropy": 0.4081,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_3",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 1,
+        "y": 1,
+        "certainty": 0.9179,
+        "entropy": 0.4096,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_5",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 2,
+        "y": 1,
+        "certainty": 0.9995,
+        "entropy": 0.0062,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_4",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 3,
+        "y": 1,
+        "certainty": 0.9945,
+        "entropy": 0.049,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_3",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 4,
+        "y": 1,
+        "certainty": 1.0,
+        "entropy": 0.0,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_1",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 5,
+        "y": 1,
+        "certainty": 0.9896,
+        "entropy": 0.0834,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_1",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 6,
+        "y": 1,
+        "certainty": 0.997,
+        "entropy": 0.0294,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_4",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 7,
+        "y": 1,
+        "certainty": 0.999,
+        "entropy": 0.0114,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_3",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 8,
+        "y": 1,
+        "certainty": 0.9166,
+        "entropy": 0.4139,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_2",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 9,
+        "y": 1,
+        "certainty": 0.9183,
+        "entropy": 0.4081,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_4",
+        "decay_rate": 0.001
+      }
+    ],
+    [
+      {
+        "x": 0,
+        "y": 2,
+        "certainty": 0.9162,
+        "entropy": 0.4154,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_3",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 1,
+        "y": 2,
+        "certainty": 0.92,
+        "entropy": 0.4022,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_5",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 2,
+        "y": 2,
+        "certainty": 0.9183,
+        "entropy": 0.4081,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_1",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 3,
+        "y": 2,
+        "certainty": 0.9162,
+        "entropy": 0.4154,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_1",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 4,
+        "y": 2,
+        "certainty": 0.9965,
+        "entropy": 0.0335,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_3",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 5,
+        "y": 2,
+        "certainty": 0.9857,
+        "entropy": 0.1081,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_4",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 6,
+        "y": 2,
+        "certainty": 0.9234,
+        "entropy": 0.3902,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_4",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 7,
+        "y": 2,
+        "certainty": 0.9212,
+        "entropy": 0.3978,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_4",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 8,
+        "y": 2,
+        "certainty": 0.9187,
+        "entropy": 0.4066,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_2",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 9,
+        "y": 2,
+        "certainty": 0.9162,
+        "entropy": 0.4154,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_4",
+        "decay_rate": 0.001
+      }
+    ],
+    [
+      {
+        "x": 0,
+        "y": 3,
+        "certainty": 0.9141,
+        "entropy": 0.4225,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_3",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 1,
+        "y": 3,
+        "certainty": 0.9212,
+        "entropy": 0.3978,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_3",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 2,
+        "y": 3,
+        "certainty": 0.9204,
+        "entropy": 0.4007,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_1",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 3,
+        "y": 3,
+        "certainty": 0.9225,
+        "entropy": 0.3933,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_1",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 4,
+        "y": 3,
         "certainty": 0.9246,
-        "entropy": 0.3859,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_1",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 2,
-        "y": 0,
-        "certainty": 0.9292,
-        "entropy": 0.3687,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_1",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 3,
-        "y": 0,
-        "certainty": 0.934,
-        "entropy": 0.3508,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_1",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 4,
-        "y": 0,
-        "certainty": 0.9388,
-        "entropy": 0.3322,
+        "entropy": 0.3856,
         "last_updated_ms": 180000,
         "updated_by": "drone_1",
         "decay_rate": 0.001
       },
       {
         "x": 5,
-        "y": 0,
-        "certainty": 0.9388,
-        "entropy": 0.3322,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_2",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 6,
-        "y": 0,
-        "certainty": 0.934,
-        "entropy": 0.3508,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_2",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 7,
-        "y": 0,
-        "certainty": 0.9292,
-        "entropy": 0.3687,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_2",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 8,
-        "y": 0,
-        "certainty": 0.9246,
-        "entropy": 0.3859,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_2",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 9,
-        "y": 0,
-        "certainty": 0.9199,
-        "entropy": 0.4025,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_2",
-        "decay_rate": 0.001
-      }
-    ],
-    [
-      {
-        "x": 0,
-        "y": 1,
-        "certainty": 0.9585,
-        "entropy": 0.2489,
+        "y": 3,
+        "certainty": 0.9828,
+        "entropy": 0.1255,
         "last_updated_ms": 180000,
         "updated_by": "drone_3",
         "decay_rate": 0.001
       },
       {
-        "x": 1,
-        "y": 1,
-        "certainty": 0.9244,
-        "entropy": 0.3866,
-        "last_updated_ms": 180000,
-        "updated_by": "decay",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 2,
-        "y": 1,
-        "certainty": 0.9201,
-        "entropy": 0.4017,
-        "last_updated_ms": 180000,
-        "updated_by": "decay",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 3,
-        "y": 1,
-        "certainty": 0.916,
-        "entropy": 0.4163,
-        "last_updated_ms": 180000,
-        "updated_by": "decay",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 4,
-        "y": 1,
-        "certainty": 0.9118,
-        "entropy": 0.4304,
-        "last_updated_ms": 180000,
-        "updated_by": "decay",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 5,
-        "y": 1,
-        "certainty": 0.9388,
-        "entropy": 0.3322,
+        "x": 6,
+        "y": 3,
+        "certainty": 0.9313,
+        "entropy": 0.361,
         "last_updated_ms": 180000,
         "updated_by": "drone_5",
         "decay_rate": 0.001
       },
       {
-        "x": 6,
-        "y": 1,
-        "certainty": 0.6328,
-        "entropy": 0.9485,
+        "x": 7,
+        "y": 3,
+        "certainty": 0.9229,
+        "entropy": 0.3917,
         "last_updated_ms": 180000,
         "updated_by": "drone_2",
         "decay_rate": 0.001
       },
       {
-        "x": 7,
-        "y": 1,
-        "certainty": 0.9688,
-        "entropy": 0.2006,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_4",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 8,
-        "y": 1,
-        "certainty": 0.9636,
-        "entropy": 0.2254,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_4",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 9,
-        "y": 1,
-        "certainty": 0.9585,
-        "entropy": 0.2489,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_4",
-        "decay_rate": 0.001
-      }
-    ],
-    [
-      {
-        "x": 0,
-        "y": 2,
-        "certainty": 0.9535,
-        "entropy": 0.2712,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_3",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 1,
-        "y": 2,
-        "certainty": 0.9286,
-        "entropy": 0.371,
-        "last_updated_ms": 180000,
-        "updated_by": "decay",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 2,
-        "y": 2,
-        "certainty": 0.9646,
-        "entropy": 0.221,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_3",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 3,
-        "y": 2,
-        "certainty": 0.9697,
-        "entropy": 0.1959,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_3",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 4,
-        "y": 2,
-        "certainty": 0.9749,
-        "entropy": 0.1692,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_3",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 5,
-        "y": 2,
-        "certainty": 0.934,
-        "entropy": 0.3508,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_5",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 6,
-        "y": 2,
-        "certainty": 0.9792,
-        "entropy": 0.146,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_4",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 7,
-        "y": 2,
-        "certainty": 0.9739,
-        "entropy": 0.1742,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_4",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 8,
-        "y": 2,
-        "certainty": 0.6997,
-        "entropy": 0.8817,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_4",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 9,
-        "y": 2,
-        "certainty": 0.9535,
-        "entropy": 0.2712,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_4",
-        "decay_rate": 0.001
-      }
-    ],
-    [
-      {
-        "x": 0,
-        "y": 3,
-        "certainty": 0.9486,
-        "entropy": 0.2925,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_3",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 1,
-        "y": 3,
-        "certainty": 0.9329,
-        "entropy": 0.3548,
-        "last_updated_ms": 180000,
-        "updated_by": "decay",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 2,
-        "y": 3,
-        "certainty": 0.9373,
-        "entropy": 0.3381,
-        "last_updated_ms": 180000,
-        "updated_by": "decay",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 3,
-        "y": 3,
-        "certainty": 0.9417,
-        "entropy": 0.3207,
-        "last_updated_ms": 180000,
-        "updated_by": "decay",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 4,
-        "y": 3,
-        "certainty": 0.9801,
-        "entropy": 0.1406,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_3",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 5,
-        "y": 3,
-        "certainty": 0.9292,
-        "entropy": 0.3687,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_5",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 6,
-        "y": 3,
-        "certainty": 0.9845,
-        "entropy": 0.1154,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_4",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 7,
-        "y": 3,
-        "certainty": 0.9899,
-        "entropy": 0.0818,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_4",
-        "decay_rate": 0.001
-      },
-      {
         "x": 8,
         "y": 3,
-        "certainty": 0.9953,
-        "entropy": 0.0433,
+        "certainty": 0.9208,
+        "entropy": 0.3993,
         "last_updated_ms": 180000,
-        "updated_by": "drone_4",
+        "updated_by": "drone_2",
         "decay_rate": 0.001
       },
       {
         "x": 9,
         "y": 3,
-        "certainty": 0.9486,
-        "entropy": 0.2925,
+        "certainty": 0.996,
+        "entropy": 0.0375,
         "last_updated_ms": 180000,
-        "updated_by": "drone_4",
+        "updated_by": "drone_1",
         "decay_rate": 0.001
       }
     ],
@@ -2660,553 +4809,1212 @@
       {
         "x": 0,
         "y": 4,
+        "certainty": 0.9921,
+        "entropy": 0.0668,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_4",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 1,
+        "y": 4,
+        "certainty": 0.9225,
+        "entropy": 0.3933,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_5",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 2,
+        "y": 4,
+        "certainty": 0.9238,
+        "entropy": 0.3887,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_3",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 3,
+        "y": 4,
+        "certainty": 0.9259,
+        "entropy": 0.381,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_3",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 4,
+        "y": 4,
+        "certainty": 0.9268,
+        "entropy": 0.3779,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_1",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 5,
+        "y": 4,
+        "certainty": 0.9775,
+        "entropy": 0.1552,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_5",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 6,
+        "y": 4,
+        "certainty": 0.9259,
+        "entropy": 0.381,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_4",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 7,
+        "y": 4,
+        "certainty": 0.928,
+        "entropy": 0.3732,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_4",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 8,
+        "y": 4,
+        "certainty": 0.9302,
+        "entropy": 0.3652,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_4",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 9,
+        "y": 4,
+        "certainty": 0.995,
+        "entropy": 0.0452,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_1",
+        "decay_rate": 0.001
+      }
+    ],
+    [
+      {
+        "x": 0,
+        "y": 5,
+        "certainty": 0.9891,
+        "entropy": 0.0866,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_3",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 1,
+        "y": 5,
+        "certainty": 0.9246,
+        "entropy": 0.3856,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_5",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 2,
+        "y": 5,
+        "certainty": 0.9268,
+        "entropy": 0.3779,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_5",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 3,
+        "y": 5,
+        "certainty": 0.928,
+        "entropy": 0.3732,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_3",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 4,
+        "y": 5,
+        "certainty": 0.9289,
+        "entropy": 0.37,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_1",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 5,
+        "y": 5,
+        "certainty": 0.9728,
+        "entropy": 0.1804,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_3",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 6,
+        "y": 5,
+        "certainty": 0.9367,
+        "entropy": 0.3404,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_4",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 7,
+        "y": 5,
+        "certainty": 0.9345,
+        "entropy": 0.3488,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_4",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 8,
+        "y": 5,
+        "certainty": 0.9323,
+        "entropy": 0.3571,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_4",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 9,
+        "y": 5,
+        "certainty": 0.996,
+        "entropy": 0.0375,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_5",
+        "decay_rate": 0.001
+      }
+    ],
+    [
+      {
+        "x": 0,
+        "y": 6,
+        "certainty": 0.9906,
+        "entropy": 0.0769,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_4",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 1,
+        "y": 6,
+        "certainty": 0.9311,
+        "entropy": 0.362,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_5",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 2,
+        "y": 6,
+        "certainty": 0.9289,
+        "entropy": 0.37,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_5",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 3,
+        "y": 6,
+        "certainty": 0.9302,
+        "entropy": 0.3652,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_3",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 4,
+        "y": 6,
+        "certainty": 0.9311,
+        "entropy": 0.362,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_1",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 5,
+        "y": 6,
+        "certainty": 0.9332,
+        "entropy": 0.3538,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_1",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 6,
+        "y": 6,
+        "certainty": 0.9354,
+        "entropy": 0.3455,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_1",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 7,
+        "y": 6,
+        "certainty": 0.9376,
+        "entropy": 0.337,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_1",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 8,
+        "y": 6,
+        "certainty": 0.9398,
+        "entropy": 0.3284,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_1",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 9,
+        "y": 6,
+        "certainty": 0.9838,
+        "entropy": 0.1198,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_5",
+        "decay_rate": 0.001
+      }
+    ],
+    [
+      {
+        "x": 0,
+        "y": 7,
+        "certainty": 0.9876,
+        "entropy": 0.096,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_3",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 1,
+        "y": 7,
+        "certainty": 0.9332,
+        "entropy": 0.3538,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_5",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 2,
+        "y": 7,
+        "certainty": 0.9345,
+        "entropy": 0.3488,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_3",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 3,
+        "y": 7,
+        "certainty": 0.9323,
+        "entropy": 0.3571,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_3",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 4,
+        "y": 7,
+        "certainty": 0.9433,
+        "entropy": 0.3142,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_3",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 5,
+        "y": 7,
+        "certainty": 0.9415,
+        "entropy": 0.3213,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_4",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 6,
+        "y": 7,
+        "certainty": 0.9393,
+        "entropy": 0.3301,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_4",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 7,
+        "y": 7,
+        "certainty": 0.9442,
+        "entropy": 0.3106,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_1",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 8,
+        "y": 7,
+        "certainty": 0.942,
+        "entropy": 0.3196,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_1",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 9,
+        "y": 7,
+        "certainty": 0.9828,
+        "entropy": 0.1255,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_5",
+        "decay_rate": 0.001
+      }
+    ],
+    [
+      {
+        "x": 0,
+        "y": 8,
+        "certainty": 0.9809,
+        "entropy": 0.1366,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_1",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 1,
+        "y": 8,
+        "certainty": 0.9354,
+        "entropy": 0.3455,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_5",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 2,
+        "y": 8,
+        "certainty": 0.9367,
+        "entropy": 0.3404,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_3",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 3,
+        "y": 8,
+        "certainty": 0.9389,
+        "entropy": 0.3318,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_3",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 4,
+        "y": 8,
+        "certainty": 0.9411,
+        "entropy": 0.3231,
+        "last_updated_ms": 180000,
+        "updated_by": "drone_3",
+        "decay_rate": 0.001
+      },
+      {
+        "x": 5,
+        "y": 8,
         "certainty": 0.9437,
-        "entropy": 0.3128,
+        "entropy": 0.3124,
         "last_updated_ms": 180000,
-        "updated_by": "drone_3",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 1,
-        "y": 4,
-        "certainty": 0.9552,
-        "entropy": 0.2641,
-        "last_updated_ms": 180000,
-        "updated_by": "decay",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 2,
-        "y": 4,
-        "certainty": 0.9506,
-        "entropy": 0.2837,
-        "last_updated_ms": 180000,
-        "updated_by": "decay",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 3,
-        "y": 4,
-        "certainty": 0.9461,
-        "entropy": 0.3026,
-        "last_updated_ms": 180000,
-        "updated_by": "decay",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 4,
-        "y": 4,
-        "certainty": 0.9855,
-        "entropy": 0.1096,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_3",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 5,
-        "y": 4,
-        "certainty": 0.9246,
-        "entropy": 0.3859,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_5",
+        "updated_by": "drone_4",
         "decay_rate": 0.001
       },
       {
         "x": 6,
-        "y": 4,
-        "certainty": 0.5,
-        "entropy": 1.0,
+        "y": 8,
+        "certainty": 0.9464,
+        "entropy": 0.3014,
         "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
+        "updated_by": "drone_3",
         "decay_rate": 0.001
       },
       {
         "x": 7,
-        "y": 4,
-        "certainty": 0.5,
-        "entropy": 1.0,
+        "y": 8,
+        "certainty": 0.9464,
+        "entropy": 0.3014,
         "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
+        "updated_by": "drone_1",
         "decay_rate": 0.001
       },
       {
         "x": 8,
-        "y": 4,
-        "certainty": 0.5,
-        "entropy": 1.0,
+        "y": 8,
+        "certainty": 0.9487,
+        "entropy": 0.2921,
         "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
+        "updated_by": "drone_1",
         "decay_rate": 0.001
       },
       {
         "x": 9,
-        "y": 4,
-        "certainty": 0.9437,
-        "entropy": 0.3128,
+        "y": 8,
+        "certainty": 0.9818,
+        "entropy": 0.131,
         "last_updated_ms": 180000,
-        "updated_by": "drone_4",
+        "updated_by": "drone_5",
         "decay_rate": 0.001
       }
     ],
     [
       {
         "x": 0,
-        "y": 5,
-        "certainty": 0.9388,
-        "entropy": 0.3322,
+        "y": 9,
+        "certainty": 0.9742,
+        "entropy": 0.173,
         "last_updated_ms": 180000,
-        "updated_by": "drone_3",
+        "updated_by": "drone_4",
         "decay_rate": 0.001
       },
       {
         "x": 1,
-        "y": 5,
-        "certainty": 0.9597,
-        "entropy": 0.2435,
+        "y": 9,
+        "certainty": 0.9376,
+        "entropy": 0.337,
         "last_updated_ms": 180000,
-        "updated_by": "decay",
+        "updated_by": "drone_5",
         "decay_rate": 0.001
       },
       {
         "x": 2,
-        "y": 5,
-        "certainty": 0.7625,
-        "entropy": 0.7909,
+        "y": 9,
+        "certainty": 0.9398,
+        "entropy": 0.3284,
         "last_updated_ms": 180000,
         "updated_by": "drone_5",
         "decay_rate": 0.001
       },
       {
         "x": 3,
-        "y": 5,
-        "certainty": 0.9963,
-        "entropy": 0.0355,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_3",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 4,
-        "y": 5,
-        "certainty": 0.9908,
-        "entropy": 0.0752,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_3",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 5,
-        "y": 5,
-        "certainty": 0.9199,
-        "entropy": 0.4025,
+        "y": 9,
+        "certainty": 0.942,
+        "entropy": 0.3196,
         "last_updated_ms": 180000,
         "updated_by": "drone_5",
         "decay_rate": 0.001
       },
       {
-        "x": 6,
-        "y": 5,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 7,
-        "y": 5,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 8,
-        "y": 5,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 9,
-        "y": 5,
-        "certainty": 0.9388,
-        "entropy": 0.3322,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_4",
-        "decay_rate": 0.001
-      }
-    ],
-    [
-      {
-        "x": 0,
-        "y": 6,
-        "certainty": 0.934,
-        "entropy": 0.3508,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_3",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 1,
-        "y": 6,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 2,
-        "y": 6,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 3,
-        "y": 6,
-        "certainty": 0.6,
-        "entropy": 0.971,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_3",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 4,
-        "y": 6,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 5,
-        "y": 6,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 6,
-        "y": 6,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 7,
-        "y": 6,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 8,
-        "y": 6,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 9,
-        "y": 6,
-        "certainty": 0.934,
-        "entropy": 0.3508,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_4",
-        "decay_rate": 0.001
-      }
-    ],
-    [
-      {
-        "x": 0,
-        "y": 7,
-        "certainty": 0.9292,
-        "entropy": 0.3687,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_3",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 1,
-        "y": 7,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 2,
-        "y": 7,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 3,
-        "y": 7,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 4,
-        "y": 7,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 5,
-        "y": 7,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 6,
-        "y": 7,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 7,
-        "y": 7,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 8,
-        "y": 7,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 9,
-        "y": 7,
-        "certainty": 0.9292,
-        "entropy": 0.3687,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_4",
-        "decay_rate": 0.001
-      }
-    ],
-    [
-      {
-        "x": 0,
-        "y": 8,
-        "certainty": 0.9246,
-        "entropy": 0.3859,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_3",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 1,
-        "y": 8,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 2,
-        "y": 8,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 3,
-        "y": 8,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 4,
-        "y": 8,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 5,
-        "y": 8,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 6,
-        "y": 8,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 7,
-        "y": 8,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 8,
-        "y": 8,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 9,
-        "y": 8,
-        "certainty": 0.9246,
-        "entropy": 0.3859,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_4",
-        "decay_rate": 0.001
-      }
-    ],
-    [
-      {
-        "x": 0,
-        "y": 9,
-        "certainty": 0.9199,
-        "entropy": 0.4025,
-        "last_updated_ms": 180000,
-        "updated_by": "drone_3",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 1,
-        "y": 9,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 2,
-        "y": 9,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
-        "x": 3,
-        "y": 9,
-        "certainty": 0.5,
-        "entropy": 1.0,
-        "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
-        "decay_rate": 0.001
-      },
-      {
         "x": 4,
         "y": 9,
-        "certainty": 0.5,
-        "entropy": 1.0,
+        "certainty": 0.9442,
+        "entropy": 0.3106,
         "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
+        "updated_by": "drone_5",
         "decay_rate": 0.001
       },
       {
         "x": 5,
         "y": 9,
-        "certainty": 0.5,
-        "entropy": 1.0,
+        "certainty": 0.946,
+        "entropy": 0.3033,
         "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
+        "updated_by": "drone_4",
         "decay_rate": 0.001
       },
       {
         "x": 6,
         "y": 9,
-        "certainty": 0.5,
-        "entropy": 1.0,
+        "certainty": 0.9469,
+        "entropy": 0.2996,
         "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
+        "updated_by": "drone_5",
         "decay_rate": 0.001
       },
       {
         "x": 7,
         "y": 9,
-        "certainty": 0.5,
-        "entropy": 1.0,
+        "certainty": 0.9487,
+        "entropy": 0.2921,
         "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
+        "updated_by": "drone_4",
         "decay_rate": 0.001
       },
       {
         "x": 8,
         "y": 9,
-        "certainty": 0.5,
-        "entropy": 1.0,
+        "certainty": 0.9496,
+        "entropy": 0.2883,
         "last_updated_ms": 180000,
-        "updated_by": "bootstrap",
+        "updated_by": "drone_3",
         "decay_rate": 0.001
       },
       {
         "x": 9,
         "y": 9,
-        "certainty": 0.9199,
-        "entropy": 0.4025,
+        "certainty": 0.9695,
+        "entropy": 0.1971,
         "last_updated_ms": 180000,
         "updated_by": "drone_4",
         "decay_rate": 0.001
       }
     ]
-  ]
+  ],
+  "partitions": [
+    {
+      "drone_id": "drone_1",
+      "cells": [
+        [
+          4,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          5,
+          1
+        ],
+        [
+          6,
+          1
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          5,
+          2
+        ],
+        [
+          6,
+          2
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          6,
+          3
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          6,
+          4
+        ],
+        [
+          6,
+          5
+        ]
+      ]
+    },
+    {
+      "drone_id": "drone_3",
+      "cells": [
+        [
+          7,
+          0
+        ],
+        [
+          8,
+          0
+        ],
+        [
+          9,
+          0
+        ],
+        [
+          7,
+          1
+        ],
+        [
+          8,
+          1
+        ],
+        [
+          9,
+          1
+        ],
+        [
+          7,
+          2
+        ],
+        [
+          8,
+          2
+        ],
+        [
+          9,
+          2
+        ],
+        [
+          7,
+          3
+        ],
+        [
+          8,
+          3
+        ],
+        [
+          9,
+          3
+        ],
+        [
+          7,
+          4
+        ],
+        [
+          8,
+          4
+        ],
+        [
+          9,
+          4
+        ],
+        [
+          7,
+          5
+        ],
+        [
+          8,
+          5
+        ],
+        [
+          9,
+          5
+        ],
+        [
+          7,
+          6
+        ],
+        [
+          8,
+          6
+        ],
+        [
+          9,
+          6
+        ],
+        [
+          7,
+          7
+        ],
+        [
+          8,
+          7
+        ],
+        [
+          9,
+          7
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          9,
+          8
+        ],
+        [
+          8,
+          9
+        ],
+        [
+          9,
+          9
+        ]
+      ]
+    },
+    {
+      "drone_id": "drone_4",
+      "cells": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          3
+        ]
+      ]
+    },
+    {
+      "drone_id": "drone_5",
+      "cells": [
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          0,
+          4
+        ],
+        [
+          1,
+          4
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          0,
+          5
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          0,
+          6
+        ],
+        [
+          1,
+          6
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          0,
+          7
+        ],
+        [
+          1,
+          7
+        ],
+        [
+          2,
+          7
+        ],
+        [
+          3,
+          7
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          0,
+          8
+        ],
+        [
+          1,
+          8
+        ],
+        [
+          2,
+          8
+        ],
+        [
+          3,
+          8
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          5,
+          8
+        ],
+        [
+          6,
+          8
+        ],
+        [
+          7,
+          8
+        ],
+        [
+          0,
+          9
+        ],
+        [
+          1,
+          9
+        ],
+        [
+          2,
+          9
+        ],
+        [
+          3,
+          9
+        ],
+        [
+          4,
+          9
+        ],
+        [
+          5,
+          9
+        ],
+        [
+          6,
+          9
+        ],
+        [
+          7,
+          9
+        ]
+      ]
+    }
+  ],
+  "partition_boundaries": [
+    [
+      0,
+      2
+    ],
+    [
+      0,
+      3
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      1,
+      3
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      3,
+      0
+    ],
+    [
+      3,
+      1
+    ],
+    [
+      3,
+      2
+    ],
+    [
+      3,
+      3
+    ],
+    [
+      3,
+      4
+    ],
+    [
+      4,
+      0
+    ],
+    [
+      4,
+      1
+    ],
+    [
+      4,
+      2
+    ],
+    [
+      4,
+      3
+    ],
+    [
+      4,
+      4
+    ],
+    [
+      4,
+      5
+    ],
+    [
+      5,
+      4
+    ],
+    [
+      5,
+      5
+    ],
+    [
+      6,
+      0
+    ],
+    [
+      6,
+      1
+    ],
+    [
+      6,
+      2
+    ],
+    [
+      6,
+      3
+    ],
+    [
+      6,
+      4
+    ],
+    [
+      6,
+      5
+    ],
+    [
+      6,
+      6
+    ],
+    [
+      6,
+      7
+    ],
+    [
+      7,
+      0
+    ],
+    [
+      7,
+      1
+    ],
+    [
+      7,
+      2
+    ],
+    [
+      7,
+      3
+    ],
+    [
+      7,
+      4
+    ],
+    [
+      7,
+      5
+    ],
+    [
+      7,
+      6
+    ],
+    [
+      7,
+      7
+    ],
+    [
+      7,
+      8
+    ],
+    [
+      7,
+      9
+    ],
+    [
+      8,
+      8
+    ],
+    [
+      8,
+      9
+    ]
+  ],
+  "bridge_snapshot": {
+    "tick_seconds": 1,
+    "drones": [
+      {
+        "drone_id": "drone_1",
+        "position": [
+          4,
+          1
+        ],
+        "reachable": true
+      },
+      {
+        "drone_id": "drone_2",
+        "position": [
+          6,
+          3
+        ],
+        "reachable": false
+      },
+      {
+        "drone_id": "drone_3",
+        "position": [
+          9,
+          1
+        ],
+        "reachable": true
+      },
+      {
+        "drone_id": "drone_4",
+        "position": [
+          3,
+          1
+        ],
+        "reachable": true
+      },
+      {
+        "drone_id": "drone_5",
+        "position": [
+          1,
+          5
+        ],
+        "reachable": true
+      }
+    ],
+    "commands": [
+      {
+        "drone_id": "drone_1",
+        "target": [
+          0,
+          2
+        ],
+        "status": "claim_won"
+      },
+      {
+        "drone_id": "drone_3",
+        "target": [
+          9,
+          2
+        ],
+        "status": "transiting"
+      },
+      {
+        "drone_id": "drone_4",
+        "target": [
+          3,
+          2
+        ],
+        "status": "transiting"
+      },
+      {
+        "drone_id": "drone_5",
+        "target": [
+          0,
+          3
+        ],
+        "status": "transiting"
+      }
+    ]
+  }
 }

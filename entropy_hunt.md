@@ -14,11 +14,23 @@
 
 ## What This Is
 
-A 5-drone search coordination system where the swarm's collective next action is always: send the next available drone to the zone of highest joint uncertainty — maximum information entropy. No pre-assigned grid sectors. No central planner. No ROS master node. The search pattern is not programmed; it emerges from the swarm's shared certainty state.
+The target system is a 5-drone search coordination system where the swarm's collective next action is always: send the next available drone to the zone of highest joint uncertainty — maximum information entropy. No pre-assigned grid sectors. No central planner. No ROS master node. The search pattern is not programmed; it emerges from the swarm's shared certainty state.
 
 The coordination problem is genuine: when two drones simultaneously lock onto the same high-entropy zone, they must P2P-auction the zone boundary using BFT consensus. The auction output determines which drone takes which sub-zone. Remove Vertex and the auction has no Byzantine-resistant arbitration. Remove FoxMQ and the shared certainty map does not exist.
 
 **Minimum demo requirement:** 5 simulated drones, Webots or equivalent. Mocked sensor data is explicitly permitted by the Track 2 brief. The focus is the mesh coordination logic, not the sensor accuracy.
+
+## Current Repository Status
+
+This repository currently contains a **working local prototype**, not the full live stack described in the handoff:
+
+- runnable Python simulation: `main.py` -> `simulation/stub.py`
+- certainty/entropy scoring, local mesh bus, heartbeat, and simplified BFT-style claim resolution
+- ASCII CLI heatmap output and JSON summary/final-map output
+- two static HTML console prototypes: `entropy_hunt_v2.html` and `entropy_hunt_mockup.html`
+- passing tests and static analysis in the current repo state
+
+It does **not** yet contain the live Vertex/FoxMQ/Webots runtime, the production frontend app shell, or all of the optional files named later in the target file structure. Treat the rest of this document as the ambition and implementation plan for parity, not as a claim that the whole system already exists.
 
 ---
 
@@ -163,6 +175,8 @@ IDLE → COMPUTING (entropy argmax) → CLAIMING (BFT round)
 ---
 
 ## File Structure
+
+**Note:** the tree below is the intended delivery shape. Some items are not yet present in this repository and are listed here as parity targets.
 
 ```
 entropy-hunt/
@@ -353,9 +367,10 @@ The two HTML files in this directory are **UI prototypes**, not the production i
 
 ### Current cleanup status (2026-04-04)
 
-- Both HTML prototypes now include local `:root` token defaults so they render coherently outside the original shell.
-- `entropy_hunt_mockup.html` now resolves auction winners deterministically (nearest drone, then lexical drone id) instead of relying on random selection.
-- The mockup metrics derive coverage/entropy from computed grid totals, and recovery paths randomise `x`/`y` independently during respawn.
+- The default Python demo is now tuned to the static-console constants (`search_increment=0.12`, `completion_certainty=0.92`) so the 10×10 / 180s run reaches full completed coverage while still showing decay on the live snapshot.
+- `final_map.json` now carries replay-friendly metadata: config, events, Voronoi partitions, partition boundaries, and a dependency-free Webots bridge snapshot.
+- Both HTML consoles can now load a real simulation replay payload via **Load replay** and clearly distinguish `synthetic demo` from `replay snapshot` mode.
+- The repo now includes the missing spec-alignment modules: `failure/injector.py`, `auction/voronoi.py`, `simulation/webots_bridge.py`, `README.md`, and `requirements.txt`.
 
 ### Concrete Review Findings
 

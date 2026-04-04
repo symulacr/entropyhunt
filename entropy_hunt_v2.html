@@ -92,6 +92,28 @@
   .btn.danger:hover {
     background: var(--color-background-danger);
   }
+  .btn.file {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn.file input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .header-mode {
+    font-size: 9px;
+    padding: 2px 7px;
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: 999px;
+    color: var(--color-text-secondary);
+  }
+  .header-mode.replay {
+    background: var(--color-background-info);
+    color: var(--color-text-info);
+    border-color: var(--color-text-info);
+  }
   .kv-bar {
     display: flex;
     border-bottom: 0.5px solid var(--color-border-tertiary);
@@ -318,7 +340,15 @@
   <div class="header">
     <span class="header-title">entropy hunt</span>
     <span class="header-tag">track 2 · search &amp; rescue</span>
+    <span class="header-mode" id="mode-chip">synthetic demo</span>
     <span class="spacer"></span>
+    <label class="btn file">
+      load replay
+      <input id="replay-input" type="file" accept="application/json" />
+    </label>
+    <button class="btn" id="replay-reset" onclick="clearReplay()">
+      clear replay
+    </button>
     <button class="btn warn" id="packet-btn" onclick="dropPackets()">
       drop packets 20%
     </button>
@@ -439,6 +469,8 @@
   const tooltip = document.getElementById("tip");
   const packetButton = document.getElementById("packet-btn");
   const demoButton = document.getElementById("demo-btn");
+  const replayResetButton = document.getElementById("replay-reset");
+  const replayInput = document.getElementById("replay-input");
   const canvasOutlineColor = "#0f1115";
 
   let speed = 2;
@@ -450,6 +482,7 @@
   let found = false;
   let missionComplete = false;
   let events = [];
+  let sourceMode = "synthetic";
   const autoDemo = {
     enabled: false,
     packetLoss: false,
@@ -457,6 +490,14 @@
     dropout: false,
     survivor: false,
   };
+
+  function setSourceMode(mode) {
+    sourceMode = mode;
+    const chip = document.getElementById("mode-chip");
+    chip.textContent = mode === "replay" ? "replay snapshot" : "synthetic demo";
+    chip.classList.toggle("replay", mode === "replay");
+    replayResetButton.disabled = mode !== "replay";
+  }
 
   const grid = Array.from({ length: GRID_SIZE }, (_, y) =>
     Array.from({ length: GRID_SIZE }, (_, x) => ({
@@ -541,6 +582,101 @@
     events.unshift({ type, msg, t: elapsed });
     if (events.length > 24) events.pop();
     renderLog();
+  }
+
+  function mapReplayEventType(type) {
+    return {
+      bft: "bft",
+      failure: "err",
+      stale: "err",
+      survivor: "ok",
+      survivor_ack: "ok",
+      zone_complete: "ok",
+      claim: "info",
+      mesh: "info",
+      map: "info",
+    }[type] || "info";
+  }
+
+  function formatReplayEvent(event) {
+    return {
+      type: mapReplayEventType(event.type),
+      msg: event.message || event.type || "replay event",
+      t: event.t ?? 0,
+    };
+  }
+
+  function applyReplayPayload(payload) {
+    const rows = payload?.grid;
+    const summary = payload?.summary || {};
+    if (!Array.isArray(rows) || rows.length !== GRID_SIZE) {
+      throw new Error(`expected ${GRID_SIZE} replay rows`);
+    }
+
+    rows.forEach((row, y) => {
+      if (!Array.isArray(row) || row.length !== GRID_SIZE) {
+        throw new Error(`expected ${GRID_SIZE} replay columns in row ${y}`);
+      }
+      row.forEach((cell, x) => {
+        const replayCell = getCell(x, y);
+        replayCell.certainty = Number(cell.certainty ?? 0.5);
+        replayCell.owner = -1;
+      });
+    });
+
+    elapsed = Number(summary.duration_elapsed ?? 0);
+    bftRounds = Number(summary.bft_rounds ?? 0);
+    auctions = Number(summary.auctions ?? 0);
+    dropouts = Number(summary.dropouts ?? 0);
+    found = Boolean(summary.survivor_found);
+    missionComplete = true;
+    packetDrop = false;
+    autoDemo.enabled = false;
+    autoDemo.packetLoss = false;
+    autoDemo.contention = false;
+    autoDemo.dropout = false;
+    autoDemo.survivor = false;
+    setButtonState(packetButton, false, "drop packets on", "drop packets 20%");
+    setButtonState(demoButton, false, "auto demo on", "auto demo off");
+
+    const replayDrones = Array.isArray(summary.drones) ? summary.drones : [];
+    drones.forEach((drone, index) => {
+      const replayDrone = replayDrones[index] || {};
+      const position = replayDrone.position || START_POSITIONS[index];
+      const target = replayDrone.target || null;
+      drone.x = position[0];
+      drone.y = position[1];
+      drone.tx = target ? target[0] : null;
+      drone.ty = target ? target[1] : null;
+      drone.stale = replayDrone.alive === false;
+      drone.status = replayDrone.status || (drone.stale ? "offline" : "idle");
+      drone.cells = Number(replayDrone.searched_cells ?? drone.cells ?? 0);
+    });
+
+    events = Array.isArray(payload.events)
+      ? payload.events.slice(-24).reverse().map(formatReplayEvent)
+      : [];
+
+    drawGrid();
+    renderDrones();
+    renderLog();
+    updateStats();
+    setSourceMode("replay");
+    setFooter(
+      found
+        ? "replay loaded — final simulation snapshot with survivor confirmation"
+        : "replay loaded — final simulation snapshot",
+    );
+  }
+
+  function clearReplay() {
+    if (sourceMode !== "replay") return;
+    if (window.location && typeof window.location.reload === "function") {
+      window.location.reload();
+      return;
+    }
+    setSourceMode("synthetic");
+    missionComplete = false;
   }
 
   function buildCandidates(drone, reserved) {
@@ -1163,7 +1299,7 @@
   }
 
   function tick() {
-    if (missionComplete) return;
+    if (missionComplete || sourceMode === "replay") return;
     for (let step = 0; step < speed; step += 1) {
       elapsed += 1;
       runAutoDemoSchedule();
@@ -1209,12 +1345,30 @@
     document.getElementById("speed-lbl").textContent = `${value}×`;
   }
 
+  if (replayInput) {
+    replayInput.addEventListener("change", async (event) => {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      try {
+        const text = await file.text();
+        applyReplayPayload(JSON.parse(text));
+      } catch (error) {
+        setFooter(`replay load failed — ${error.message}`);
+        addEvent("err", `replay load failed — ${error.message}`);
+      } finally {
+        event.target.value = "";
+      }
+    });
+  }
+
   window.killDrone = killDrone;
   window.killRandom = killRandom;
   window.reviveAll = reviveAll;
   window.dropPackets = dropPackets;
   window.toggleAutoDemo = toggleAutoDemo;
   window.setSpeed = setSpeed;
+  window.applyReplayPayload = applyReplayPayload;
+  window.clearReplay = clearReplay;
   window.drones = drones;
 
   addEvent("info", "vertex p2p discovery complete — 5 peers online");
@@ -1226,6 +1380,7 @@
   drawGrid();
   renderDrones();
   updateStats();
+  setSourceMode("synthetic");
   setButtonState(packetButton, false, "drop packets on", "drop packets 20%");
   setButtonState(demoButton, false, "auto demo on", "auto demo off");
   setFooter("mesh stable — entropy auctions active");

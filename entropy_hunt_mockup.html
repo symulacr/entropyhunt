@@ -51,6 +51,21 @@
     color: var(--color-text-primary);
     background: var(--color-background-secondary);
   }
+  .tab.file {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .tab.file input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .tab.mode-replay {
+    background: var(--color-background-info);
+    color: var(--color-text-info);
+  }
   .stats {
     display: flex;
     gap: 0;
@@ -199,7 +214,13 @@
     <div class="tab active">hunt console</div>
     <div class="tab">entropy map</div>
     <div class="tab">bft log</div>
+    <div class="tab" id="mode-pill">synthetic demo</div>
     <div style="flex: 1"></div>
+    <label class="tab file">
+      load replay
+      <input id="replay-input" type="file" accept="application/json" />
+    </label>
+    <div class="tab" id="replay-reset">clear replay</div>
     <div
       class="tab"
       style="
@@ -256,6 +277,8 @@
   const TOTAL_CELLS = G * G;
   const canvas = document.getElementById("grid");
   const ctx = canvas.getContext("2d");
+  const replayInput = document.getElementById("replay-input");
+  const replayReset = document.getElementById("replay-reset");
   const css = getComputedStyle(document.documentElement);
   const resolveToken = (name, fallback) =>
     css.getPropertyValue(name).trim() || fallback;
@@ -285,6 +308,14 @@
     auctions = 0,
     elapsed = 0,
     events = [];
+  let replayMode = false;
+
+  function setReplayMode(active) {
+    replayMode = active;
+    const pill = document.getElementById("mode-pill");
+    pill.textContent = active ? "replay snapshot" : "synthetic demo";
+    pill.classList.toggle("mode-replay", active);
+  }
 
   function H(c) {
     if (c <= 0 || c >= 1) return 0;
@@ -322,6 +353,71 @@
   function addEvent(type, msg) {
     events.unshift({ type, msg, t: elapsed });
     if (events.length > 12) events.pop();
+  }
+
+  function mapReplayEventType(type) {
+    return {
+      bft: "bft",
+      survivor: "found",
+      survivor_ack: "found",
+      failure: "stale",
+      stale: "stale",
+    }[type] || "claim";
+  }
+
+  function applyReplayPayload(payload) {
+    if (!payload || !Array.isArray(payload.grid) || !payload.summary) {
+      throw new Error("expected final_map-style payload");
+    }
+    const rows = payload.grid;
+    if (rows.length !== G || rows.some((row) => !Array.isArray(row) || row.length !== G)) {
+      throw new Error(`expected ${G}x${G} replay grid`);
+    }
+
+    grid = rows.map((row) => row.map((cell) => Number(cell.certainty ?? 0.5)));
+    claimed = Array.from({ length: G }, () => Array(G).fill(-1));
+
+    const replayDrones = Array.isArray(payload.summary.drones)
+      ? payload.summary.drones
+      : [];
+    drones = droneColors.map((color, i) => {
+      const replayDrone = replayDrones[i] || {};
+      const position = replayDrone.position || [0, 0];
+      const target = replayDrone.target || [null, null];
+      return {
+        id: droneNames[i],
+        color,
+        x: position[0],
+        y: position[1],
+        tx: target[0],
+        ty: target[1],
+        status: replayDrone.status || (replayDrone.alive === false ? "stale" : "idle"),
+        progress: replayDrone.searched_cells || 0,
+      };
+    });
+
+    bftRound = Number(payload.summary.bft_rounds ?? 0);
+    auctions = Number(payload.summary.auctions ?? 0);
+    elapsed = Number(payload.summary.duration_elapsed ?? 0);
+    events = Array.isArray(payload.events)
+      ? payload.events.slice(-12).reverse().map((event) => ({
+          type: mapReplayEventType(event.type),
+          msg: event.message || event.type || "replay event",
+          t: event.t ?? 0,
+        }))
+      : [];
+    setReplayMode(true);
+    drawGrid();
+    renderSide();
+  }
+
+  function clearReplay() {
+    if (!replayMode) return;
+    if (window.location && typeof window.location.reload === "function") {
+      window.location.reload();
+      return;
+    }
+    setReplayMode(false);
   }
 
   function decay() {
@@ -497,7 +593,29 @@
     "initial zone scan complete — drones selecting max-entropy cells",
   );
 
+  if (replayReset) {
+    replayReset.addEventListener("click", clearReplay);
+  }
+
+  if (replayInput) {
+    replayInput.addEventListener("change", async (event) => {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      try {
+        applyReplayPayload(JSON.parse(await file.text()));
+      } catch (error) {
+        addEvent("stale", `replay load failed — ${error.message}`);
+        renderSide();
+      } finally {
+        event.target.value = "";
+      }
+    });
+  }
+
+  setReplayMode(false);
+
   setInterval(() => {
+    if (replayMode) return;
     elapsed++;
     decay();
     moveDrones();

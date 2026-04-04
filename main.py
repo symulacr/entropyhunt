@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import argparse
 import json
+from pathlib import Path
 
 from simulation.stub import EntropyHuntSimulation, SimulationConfig
-from viz.heatmap import render_ascii_heatmap
+from viz.heatmap import render_ascii_heatmap, render_html_snapshot, render_svg_heatmap
 
 
 def parse_args() -> argparse.Namespace:
@@ -19,6 +20,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--stop-on-survivor", action="store_true")
     parser.add_argument("--seed", type=int, default=7)
     parser.add_argument("--final-map", default="final_map.json")
+    parser.add_argument("--svg-map", default=None)
+    parser.add_argument("--final-html", default="")
     return parser.parse_args()
 
 
@@ -41,6 +44,28 @@ def main() -> int:
     summary = simulation.run()
     print(render_ascii_heatmap(simulation.certainty_map, simulation.drones))
     print(json.dumps(summary, indent=2))
+    if args.final_html:
+        svg = render_svg_heatmap(
+            simulation.certainty_map,
+            simulation.drones,
+            target=config.target,
+            boundary_cells_override=simulation.partition_boundary_cells(),
+        )
+        html = render_html_snapshot(
+            title="Entropy Hunt final snapshot",
+            summary=summary,
+            svg_heatmap=svg,
+            events=simulation.events,
+        )
+        Path(args.final_html).write_text(html)
+    if args.svg_map:
+        svg = render_svg_heatmap(
+            simulation.certainty_map,
+            simulation.drones,
+            target=config.target,
+            boundary_cells_override=simulation.partition_boundary_cells(),
+        )
+        Path(args.svg_map).write_text(svg)
     return 0
 
 

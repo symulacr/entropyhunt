@@ -6,13 +6,16 @@ from pathlib import Path
 import random
 from typing import Any
 
+from auction.voronoi import PartitionOwner, boundary_cells as voronoi_boundary_cells, partition_grid
 from core.bft import BftCoordinator
 from core.certainty_map import CertaintyMap, Coordinate
 from core.heartbeat import HeartbeatRegistry
 from core.mesh import MeshBus
 from core.zone_selector import ZoneSelector
+from failure.injector import FailureInjector, FailurePlan
 from roles.claimer import ClaimCoordinator
 from roles.searcher import DroneState
+from simulation.webots_bridge import build_bridge_snapshot
 
 
 @dataclass(frozen=True, slots=True)
@@ -21,8 +24,8 @@ class SimulationConfig:
     grid: int = 10
     duration: int = 180
     tick_seconds: int = 1
-    search_increment: float = 0.05
-    completion_certainty: float = 0.95
+    search_increment: float = 0.12
+    completion_certainty: float = 0.92
     decay_rate: float = 0.001
     stale_after_seconds: int = 3
     target: Coordinate = (7, 3)
@@ -51,6 +54,9 @@ class EntropyHuntSimulation:
         self.selector = ZoneSelector()
         self.bft = BftCoordinator(peer_ids)
         self.claims = ClaimCoordinator(mesh=self.mesh, selector=self.selector, bft=self.bft)
+        self.failure_injector = FailureInjector(
+            FailurePlan(drone_id=config.fail_drone, fail_at_seconds=config.fail_at)
+        )
         self.events: list[dict[str, Any]] = []
         self.dropouts = 0
         self.auctions = 0
@@ -231,23 +237,23 @@ class EntropyHuntSimulation:
                 self._log("stale", f"{drone.drone_id} marked stale")
 
     def _inject_failure(self) -> None:
-        if self.config.fail_drone is None or self.config.fail_at is None:
+        event = self.failure_injector.maybe_trigger(
+            self.drones,
+            now_seconds=self.now_ms // 1000,
+        )
+        if event is None:
             return
-        if self.now_ms // 1000 != self.config.fail_at:
-            return
-        for drone in self.drones:
-            if drone.drone_id == self.config.fail_drone and drone.alive and drone.reachable:
-                drone.reachable = False
-                self.dropouts += 1
-                self._log(
-                    "failure",
-                    (
-                        f"{drone.drone_id} dropped off-mesh; waiting "
-                        f"{self.config.stale_after_seconds}s for stale release"
-                    ),
-                    zone=drone.claimed_cell,
-                )
-                return
+        self.dropouts += 1
+        drone = next(drone for drone in self.drones if drone.drone_id == event.drone_id)
+        self._log(
+            "failure",
+            (
+                f"{drone.drone_id} dropped off-mesh; waiting "
+                f"{self.config.stale_after_seconds}s for stale release"
+            ),
+            zone=drone.claimed_cell,
+            mode=event.mode,
+        )
 
     def _move_and_search(self) -> None:
         for drone in self.drones:
@@ -367,12 +373,19 @@ class EntropyHuntSimulation:
         return summary
 
     def summary(self) -> dict[str, Any]:
+        current_coverage = round(
+            self.certainty_map.coverage(threshold=self.config.completion_certainty),
+            3,
+        )
+        completed_coverage = round(
+            len(self.completed_cells) / (self.config.grid * self.config.grid),
+            3,
+        )
         return {
             "duration_elapsed": self.now_ms // 1000,
-            "coverage": round(
-                len(self.completed_cells) / (self.config.grid * self.config.grid),
-                3,
-            ),
+            "coverage": completed_coverage,
+            "coverage_completed": completed_coverage,
+            "coverage_current": current_coverage,
             "average_entropy": round(self.certainty_map.average_entropy(), 3),
             "bft_rounds": self.bft._round_id,
             "auctions": self.auctions,
@@ -394,10 +407,34 @@ class EntropyHuntSimulation:
             ],
         }
 
+    def partition_snapshot(self) -> tuple[PartitionOwner, ...]:
+        return partition_grid(
+            size=self.config.grid,
+            drone_positions={
+                drone.drone_id: drone.position
+                for drone in self.drones
+                if drone.alive and drone.reachable
+            },
+        )
+
+    def partition_boundary_cells(self) -> tuple[Coordinate, ...]:
+        return voronoi_boundary_cells(self.partition_snapshot(), size=self.config.grid)
+
     def save_final_map(self, path: Path) -> None:
+        partitions = self.partition_snapshot()
         payload = {
             "summary": self.summary(),
+            "config": asdict(self.config),
             "events": self.events,
             "grid": self.certainty_map.to_rows(),
+            "partitions": [
+                {"drone_id": partition.drone_id, "cells": list(partition.cells)}
+                for partition in partitions
+            ],
+            "partition_boundaries": list(self.partition_boundary_cells()),
+            "bridge_snapshot": build_bridge_snapshot(
+                self.drones,
+                tick_seconds=self.config.tick_seconds,
+            ),
         }
         path.write_text(json.dumps(payload, indent=2) + "\n")

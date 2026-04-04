@@ -212,6 +212,60 @@ test("v2 reviveAll re-randomizes x and y independently", () => {
   assert.equal(drone.y, 8);
 });
 
+test("v2 replay payload imports simulation output into the console state", () => {
+  const { exports } = loadSimulation(
+    "entropy_hunt_v2.html",
+    `({
+      applyReplayPayload,
+      get sourceMode(){return sourceMode;},
+      get elapsed(){return elapsed;},
+      get bftRounds(){return bftRounds;},
+      get dropouts(){return dropouts;},
+      get found(){return found;},
+      get missionComplete(){return missionComplete;},
+      get events(){return events;},
+      get drones(){return drones;},
+      get grid(){return grid;}
+    })`,
+  );
+
+  const payload = {
+    summary: {
+      duration_elapsed: 180,
+      bft_rounds: 63,
+      auctions: 13,
+      dropouts: 1,
+      survivor_found: true,
+      drones: [
+        { id: "drone_1", alive: true, position: [2, 5], target: [2, 5], status: "searching", searched_cells: 163 },
+        { id: "drone_2", alive: false, position: [6, 1], target: null, status: "stale", searched_cells: 53 },
+      ],
+    },
+    events: [{ t: 60, type: "survivor", message: "survivor found by drone_1" }],
+    grid: Array.from({ length: 10 }, (_, y) =>
+      Array.from({ length: 10 }, (_, x) => ({
+        x,
+        y,
+        certainty: x === 2 && y === 5 ? 0.98 : 0.5,
+      })),
+    ),
+  };
+
+  exports.applyReplayPayload(payload);
+
+  assert.equal(exports.sourceMode, "replay");
+  assert.equal(exports.elapsed, 180);
+  assert.equal(exports.bftRounds, 63);
+  assert.equal(exports.dropouts, 1);
+  assert.equal(exports.found, true);
+  assert.equal(exports.missionComplete, true);
+  assert.equal(exports.drones[0].x, 2);
+  assert.equal(exports.drones[0].y, 5);
+  assert.equal(exports.drones[1].stale, true);
+  assert.equal(exports.grid[5][2].certainty, 0.98);
+  assert.match(exports.events[0].msg, /survivor found/i);
+});
+
 test("mockup reconnect path re-randomizes x and y independently", () => {
   const { sandbox, exports } = loadSimulation(
     "entropy_hunt_mockup.html",
@@ -227,6 +281,51 @@ test("mockup reconnect path re-randomizes x and y independently", () => {
   const drone = exports.drones[1];
   assert.equal(drone.x, 7);
   assert.equal(drone.y, 3);
+});
+
+test("mockup replay payload imports final map snapshots", () => {
+  const { exports } = loadSimulation(
+    "entropy_hunt_mockup.html",
+    `({
+      applyReplayPayload,
+      get replayMode(){return replayMode;},
+      get drones(){return drones;},
+      get events(){return events;},
+      get grid(){return grid;},
+      get elapsed(){return elapsed;},
+      get bftRound(){return bftRound;}
+    })`,
+  );
+
+  const payload = {
+    summary: {
+      duration_elapsed: 30,
+      bft_rounds: 14,
+      auctions: 2,
+      drones: [
+        { alive: true, position: [1, 1], target: [1, 1], status: "searching", searched_cells: 28 },
+        { alive: false, position: [1, 2], target: null, status: "stale", searched_cells: 10 },
+      ],
+    },
+    events: [{ t: 12, type: "stale", message: "drone_2 heartbeat timeout" }],
+    grid: Array.from({ length: 10 }, (_, y) =>
+      Array.from({ length: 10 }, (_, x) => ({
+        x,
+        y,
+        certainty: x === 1 && y === 1 ? 0.95 : 0.5,
+      })),
+    ),
+  };
+
+  exports.applyReplayPayload(payload);
+
+  assert.equal(exports.replayMode, true);
+  assert.equal(exports.elapsed, 30);
+  assert.equal(exports.bftRound, 14);
+  assert.equal(exports.drones[0].x, 1);
+  assert.equal(exports.drones[1].status, "stale");
+  assert.equal(exports.grid[1][1], 0.95);
+  assert.match(exports.events[0].msg, /heartbeat timeout/i);
 });
 
 test("v2 auto demo drives staged packet loss, contention, dropout, and survivor milestones", () => {

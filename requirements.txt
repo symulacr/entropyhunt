@@ -1,0 +1,4 @@
+# Runtime dependencies
+# --------------------
+# Entropy Hunt's core simulation is intentionally standard-library-only.
+# This file exists so the repository layout matches the handoff spec.
