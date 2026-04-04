@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Entropy Hunt — Packaged Demo Shell</title>
+    <link rel="stylesheet" href="./assets/shell.css" />
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Vertex Swarm Challenge · packaged static shell</p>
+          <h1>Entropy Hunt</h1>
+          <p class="lede">
+            A buildable frontend shell for the entropy-driven swarm-search demo.
+            It packages the replay artifacts, static operator consoles, and the
+            latest verified simulation snapshot into one deployable static site.
+          </p>
+        </div>
+        <div class="hero-actions">
+          <a class="button primary" href="./console.html">Open rich console</a>
+          <a class="button" href="./mockup.html">Open minimal mockup</a>
+          <a class="button" href="./artifacts/final_map.html">Open final snapshot</a>
+        </div>
+      </section>
+
+      <section class="grid two-up">
+        <article class="panel">
+          <div class="panel-header">
+            <h2>Latest verified run</h2>
+            <span class="chip">built from final_map.json</span>
+          </div>
+          <div class="cards">{{SUMMARY_CARDS}}</div>
+          <div class="run-meta">{{RUN_META}}</div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-header">
+            <h2>Replay artifacts</h2>
+            <span class="chip">drag into either console</span>
+          </div>
+          <ul class="artifact-list">{{ARTIFACT_LINKS}}</ul>
+          <pre class="code-block"><code>python3 main.py --final-map final_map.json --svg-map final_map.svg --final-html final_map.html
+npm run build
+npm run preview</code></pre>
+        </article>
+      </section>
+
+      <section class="grid preview-layout">
+        <article class="panel heatmap-panel">
+          <div class="panel-header">
+            <h2>Snapshot preview</h2>
+            <span class="chip">SVG from backend export</span>
+          </div>
+          <div class="heatmap-frame">{{SVG_PREVIEW}}</div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-header">
+            <h2>Recent events</h2>
+            <span class="chip">latest replay timeline</span>
+          </div>
+          <ol class="event-list">{{RECENT_EVENTS}}</ol>
+        </article>
+      </section>
+
+      <section class="grid two-up">
+        <article class="panel">
+          <div class="panel-header">
+            <h2>Current delivery surfaces</h2>
+          </div>
+          <ul class="stack-list">
+            <li><strong>Packaged shell</strong> — this `dist/` site for deployment and review.</li>
+            <li><strong>Rich console</strong> — replay-capable operations view in <code>console.html</code>.</li>
+            <li><strong>Minimal mockup</strong> — compact reference console in <code>mockup.html</code>.</li>
+            <li><strong>Python runtime</strong> — source of truth for simulation/export artifacts.</li>
+          </ul>
+        </article>
+
+        <article class="panel">
+          <div class="panel-header">
+            <h2>Known limits</h2>
+          </div>
+          <ul class="stack-list">
+            <li>Still a static/demo shell — no live Vertex/FoxMQ transport.</li>
+            <li>Webots bridge remains a dependency-free contract layer, not a live supervisor.</li>
+            <li>Replay mode visualizes backend artifacts; it does not stream real swarm state yet.</li>
+          </ul>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

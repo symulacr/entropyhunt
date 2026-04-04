@@ -27,7 +27,8 @@ This repository currently contains a **working local prototype**, not the full l
 - runnable Python simulation: `main.py` -> `simulation/stub.py`
 - certainty/entropy scoring, local mesh bus, heartbeat, and simplified BFT-style claim resolution
 - ASCII CLI heatmap output and JSON summary/final-map output
-- two static HTML console prototypes: `entropy_hunt_v2.html` and `entropy_hunt_mockup.html`
+- a packaged static app shell source (`frontend/index.template.html`) that builds into `dist/`
+- two static HTML operator consoles: `entropy_hunt_v2.html` and `entropy_hunt_mockup.html`
 - passing tests and static analysis in the current repo state
 
 It does **not** yet contain the live Vertex/FoxMQ/Webots runtime, the production frontend app shell, or all of the optional files named later in the target file structure. Treat the rest of this document as the ambition and implementation plan for parity, not as a claim that the whole system already exists.
@@ -371,6 +372,7 @@ The two HTML files in this directory are **UI prototypes**, not the production i
 - `final_map.json` now carries replay-friendly metadata: config, events, Voronoi partitions, partition boundaries, and a dependency-free Webots bridge snapshot.
 - Both HTML consoles can now load a real simulation replay payload via **Load replay** and clearly distinguish `synthetic demo` from `replay snapshot` mode.
 - The repo now includes the missing spec-alignment modules: `failure/injector.py`, `auction/voronoi.py`, `simulation/webots_bridge.py`, `README.md`, and `requirements.txt`.
+- A packaged frontend entrypoint now exists via `package.json` + `scripts/build_frontend.py`, producing a deployable static shell in `dist/`.
 
 ### Concrete Review Findings
 
@@ -402,13 +404,13 @@ The two HTML files in this directory are **UI prototypes**, not the production i
 - [ ] Replace inline DOM mutation with framework state updates or a small view-model layer.
 - [ ] Make BFT status labels honest: `synthetic`, `simulated`, or `live mesh`.
 - [ ] Remove all hard-coded `10×10 = 100 cells` assumptions; derive totals from config.
-- [ ] Add a real deployment entrypoint (`package.json`, build command, Vercel config if needed).
+- [x] Add a real deployment entrypoint (`package.json`, build command; static-shell `dist/` output).
 - [ ] Add smoke tests for: coverage calculation, auction winner selection, revive/dropout handling, and survivor detection.
 - [ ] Keep the markdown handoff in sync with whatever actually ships.
 
 ### Recommended Vercel Delivery Order
 
-1. Ship a static explanatory landing page first (`entropy_hunt.md` -> README/marketing copy).
-2. Ship the standalone simulated console second (no live mesh, clearly labelled as a prototype/demo).
+1. Keep the generated `dist/index.html` static shell as the landing/deployment surface.
+2. Ship the replayable standalone consoles beside it (`dist/console.html`, `dist/mockup.html`) while clearly labelling them as prototype/demo surfaces.
 3. Add a server/API boundary only when real swarm events exist to stream into the UI.
 4. Do **not** claim live Vertex/FoxMQ support in the deployed UI until the data path is real and observable.
