@@ -1,0 +1,13 @@
+{
+  "subject": "Review and document: READ FULLY: entropy_hunt.md + entropy_hunt_mockup.html + en",
+  "description": "Review code quality and update documentation for: READ FULLY: entropy_hunt.md + entropy_hunt_mockup.html + entropy_hunt_v2.html (no skimming). Work together to build clean production-grade Entropy Hunt codebase. Deploy iteratively to Vercel. Use: architect, frontend-design, frontend-code-review, code-review, deep-interview, security-review, ralph, ralplan, note, ai-slop-cleaner, ultrawork, trace, Frontend Skill, autopilot.",
+  "status": "completed",
+  "owner": "worker-3",
+  "role": "executor",
+  "id": "3",
+  "depends_on": [],
+  "version": 3,
+  "created_at": "2026-04-04T04:33:29.926Z",
+  "completed_at": "2026-04-04T04:42:32.130Z",
+  "result": "Completed task 3: reviewed the handoff doc and both HTML prototypes, then applied targeted documentation and demo-readiness fixes.\n\nChanges:\n- entropy_hunt.md:342-392 — added “Prototype Audit and Production Handoff”, a production-readiness checklist, and Vercel delivery order.\n- entropy_hunt_mockup.html:1-20,256-513 — added standalone design-token fallbacks, deterministic auction winner selection, accurate coverage/entropy totals, honest initial event copy, and fixed respawn / canvas color handling.\n- entropy_hunt_v2.html:2-26,271,426-427,490-608,767,855-907 — added standalone token fallbacks, warn styling, resolved canvas outline color via computed CSS, kept deterministic claim resolution / respawn flow, and preserved clearer packet-loss messaging.\n\nVerification:\n- PASS diagnostics: mcp lsp_diagnostics on entropy_hunt.md, entropy_hunt_mockup.html, entropy_hunt_v2.html -> 0 diagnostics each.\n- PASS syntax: extracted <script> blocks from both HTML files and ran node --check -> PASS for entropy_hunt_mockup.html and entropy_hunt_v2.html.\n- PASS formatting: npx --yes prettier@3.6.2 --check entropy_hunt.md entropy_hunt_mockup.html entropy_hunt_v2.html -> All matched files use Prettier code style.\n- PASS regression grep: verified no remaining y=d.x respawn bug, no canvas strokeStyle=\"var(...)\" usage, no /100*100 hardcoding, and no random Math.random()>0.5 auction winner path.\n- FAIL/Not available tests: no project test suite / package.json / build pipeline present in /home/kpa/entropyhunt.\n\nNotes / risks:\n- /home/kpa/entropyhunt is not a git repository, so the required Lore commit could not be created here.\n- The HTML files are still prototypes with inline scripts/handlers; the markdown now explicitly documents that they are not the production Vercel app yet.\n"
+}

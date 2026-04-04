@@ -1,0 +1,37 @@
+# Context Snapshot — codebase-discovery
+
+- Task statement: Discover the codebase, infer its purpose, and assess completeness score, gaps, limits, and risks.
+- Desired outcome: An evidence-backed assessment of what the repository currently is, how complete it is, what is missing, and what risks remain.
+- Stated solution: Use deep-interview mode to inspect the repo first, then clarify the intended scoring baseline before crystallizing the assessment artifact.
+- Probable intent hypothesis: The user likely wants a fast brownfield audit that distinguishes the implemented pure-Python demo from the fuller hackathon vision described in the handoff doc.
+- Known facts/evidence:
+  - Python package `entropy-hunt` describes a deterministic entropy-driven swarm search simulation (`pyproject.toml`).
+  - `main.py` runs `simulation.stub.EntropyHuntSimulation` and prints an ASCII heatmap plus JSON summary.
+  - Core implemented modules exist for certainty map, zone selection, mesh bus, heartbeat, BFT coordination, claim coordination, and stub simulation.
+  - Tests currently pass: `pytest -q` => 8 passed; `node --test entropy_hunt_ui.test.mjs` => 6 passed.
+  - Static analysis passes: `ruff check .`, `mypy .`.
+  - `entropy_hunt.md` frames a larger hackathon deliverable involving Vertex 2.0, FoxMQ, Webots, live heatmap/UI, failure injection, and submission positioning.
+  - Several spec-listed artifacts are absent in the repo: `README.md`, `requirements.txt`, `webots_world/`, `failure/`, `simulation/webots_bridge.py`, `auction/voronoi.py`.
+  - Two HTML files appear to be local UI prototypes rather than integrated production code.
+  - Repository appears not to be inside a git working tree.
+- Constraints:
+  - Deep-interview mode: no direct implementation.
+  - One question per round.
+  - Brownfield facts should be gathered from the repo before asking the user.
+- Unknowns/open questions:
+  - What does the user want the completeness score measured against: current stub MVP, full hackathon spec, deployable frontend demo, or all of them?
+  - Does the user want a single aggregate score or separate subsystem scores?
+  - How formal should the output artifact be (brief audit vs exhaustive matrix)?
+- Decision-boundary unknowns:
+  - Whether OMX may define its own scoring rubric.
+  - Whether speculative/inferred risks should be weighted equally with evidence-backed gaps.
+- Likely codebase touchpoints:
+  - `entropy_hunt.md`
+  - `main.py`
+  - `simulation/stub.py`
+  - `core/*.py`
+  - `roles/*.py`
+  - `auction/protocol.py`
+  - `viz/heatmap.py`
+  - `tests/*.py`
+  - `entropy_hunt_v2.html`, `entropy_hunt_mockup.html`, `entropy_hunt_ui.test.mjs`

@@ -1,0 +1,9 @@
+{
+  "session_id": "omx-1775280502017-qe342x",
+  "started_at": "2026-04-04T05:28:22.357Z",
+  "cwd": "/home/kpa/entropyhunt",
+  "pid": 3000317,
+  "platform": "linux",
+  "pid_start_ticks": 182456775,
+  "pid_cmdline": "node /home/kpa/.npm-global/bin/omx --madmax --xhigh"
+}

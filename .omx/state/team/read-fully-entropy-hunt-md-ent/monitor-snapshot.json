@@ -1,0 +1,53 @@
+{
+  "taskStatusById": {
+    "1": "completed",
+    "2": "completed",
+    "3": "completed",
+    "4": "completed",
+    "5": "completed"
+  },
+  "workerAliveByName": {
+    "worker-1": false,
+    "worker-2": false,
+    "worker-3": false,
+    "worker-4": false,
+    "worker-5": false
+  },
+  "workerStateByName": {
+    "worker-1": "idle",
+    "worker-2": "idle",
+    "worker-3": "idle",
+    "worker-4": "idle",
+    "worker-5": "blocked"
+  },
+  "workerTurnCountByName": {
+    "worker-1": 6,
+    "worker-2": 4,
+    "worker-3": 6,
+    "worker-4": 2,
+    "worker-5": 3
+  },
+  "workerTaskIdByName": {
+    "worker-1": "",
+    "worker-2": "",
+    "worker-3": "",
+    "worker-4": "",
+    "worker-5": ""
+  },
+  "mailboxNotifiedByMessageId": {},
+  "completedEventTaskIds": {
+    "1": true,
+    "2": true,
+    "3": true,
+    "4": true,
+    "5": true
+  },
+  "integrationByWorker": {},
+  "monitorTimings": {
+    "list_tasks_ms": 1.71,
+    "worker_scan_ms": 36.27,
+    "mailbox_delivery_ms": 2.68,
+    "total_ms": 120.52,
+    "updated_at": "2026-04-04T05:29:27.433Z"
+  }
+}

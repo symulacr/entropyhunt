@@ -1,0 +1,893 @@
+{"timestamp":"2026-04-04T04:39:12.068Z","type":"worker_idle_notification","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","worker":"worker-2","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T04:43:38.362Z","type":"worker_idle_notification","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","worker":"worker-3","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T04:44:01.544Z","type":"worker_idle_notification","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","worker":"worker-4","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:08.869Z","type":"worker_idle_notification","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","worker":"worker-1","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:32.878Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:33.862Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:35.049Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:35.878Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:36.875Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:37.871Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:39.008Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:39.930Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:40.919Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:41.954Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:42.893Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:43.897Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:44.899Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:45.869Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:46.875Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:47.881Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:48.874Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:49.868Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:50.860Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:51.870Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:52.868Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:53.869Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:54.863Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:55.911Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:56.919Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:57.918Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:58.849Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:10:59.828Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:00.838Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:01.865Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:02.846Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:03.825Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:04.820Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:05.833Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:06.828Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:07.832Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:08.829Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:09.827Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:10.815Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:11.804Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:12.862Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:13.866Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:14.869Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:15.804Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:16.816Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:17.806Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:18.806Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:19.819Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:20.811Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:21.811Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:22.808Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:23.814Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:24.809Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:25.813Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:26.779Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:27.753Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:28.756Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:29.757Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:30.766Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:31.760Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:32.765Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:33.772Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:34.765Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:35.765Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:36.772Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:37.776Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:38.764Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:39.774Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:40.768Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:41.769Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:42.766Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:43.781Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:44.771Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:45.775Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:46.841Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:47.786Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:48.774Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:49.783Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:50.777Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:51.778Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:52.779Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:53.786Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:54.788Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:55.786Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:11:56.796Z","type":"team_leader_nudge","team":"read-fully-entropy-hunt-md-ent","tmux_target":"%32","reason":"stale_leader_with_messages","error":"can't find pane: %32"}
+{"timestamp":"2026-04-04T05:29:31.566Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:29:44.184Z","type":"auto_nudge_skipped","reason":"stall_window_pending","source":"payload","stall_ms":5000,"signature":"payload:019d56f7-c44e-7321-b3b6-c6b22b733797|019d56f7-c4a5-75b3-ac48-25035af1e6dd|stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:29:49.186Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:29:50.170Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:29:51.165Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:29:52.169Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:29:53.851Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:29:54.265Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:29:55.254Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:29:56.206Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:29:57.206Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:29:58.259Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:29:59.245Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:00.268Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:01.246Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:02.266Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:03.208Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:04.247Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:05.260Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:06.264Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:07.271Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:08.203Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:09.246Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:10.239Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:11.292Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:12.270Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:13.360Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:14.286Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:15.279Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:16.298Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:17.255Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:18.293Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:19.290Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:20.288Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:21.298Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:22.269Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:23.289Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:24.361Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:25.277Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:26.255Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:27.243Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:28.259Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:29.339Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:30.206Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:31.197Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:32.242Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:33.207Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:34.279Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:35.276Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:36.279Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:37.268Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:38.244Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:39.548Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:40.464Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:41.466Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:42.377Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:43.347Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:44.468Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:45.463Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:46.552Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:47.354Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:48.395Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:49.444Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:50.386Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:51.261Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:52.278Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:53.267Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:54.264Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:55.209Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:56.259Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:57.210Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:58.259Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:30:59.254Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:00.287Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:01.286Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:02.285Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:03.214Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:04.248Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:05.275Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:06.256Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:07.272Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:08.272Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:09.272Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:10.249Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:11.214Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:12.246Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:13.216Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:14.286Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:15.268Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:16.279Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:17.271Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:18.269Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:19.216Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:20.253Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:21.213Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:22.247Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:23.245Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:24.287Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:25.265Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:26.273Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:27.258Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:28.260Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:29.243Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:30.262Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:31.276Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:32.269Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:33.357Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:34.274Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:35.290Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:36.289Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:37.275Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:38.268Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:39.263Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:40.296Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:41.291Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:42.339Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:43.259Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:44.246Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:45.221Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:46.217Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:47.221Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:48.269Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:49.220Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:50.251Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:51.254Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:52.257Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:53.256Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:54.244Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:55.220Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:56.223Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:57.244Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:58.251Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:31:59.258Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:00.270Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:01.273Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:02.252Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:03.259Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:04.244Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:05.266Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:06.265Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:07.271Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:08.284Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:09.278Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:10.287Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:11.256Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:12.271Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:13.261Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:13.768Z","type":"auto_nudge_skipped","pane_id":"%39","reason":"pane_has_active_task","source":"capture-pane","pane_current_command":"sh","pane_excerpt":"    ✔ Preflight: inspect repo structure and create deep-interview context/state artifacts for codebase discovery brief\n    ✔ Analyze codebase purpose, current completeness, gaps, limits, and risks from repository evidence\n    □ Ask the single highest-leverage clarification question with ambiguity breakdown and persist interview progress\n• Starting MCP servers (5/6): omx_team_run (3m 03s • esc to interrupt)\n› Write tests for @filename\n  gpt-5.4 xhigh · 94% left · ~/entropyhunt · Main [default]"}
+{"timestamp":"2026-04-04T05:32:14.134Z","type":"auto_nudge_skipped","pane_id":"%39","reason":"pane_has_active_task","source":"capture-pane","pane_current_command":"sh","pane_excerpt":"    ✔ Preflight: inspect repo structure and create deep-interview context/state artifacts for codebase discovery brief\n    ✔ Analyze codebase purpose, current completeness, gaps, limits, and risks from repository evidence\n    □ Ask the single highest-leverage clarification question with ambiguity breakdown and persist interview progress\n◦ Starting MCP servers (5/6): omx_team_run (3m 04s • esc to interrupt)\n› Write tests for @filename\n  gpt-5.4 xhigh · 94% left · ~/entropyhunt · Main [default]"}
+{"timestamp":"2026-04-04T05:32:14.286Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:14.498Z","type":"auto_nudge_skipped","pane_id":"%39","reason":"pane_has_active_task","source":"capture-pane","pane_current_command":"sh","pane_excerpt":"    ✔ Preflight: inspect repo structure and create deep-interview context/state artifacts for codebase discovery brief\n    ✔ Analyze codebase purpose, current completeness, gaps, limits, and risks from repository evidence\n    □ Ask the single highest-leverage clarification question with ambiguity breakdown and persist interview progress\n◦ Starting MCP servers (5/6): omx_team_run (3m 04s • esc to interrupt)\n› Write tests for @filename\n  gpt-5.4 xhigh · 94% left · ~/entropyhunt · Main [default]"}
+{"timestamp":"2026-04-04T05:32:14.865Z","type":"auto_nudge_skipped","pane_id":"%39","reason":"pane_has_active_task","source":"capture-pane","pane_current_command":"sh","pane_excerpt":"    ✔ Preflight: inspect repo structure and create deep-interview context/state artifacts for codebase discovery brief\n    ✔ Analyze codebase purpose, current completeness, gaps, limits, and risks from repository evidence\n    □ Ask the single highest-leverage clarification question with ambiguity breakdown and persist interview progress\n• Starting MCP servers (5/6): omx_team_run (3m 04s • esc to interrupt)\n› Write tests for @filename\n  gpt-5.4 xhigh · 94% left · ~/entropyhunt · Main [default]"}
+{"timestamp":"2026-04-04T05:32:15.271Z","type":"auto_nudge_skipped","pane_id":"%39","reason":"pane_has_active_task","source":"capture-pane","pane_current_command":"sh","pane_excerpt":"    ✔ Preflight: inspect repo structure and create deep-interview context/state artifacts for codebase discovery brief\n    ✔ Analyze codebase purpose, current completeness, gaps, limits, and risks from repository evidence\n    □ Ask the single highest-leverage clarification question with ambiguity breakdown and persist interview progress\n• Starting MCP servers (5/6): omx_team_run (3m 05s • esc to interrupt)\n› Write tests for @filename\n  gpt-5.4 xhigh · 94% left · ~/entropyhunt · Main [default]"}
+{"timestamp":"2026-04-04T05:32:15.294Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:15.629Z","type":"auto_nudge_skipped","pane_id":"%39","reason":"pane_has_active_task","source":"capture-pane","pane_current_command":"sh","pane_excerpt":"    ✔ Preflight: inspect repo structure and create deep-interview context/state artifacts for codebase discovery brief\n    ✔ Analyze codebase purpose, current completeness, gaps, limits, and risks from repository evidence\n    □ Ask the single highest-leverage clarification question with ambiguity breakdown and persist interview progress\n◦ Starting MCP servers (5/6): omx_team_run (3m 05s • esc to interrupt)\n› Write tests for @filename\n  gpt-5.4 xhigh · 94% left · ~/entropyhunt · Main [default]"}
+{"timestamp":"2026-04-04T05:32:15.986Z","type":"auto_nudge_skipped","pane_id":"%39","reason":"pane_has_active_task","source":"capture-pane","pane_current_command":"sh","pane_excerpt":"    ✔ Preflight: inspect repo structure and create deep-interview context/state artifacts for codebase discovery brief\n    ✔ Analyze codebase purpose, current completeness, gaps, limits, and risks from repository evidence\n    □ Ask the single highest-leverage clarification question with ambiguity breakdown and persist interview progress\n• Starting MCP servers (5/6): omx_team_run (3m 06s • esc to interrupt)\n› Write tests for @filename\n  gpt-5.4 xhigh · 94% left · ~/entropyhunt · Main [default]"}
+{"timestamp":"2026-04-04T05:32:16.270Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:16.346Z","type":"auto_nudge_skipped","pane_id":"%39","reason":"pane_has_active_task","source":"capture-pane","pane_current_command":"sh","pane_excerpt":"    ✔ Preflight: inspect repo structure and create deep-interview context/state artifacts for codebase discovery brief\n    ✔ Analyze codebase purpose, current completeness, gaps, limits, and risks from repository evidence\n    □ Ask the single highest-leverage clarification question with ambiguity breakdown and persist interview progress\n• Starting MCP servers (5/6): omx_team_run (3m 06s • esc to interrupt)\n› Write tests for @filename\n  gpt-5.4 xhigh · 94% left · ~/entropyhunt · Main [default]"}
+{"timestamp":"2026-04-04T05:32:16.710Z","type":"auto_nudge_skipped","pane_id":"%39","reason":"pane_has_active_task","source":"capture-pane","pane_current_command":"sh","pane_excerpt":"    ✔ Preflight: inspect repo structure and create deep-interview context/state artifacts for codebase discovery brief\n    ✔ Analyze codebase purpose, current completeness, gaps, limits, and risks from repository evidence\n    □ Ask the single highest-leverage clarification question with ambiguity breakdown and persist interview progress\n◦ Starting MCP servers (5/6): omx_team_run (3m 06s • esc to interrupt)\n› Write tests for @filename\n  gpt-5.4 xhigh · 94% left · ~/entropyhunt · Main [default]"}
+{"timestamp":"2026-04-04T05:32:17.087Z","type":"auto_nudge_skipped","pane_id":"%39","reason":"pane_has_active_task","source":"capture-pane","pane_current_command":"sh","pane_excerpt":"    ✔ Preflight: inspect repo structure and create deep-interview context/state artifacts for codebase discovery brief\n    ✔ Analyze codebase purpose, current completeness, gaps, limits, and risks from repository evidence\n    □ Ask the single highest-leverage clarification question with ambiguity breakdown and persist interview progress\n◦ Starting MCP servers (5/6): omx_team_run (3m 07s • esc to interrupt)\n› Write tests for @filename\n  gpt-5.4 xhigh · 94% left · ~/entropyhunt · Main [default]"}
+{"timestamp":"2026-04-04T05:32:17.275Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:17.453Z","type":"auto_nudge_skipped","pane_id":"%39","reason":"pane_has_active_task","source":"capture-pane","pane_current_command":"sh","pane_excerpt":"    ✔ Preflight: inspect repo structure and create deep-interview context/state artifacts for codebase discovery brief\n    ✔ Analyze codebase purpose, current completeness, gaps, limits, and risks from repository evidence\n    □ Ask the single highest-leverage clarification question with ambiguity breakdown and persist interview progress\n• Starting MCP servers (5/6): omx_team_run (3m 07s • esc to interrupt)\n› Write tests for @filename\n  gpt-5.4 xhigh · 94% left · ~/entropyhunt · Main [default]"}
+{"timestamp":"2026-04-04T05:32:17.811Z","type":"auto_nudge_skipped","pane_id":"%39","reason":"pane_has_active_task","source":"capture-pane","pane_current_command":"sh","pane_excerpt":"    ✔ Preflight: inspect repo structure and create deep-interview context/state artifacts for codebase discovery brief\n    ✔ Analyze codebase purpose, current completeness, gaps, limits, and risks from repository evidence\n    □ Ask the single highest-leverage clarification question with ambiguity breakdown and persist interview progress\n◦ Starting MCP servers (5/6): omx_team_run (3m 07s • esc to interrupt)\n› Write tests for @filename\n  gpt-5.4 xhigh · 94% left · ~/entropyhunt · Main [default]"}
+{"timestamp":"2026-04-04T05:32:18.190Z","type":"auto_nudge_skipped","pane_id":"%39","reason":"pane_has_active_task","source":"capture-pane","pane_current_command":"sh","pane_excerpt":"    ✔ Preflight: inspect repo structure and create deep-interview context/state artifacts for codebase discovery brief\n    ✔ Analyze codebase purpose, current completeness, gaps, limits, and risks from repository evidence\n    □ Ask the single highest-leverage clarification question with ambiguity breakdown and persist interview progress\n◦ Starting MCP servers (5/6): omx_team_run (3m 08s • esc to interrupt)\n› Write tests for @filename\n  gpt-5.4 xhigh · 94% left · ~/entropyhunt · Main [default]"}
+{"timestamp":"2026-04-04T05:32:18.286Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:18.550Z","type":"auto_nudge_skipped","pane_id":"%39","reason":"pane_has_active_task","source":"capture-pane","pane_current_command":"sh","pane_excerpt":"    ✔ Preflight: inspect repo structure and create deep-interview context/state artifacts for codebase discovery brief\n    ✔ Analyze codebase purpose, current completeness, gaps, limits, and risks from repository evidence\n    □ Ask the single highest-leverage clarification question with ambiguity breakdown and persist interview progress\n• Starting MCP servers (5/6): omx_team_run (3m 08s • esc to interrupt)\n› Write tests for @filename\n  gpt-5.4 xhigh · 94% left · ~/entropyhunt · Main [default]"}
+{"timestamp":"2026-04-04T05:32:18.924Z","type":"auto_nudge_skipped","pane_id":"%39","reason":"pane_has_active_task","source":"capture-pane","pane_current_command":"sh","pane_excerpt":"    ✔ Preflight: inspect repo structure and create deep-interview context/state artifacts for codebase discovery brief\n    ✔ Analyze codebase purpose, current completeness, gaps, limits, and risks from repository evidence\n    □ Ask the single highest-leverage clarification question with ambiguity breakdown and persist interview progress\n◦ Starting MCP servers (5/6): omx_team_run (3m 09s • esc to interrupt)\n› Write tests for @filename\n  gpt-5.4 xhigh · 94% left · ~/entropyhunt · Main [default]"}
+{"timestamp":"2026-04-04T05:32:19.292Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:19.347Z","type":"auto_nudge_skipped","pane_id":"%39","reason":"pane_has_active_task","source":"capture-pane","pane_current_command":"sh","pane_excerpt":"    ✔ Preflight: inspect repo structure and create deep-interview context/state artifacts for codebase discovery brief\n    ✔ Analyze codebase purpose, current completeness, gaps, limits, and risks from repository evidence\n    □ Ask the single highest-leverage clarification question with ambiguity breakdown and persist interview progress\n◦ Starting MCP servers (5/6): omx_team_run (3m 09s • esc to interrupt)\n› Write tests for @filename\n  gpt-5.4 xhigh · 94% left · ~/entropyhunt · Main [default]"}
+{"timestamp":"2026-04-04T05:32:19.717Z","type":"auto_nudge_skipped","pane_id":"%39","reason":"pane_has_active_task","source":"capture-pane","pane_current_command":"sh","pane_excerpt":"    ✔ Preflight: inspect repo structure and create deep-interview context/state artifacts for codebase discovery brief\n    ✔ Analyze codebase purpose, current completeness, gaps, limits, and risks from repository evidence\n    □ Ask the single highest-leverage clarification question with ambiguity breakdown and persist interview progress\n• Starting MCP servers (5/6): omx_team_run (3m 09s • esc to interrupt)\n› Write tests for @filename\n  gpt-5.4 xhigh · 94% left · ~/entropyhunt · Main [default]"}
+{"timestamp":"2026-04-04T05:32:20.080Z","type":"auto_nudge_skipped","pane_id":"%39","reason":"pane_has_active_task","source":"capture-pane","pane_current_command":"sh","pane_excerpt":"    ✔ Preflight: inspect repo structure and create deep-interview context/state artifacts for codebase discovery brief\n    ✔ Analyze codebase purpose, current completeness, gaps, limits, and risks from repository evidence\n    □ Ask the single highest-leverage clarification question with ambiguity breakdown and persist interview progress\n• Starting MCP servers (5/6): omx_team_run (3m 10s • esc to interrupt)\n› Write tests for @filename\n  gpt-5.4 xhigh · 94% left · ~/entropyhunt · Main [default]"}
+{"timestamp":"2026-04-04T05:32:20.268Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:20.454Z","type":"auto_nudge_skipped","pane_id":"%39","reason":"pane_has_active_task","source":"capture-pane","pane_current_command":"sh","pane_excerpt":"    ✔ Preflight: inspect repo structure and create deep-interview context/state artifacts for codebase discovery brief\n    ✔ Analyze codebase purpose, current completeness, gaps, limits, and risks from repository evidence\n    □ Ask the single highest-leverage clarification question with ambiguity breakdown and persist interview progress\n◦ Starting MCP servers (5/6): omx_team_run (3m 10s • esc to interrupt)\n› Write tests for @filename\n  gpt-5.4 xhigh · 94% left · ~/entropyhunt · Main [default]"}
+{"timestamp":"2026-04-04T05:32:20.835Z","type":"auto_nudge_skipped","pane_id":"%39","reason":"pane_has_active_task","source":"capture-pane","pane_current_command":"sh","pane_excerpt":"    ✔ Preflight: inspect repo structure and create deep-interview context/state artifacts for codebase discovery brief\n    ✔ Analyze codebase purpose, current completeness, gaps, limits, and risks from repository evidence\n    □ Ask the single highest-leverage clarification question with ambiguity breakdown and persist interview progress\n• Starting MCP servers (5/6): omx_team_run (3m 10s • esc to interrupt)\n› Write tests for @filename\n  gpt-5.4 xhigh · 94% left · ~/entropyhunt · Main [default]"}
+{"timestamp":"2026-04-04T05:32:21.194Z","type":"auto_nudge_skipped","pane_id":"%39","reason":"pane_has_active_task","source":"capture-pane","pane_current_command":"sh","pane_excerpt":"    ✔ Preflight: inspect repo structure and create deep-interview context/state artifacts for codebase discovery brief\n    ✔ Analyze codebase purpose, current completeness, gaps, limits, and risks from repository evidence\n    □ Ask the single highest-leverage clarification question with ambiguity breakdown and persist interview progress\n• Starting MCP servers (5/6): omx_team_run (3m 11s • esc to interrupt)\n› Write tests for @filename\n  gpt-5.4 xhigh · 94% left · ~/entropyhunt · Main [default]"}
+{"timestamp":"2026-04-04T05:32:21.298Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:21.611Z","type":"auto_nudge_skipped","pane_id":"%39","reason":"pane_has_active_task","source":"capture-pane","pane_current_command":"sh","pane_excerpt":"    ✔ Preflight: inspect repo structure and create deep-interview context/state artifacts for codebase discovery brief\n    ✔ Analyze codebase purpose, current completeness, gaps, limits, and risks from repository evidence\n    □ Ask the single highest-leverage clarification question with ambiguity breakdown and persist interview progress\n◦ Starting MCP servers (5/6): omx_team_run (3m 11s • esc to interrupt)\n› Write tests for @filename\n  gpt-5.4 xhigh · 94% left · ~/entropyhunt · Main [default]"}
+{"timestamp":"2026-04-04T05:32:21.991Z","type":"auto_nudge_skipped","pane_id":"%39","reason":"pane_has_active_task","source":"capture-pane","pane_current_command":"sh","pane_excerpt":"    ✔ Preflight: inspect repo structure and create deep-interview context/state artifacts for codebase discovery brief\n    ✔ Analyze codebase purpose, current completeness, gaps, limits, and risks from repository evidence\n    □ Ask the single highest-leverage clarification question with ambiguity breakdown and persist interview progress\n• Starting MCP servers (5/6): omx_team_run (3m 12s • esc to interrupt)\n› Write tests for @filename\n  gpt-5.4 xhigh · 94% left · ~/entropyhunt · Main [default]"}
+{"timestamp":"2026-04-04T05:32:22.277Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:22.359Z","type":"auto_nudge_skipped","pane_id":"%39","reason":"pane_has_active_task","source":"capture-pane","pane_current_command":"sh","pane_excerpt":"    ✔ Preflight: inspect repo structure and create deep-interview context/state artifacts for codebase discovery brief\n    ✔ Analyze codebase purpose, current completeness, gaps, limits, and risks from repository evidence\n    □ Ask the single highest-leverage clarification question with ambiguity breakdown and persist interview progress\n• Starting MCP servers (5/6): omx_team_run (3m 12s • esc to interrupt)\n› Write tests for @filename\n  gpt-5.4 xhigh · 94% left · ~/entropyhunt · Main [default]"}
+{"timestamp":"2026-04-04T05:32:23.294Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:24.291Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:25.294Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:26.295Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:27.319Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:28.347Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:29.305Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:30.284Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:30.818Z","type":"tmux_hook","mode":null,"reason":"mode_not_allowed","turn_id":"019d56f7-6ff5-7bb1-b4eb-54395077b77d","thread_id":"019d56f6-ceae-7d03-9764-a11189f17a5b","target":{"type":"pane","value":"%39"},"dry_run":false,"sent":false,"event":"injection_skipped"}
+{"timestamp":"2026-04-04T05:32:30.922Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:33.836Z","type":"tmux_hook","mode":null,"reason":"mode_not_allowed","turn_id":"019d56f8-16ab-7410-a24f-fcfb7b79834c","thread_id":"019d56f8-1686-7e12-829d-a6776d0590dc","target":{"type":"pane","value":"%39"},"dry_run":false,"sent":false,"event":"injection_skipped"}
+{"timestamp":"2026-04-04T05:32:33.931Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:39.364Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:40.361Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:41.354Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:42.154Z","type":"auto_nudge","pane_id":"%39","response":"yes, proceed","source":"capture-pane","nudge_count":1}
+{"timestamp":"2026-04-04T05:32:42.392Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:42.718Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:43.060Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:43.349Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:43.463Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:43.806Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:44.147Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:44.367Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:44.507Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:44.850Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:45.198Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:45.460Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:45.593Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:45.935Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:46.378Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:46.453Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:46.721Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:47.061Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:47.371Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:47.479Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:47.829Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:48.181Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:48.395Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:48.531Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:48.873Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:49.260Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:49.393Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:49.615Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:49.963Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:50.376Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:50.399Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:50.736Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:51.081Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:51.359Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:51.470Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:51.829Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:52.171Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:52.378Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:52.529Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:52.878Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:53.271Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:53.386Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:53.621Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:53.969Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:54.374Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:54.389Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:54.715Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:55.060Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:55.358Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:55.461Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:55.799Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:56.170Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:56.385Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:56.548Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:56.888Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:57.270Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:57.388Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:57.608Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:57.948Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:58.367Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:58.384Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:58.708Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:59.047Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:59.354Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:32:59.452Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:32:59.798Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:00.144Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:00.367Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:00.507Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:00.854Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:01.242Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:01.390Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:01.602Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:01.946Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:02.363Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:02.394Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:02.712Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:03.052Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:03.358Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:03.467Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:03.819Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:04.180Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:04.373Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:04.532Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:04.887Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:05.266Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:05.387Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:05.615Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:05.953Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:06.380Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:06.386Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:06.735Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:07.098Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:07.371Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:07.478Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:07.819Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:08.165Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:08.374Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:08.525Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:08.864Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:09.243Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:09.377Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:09.589Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:09.931Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:10.349Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:10.383Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:10.687Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:11.028Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:11.360Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:11.439Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:11.796Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:12.136Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:12.440Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:12.506Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:12.845Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:13.185Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:13.368Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:13.535Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:13.876Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:14.271Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:14.448Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:14.617Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:14.972Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:15.380Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:15.382Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:15.720Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:16.059Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:16.365Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:16.470Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:16.816Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:17.166Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:17.372Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:17.528Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:17.872Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-4|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:18.131Z","type":"tmux_hook","mode":null,"reason":"mode_not_allowed","turn_id":"019d56f8-1771-79f2-950c-0954922756a8","thread_id":"019d56f8-16ff-7912-988b-65b3c5f1e3d1","target":{"type":"pane","value":"%39"},"dry_run":false,"sent":false,"event":"injection_skipped"}
+{"timestamp":"2026-04-04T05:33:18.344Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:23.375Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:24.382Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:25.392Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:26.412Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:27.387Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:28.368Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:29.297Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:30.296Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:31.309Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:32.355Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:33.348Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:34.369Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:35.376Z","type":"tmux_hook","mode":null,"reason":"mode_not_allowed","turn_id":"019d56fa-ad9c-7f70-8546-2a4649f216cc","thread_id":"019d56f6-ceae-7d03-9764-a11189f17a5b","target":{"type":"pane","value":"%39"},"dry_run":false,"sent":false,"event":"injection_skipped"}
+{"timestamp":"2026-04-04T05:33:35.574Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:41.377Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:42.390Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:43.353Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:43.508Z","type":"auto_nudge","pane_id":"%39","response":"yes, proceed","source":"capture-pane","nudge_count":2}
+{"timestamp":"2026-04-04T05:33:44.090Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:44.362Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:44.474Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:44.821Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:45.158Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:45.361Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:45.519Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:45.857Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:46.193Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:46.386Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:46.527Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:46.884Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:47.261Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:47.403Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:47.613Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:47.950Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:48.368Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:48.394Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:48.714Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:49.056Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:49.371Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:49.463Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:49.824Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:50.161Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:50.388Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:50.520Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:50.859Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:51.252Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:51.446Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:51.604Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:51.953Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:52.379Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:52.464Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:52.722Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:53.063Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:53.363Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:53.457Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:53.807Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:54.147Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:54.374Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:54.524Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:54.898Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:55.280Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:55.409Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:55.634Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:55.987Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:56.373Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:56.447Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:56.718Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:57.073Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:57.372Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:57.467Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:57.817Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:58.157Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:58.401Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:58.537Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:58.889Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:59.269Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:59.463Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:33:59.608Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:33:59.949Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:34:00.367Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:34:00.388Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:00.716Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:34:01.057Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:34:01.344Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:01.449Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:34:01.791Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:34:02.149Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:34:02.365Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:02.508Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:34:02.852Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:34:03.200Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:34:03.403Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:03.539Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:34:03.912Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:34:04.286Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:34:04.394Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:04.625Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:34:04.962Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:34:05.365Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:34:05.447Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:05.706Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:34:06.044Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:34:06.370Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:06.468Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:34:06.812Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:34:07.157Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:34:07.361Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:07.529Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:34:07.874Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:34:08.265Z","type":"auto_nudge_skipped","reason":"already_nudged_for_signature","source":"capture-pane","signature":"payload:notify-fallback-watcher-stall|stalled-turn-6|stall:proceed_intent","semantic_signature":"stall:proceed_intent"}
+{"timestamp":"2026-04-04T05:34:08.450Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:09.445Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:10.570Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:11.585Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:12.484Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:13.574Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:14.575Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:15.539Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:16.449Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:17.495Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:18.458Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:19.128Z","type":"tmux_hook","mode":null,"reason":"mode_not_allowed","turn_id":"019d56fb-9d45-7ae1-b9ad-7ba8b18407fd","thread_id":"019d56f6-ceae-7d03-9764-a11189f17a5b","target":{"type":"pane","value":"%39"},"dry_run":false,"sent":false,"event":"injection_skipped"}
+{"timestamp":"2026-04-04T05:34:19.257Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:24.484Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:25.468Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:26.472Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:27.470Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:28.461Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:29.461Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:30.542Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:31.456Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:32.461Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:33.449Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:34.383Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:35.401Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:36.474Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:37.465Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:38.460Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:39.455Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:40.458Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:41.467Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:42.466Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:43.462Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:44.476Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:45.386Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:46.449Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:47.445Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:48.474Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:49.490Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:50.500Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:51.472Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:52.488Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:53.476Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:54.475Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:55.471Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:56.493Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:57.485Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:58.476Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:34:59.492Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:00.472Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:01.476Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:02.556Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:03.480Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:04.472Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:05.479Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:06.473Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:07.456Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:08.471Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:09.474Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:10.470Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:11.481Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:12.494Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:13.488Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:14.541Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:15.490Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:16.487Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:17.475Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:18.488Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:19.472Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:20.445Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:21.453Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:22.475Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:23.464Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:24.442Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:25.447Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:26.478Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:27.474Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:28.450Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:29.445Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:30.445Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:31.472Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:32.491Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:33.446Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:34.478Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:35.392Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:36.401Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:37.390Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:38.375Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:39.397Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:40.378Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:41.378Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:42.402Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:43.466Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:44.473Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:45.446Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:46.466Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:47.478Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:48.489Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:49.443Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:50.459Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:51.442Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:52.465Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:53.480Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:54.479Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:55.473Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:56.447Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:57.457Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:58.480Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:35:59.475Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:00.481Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:01.467Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:02.468Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:03.471Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:04.493Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:05.494Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:06.489Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:07.447Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:08.469Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:09.448Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:10.456Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:11.477Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:12.398Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:13.414Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:14.469Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:15.390Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:16.420Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:17.398Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:18.398Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:19.402Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:20.419Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:21.446Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:22.390Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:23.383Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:24.389Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:25.395Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:26.406Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:27.395Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:28.422Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:29.447Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:30.407Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:31.464Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:32.466Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:33.477Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:34.464Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:35.513Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:36.508Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:37.504Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:38.469Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:39.446Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:40.482Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:41.478Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:42.510Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:43.500Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:44.524Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:45.527Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:46.513Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:47.462Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:48.440Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:49.446Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:50.449Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:51.453Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:52.484Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:53.490Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:54.486Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:55.460Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:56.454Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:57.450Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:58.458Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:36:59.459Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:00.465Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:01.488Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:02.483Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:03.457Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:04.473Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:05.460Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:06.480Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:07.459Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:08.487Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:09.463Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:10.492Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:11.470Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:12.473Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:13.474Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:14.470Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:15.469Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:16.500Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:17.514Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:18.498Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:19.494Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:20.480Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:21.485Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:22.478Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:23.504Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:24.522Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:25.501Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:26.504Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:27.483Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:28.502Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:29.516Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:30.515Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:31.506Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:32.506Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:33.505Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:34.506Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:35.537Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:36.538Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:37.505Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:38.519Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:39.502Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:40.519Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:41.513Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:42.524Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:43.534Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:44.518Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:45.506Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:46.502Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:47.519Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:48.588Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:49.551Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:50.552Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:51.547Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:52.554Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:53.550Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:54.555Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:55.552Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:56.553Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:57.554Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:58.556Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:37:59.575Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:00.547Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:01.563Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:02.565Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:03.557Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:04.559Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:05.561Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:06.595Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:07.566Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:08.563Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:09.563Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:10.568Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:11.565Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:12.572Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:13.573Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:14.570Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:15.580Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:16.572Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:17.583Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:18.570Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:19.576Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:20.574Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:21.582Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:22.578Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:23.576Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:24.580Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:25.580Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:26.585Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:27.586Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:28.582Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:29.583Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:30.587Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:31.585Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:32.588Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:33.593Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:34.601Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:35.592Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:36.631Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:37.663Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:38.640Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:39.632Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:40.635Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:41.644Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:42.652Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:43.660Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:44.730Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:45.640Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:46.668Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:47.645Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:48.645Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:49.652Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:50.648Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:51.644Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:52.650Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:53.660Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:54.640Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:55.658Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:56.661Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:57.657Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:58.681Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:38:59.659Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:00.653Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:01.675Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:02.653Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:03.658Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:04.658Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:05.653Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:06.680Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:07.662Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:08.663Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:09.664Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:10.662Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:11.667Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:12.657Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:13.664Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:14.661Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:15.666Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:16.697Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:17.664Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:18.670Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:19.684Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:20.710Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:21.676Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:22.633Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:23.636Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:24.638Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:25.672Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:26.687Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:27.673Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:28.679Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:29.686Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:30.678Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:31.695Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:32.721Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:33.691Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:34.690Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:35.682Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:36.702Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:37.683Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:38.691Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:39.700Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:40.694Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:41.729Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:42.711Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:43.688Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:44.693Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:45.692Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:46.706Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:47.698Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:48.693Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:49.699Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:50.698Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:51.696Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:52.716Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:53.722Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:54.720Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:55.712Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:56.714Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:57.729Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:58.736Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:39:59.717Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:40:00.733Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:40:01.746Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:40:02.738Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:40:03.729Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:40:04.725Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:40:05.725Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:40:06.745Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:40:07.750Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:40:08.735Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:40:09.726Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:40:10.734Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:40:11.742Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}
+{"timestamp":"2026-04-04T05:40:12.728Z","type":"auto_nudge_skipped","reason":"unmanaged_session"}

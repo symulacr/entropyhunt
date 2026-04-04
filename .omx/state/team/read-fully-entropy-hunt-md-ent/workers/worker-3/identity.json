@@ -1,0 +1,13 @@
+{
+  "name": "worker-3",
+  "index": 3,
+  "role": "executor",
+  "worker_cli": "codex",
+  "assigned_tasks": [
+    "3"
+  ],
+  "working_dir": "/home/kpa/entropyhunt",
+  "team_state_root": "/home/kpa/entropyhunt/.omx/state",
+  "pid": 2740877,
+  "pane_id": "%35"
+}

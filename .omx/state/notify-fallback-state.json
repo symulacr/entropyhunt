@@ -1,0 +1,64 @@
+{
+  "pid": 3000390,
+  "parent_pid": 3000317,
+  "started_at": "2026-04-04T05:28:22.408Z",
+  "cwd": "/home/kpa/entropyhunt",
+  "notify_script": "/home/kpa/.npm-global/lib/node_modules/oh-my-codex/dist/scripts/notify-hook.js",
+  "poll_ms": 250,
+  "pid_file": "/home/kpa/entropyhunt/.omx/state/notify-fallback.pid",
+  "max_lifetime_ms": 21600000,
+  "tracked_files": 5,
+  "seen_turns": 5,
+  "dispatch_drain": {
+    "enabled": true,
+    "max_per_tick": 5,
+    "run_count": 2010,
+    "leader_only": true,
+    "last_tick_at": "2026-04-04T05:40:12.881Z",
+    "last_result": {
+      "processed": 0,
+      "skipped": 47,
+      "failed": 0
+    },
+    "last_error": null
+  },
+  "leader_nudge": {
+    "enabled": true,
+    "leader_only": true,
+    "stale_threshold_ms": 180000,
+    "precomputed_leader_stale": true,
+    "last_tick_at": "2026-04-04T05:40:12.883Z",
+    "last_error": null,
+    "run_count": 2010
+  },
+  "ralph_continue_steer": {
+    "enabled": true,
+    "cadence_ms": 60000,
+    "message": "Ralph loop active continue",
+    "active": false,
+    "last_state_check_at": "2026-04-04T05:40:12.927Z",
+    "last_sent_at": "",
+    "cooldown_anchor_at": "",
+    "last_reason": "blocked_by_current_session",
+    "last_error": null,
+    "state_path": "",
+    "pane_id": "",
+    "pane_current_command": "",
+    "current_phase": "",
+    "shared_timestamp_path": "/home/kpa/entropyhunt/.omx/state/ralph-last-steer-at",
+    "shared_last_sent_at": "",
+    "singleton_lock_path": "/home/kpa/entropyhunt/.omx/state/ralph-continue-steer.lock"
+  },
+  "fallback_auto_nudge": {
+    "enabled": true,
+    "stall_ms": 5000,
+    "last_tick_at": "2026-04-04T05:40:12.909Z",
+    "last_turn_at": "2026-04-04T05:34:19.119Z",
+    "last_turn_count": 7,
+    "last_message": "Proceeding with these default assumptions unless you correct them:\n- score **both** the current Pyth",
+    "last_reason": "eligible_but_not_sent",
+    "last_error": null,
+    "last_nudged_signature": "hud:6|2026-04-04T05:33:35.365Z|proceeding with the default assumption that you want both views unless you override 1 curren",
+    "last_nudged_at": "2026-04-04T05:33:40.467Z"
+  }
+}
