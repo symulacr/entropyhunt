@@ -266,6 +266,57 @@ test("v2 replay payload imports simulation output into the console state", () =>
   assert.match(exports.events[0].msg, /survivor found/i);
 });
 
+
+test("v2 live payload imports peer snapshot state without ending the session", () => {
+  const { exports } = loadSimulation(
+    "entropy_hunt_v2.html",
+    `({
+      applyLivePayload,
+      get sourceMode(){return sourceMode;},
+      get elapsed(){return elapsed;},
+      get bftRounds(){return bftRounds;},
+      get dropouts(){return dropouts;},
+      get found(){return found;},
+      get missionComplete(){return missionComplete;},
+      get drones(){return drones;},
+      get events(){return events;}
+    })`,
+  );
+
+  const payload = {
+    summary: {
+      duration_elapsed: 12,
+      bft_rounds: 4,
+      dropouts: 1,
+      survivor_found: false,
+      drones: [
+        { id: "drone_1", alive: true, position: [1, 1], target: [2, 2], status: "transiting", searched_cells: 7 },
+        { id: "drone_2", alive: false, position: [4, 4], target: null, status: "stale", searched_cells: 3 },
+      ],
+    },
+    events: [{ t: 12, type: "bft", message: "round 4 resolved" }],
+    grid: Array.from({ length: 10 }, (_, y) =>
+      Array.from({ length: 10 }, (_, x) => ({
+        x,
+        y,
+        certainty: x === 1 && y === 1 ? 0.76 : 0.5,
+      })),
+    ),
+  };
+
+  exports.applyLivePayload(payload);
+
+  assert.equal(exports.sourceMode, "live");
+  assert.equal(exports.elapsed, 12);
+  assert.equal(exports.bftRounds, 4);
+  assert.equal(exports.dropouts, 1);
+  assert.equal(exports.found, false);
+  assert.equal(exports.missionComplete, false);
+  assert.equal(exports.drones[0].tx, 2);
+  assert.equal(exports.drones[1].stale, true);
+  assert.match(exports.events[0].msg, /round 4 resolved/i);
+});
+
 test("mockup reconnect path re-randomizes x and y independently", () => {
   const { sandbox, exports } = loadSimulation(
     "entropy_hunt_mockup.html",

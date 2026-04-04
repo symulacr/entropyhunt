@@ -9,7 +9,9 @@
     "start": "python3 -m http.server 4173 --directory dist",
     "test:ui": "node --test entropy_hunt_ui.test.mjs",
     "deploy:preview": "npm run build && npx vercel@latest deploy",
-    "deploy:prod": "npm run build && npx vercel@latest deploy --prod"
+    "deploy:prod": "npm run build && npx vercel@latest deploy --prod",
+    "live:peers": "python3 scripts/run_local_peers.py --count 5 --duration 30 --output-dir peer-runs",
+    "live:serve": "python3 scripts/serve_live_runtime.py --snapshot-dir peer-runs"
   },
   "engines": {
     "node": ">=18"

@@ -9,7 +9,7 @@ from auction.protocol import ClaimRequest
 from core.bft import BftCoordinator, BftRoundResult
 from core.certainty_map import CertaintyMap, Coordinate
 from core.heartbeat import HeartbeatRegistry
-from core.mesh import LocalPeerMeshBus, MeshEnvelope
+from core.mesh import FoxMQMeshBus, LocalPeerMeshBus, MeshEnvelope
 from core.zone_selector import ZoneSelector
 from failure.injector import FailureInjector, FailurePlan
 from roles.searcher import DroneState
@@ -41,6 +41,11 @@ class PeerRuntimeConfig:
     host: str = "127.0.0.1"
     port: int = 0
     peers: tuple[PeerEndpoint, ...] = ()
+    transport: str = "local"
+    mqtt_host: str = "127.0.0.1"
+    mqtt_port: int = 1883
+    mqtt_username: str | None = None
+    mqtt_password: str | None = None
     grid: int = 10
     duration: int = 180
     tick_seconds: int = 1
@@ -75,12 +80,22 @@ class PeerRuntime:
     def __init__(self, config: PeerRuntimeConfig) -> None:
         self.config = config
         self.now_ms = 0
-        self.mesh = LocalPeerMeshBus(
-            peer_id=config.peer_id,
-            bind_host=config.host,
-            bind_port=config.port,
-            peer_addresses=[(peer.host, peer.port) for peer in config.peers],
-        )
+        self.mesh: Any
+        if config.transport == "foxmq":
+            self.mesh = FoxMQMeshBus(
+                peer_id=config.peer_id,
+                mqtt_host=config.mqtt_host,
+                mqtt_port=config.mqtt_port,
+                username=config.mqtt_username,
+                password=config.mqtt_password,
+            )
+        else:
+            self.mesh = LocalPeerMeshBus(
+                peer_id=config.peer_id,
+                bind_host=config.host,
+                bind_port=config.port,
+                peer_addresses=[(peer.host, peer.port) for peer in config.peers],
+            )
         self.heartbeat = HeartbeatRegistry()
         self.peer_ids = sorted({config.peer_id, *[peer.peer_id for peer in config.peers if peer.peer_id]})
         self.local_drone = DroneState(
@@ -108,8 +123,10 @@ class PeerRuntime:
         self._released_stale: set[str] = set()
 
     @property
-    def peer_address(self) -> tuple[str, int]:
-        return self.mesh.bind_address
+    def peer_address(self) -> tuple[str, int] | tuple[str, int | str]:
+        if hasattr(self.mesh, "bind_address"):
+            return self.mesh.bind_address
+        return (self.config.mqtt_host, self.config.mqtt_port)
 
     def _tick_ms(self) -> int:
         return self.config.tick_seconds * 1000
@@ -432,7 +449,7 @@ class PeerRuntime:
         self._publish_state()
 
     def bootstrap(self) -> None:
-        self._log("mesh", f"peer runtime online at {self.peer_address[0]}:{self.peer_address[1]}")
+        self._log("mesh", f"peer runtime online via {self.config.transport} at {self.peer_address[0]}:{self.peer_address[1]}")
         self._publish_heartbeat()
         self._publish_state()
 

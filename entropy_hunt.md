@@ -26,6 +26,8 @@ This repository currently contains a **working local prototype**, not the full l
 
 - runnable Python stub simulation: `main.py --mode stub` -> `simulation/stub.py`
 - runnable local multi-process peer runtime: `main.py --mode peer` / `scripts/run_local_peers.py`
+- optional FoxMQ-backed transport helpers and cluster scripts for moving from local UDP transport toward the target broker path
+- optional Webots-backed peer runtime/controller path in `simulation/webots_runtime.py` + `webots_world/`
 - certainty/entropy scoring, local UDP peer transport, heartbeat, and simplified BFT-style claim resolution
 - ASCII CLI heatmap output and JSON summary/final-map output
 - a packaged static app shell source (`frontend/index.template.html`) that builds into `dist/`
@@ -371,9 +373,11 @@ The two HTML files in this directory are **UI prototypes**, not the production i
 
 - The default Python demo is now tuned to the static-console constants (`search_increment=0.12`, `completion_certainty=0.92`) so the 10×10 / 180s run reaches full completed coverage while still showing decay on the live snapshot.
 - `final_map.json` now carries replay-friendly metadata: config, events, Voronoi partitions, partition boundaries, and a dependency-free Webots bridge snapshot.
-- Both HTML consoles can now load a real simulation replay payload via **Load replay** and clearly distinguish `synthetic demo` from `replay snapshot` mode.
+- Both HTML consoles can now load a real simulation replay payload via **Load replay** and clearly distinguish `synthetic demo` from `replay snapshot` mode. The rich console also supports polling an aggregated live snapshot feed when `scripts/serve_live_runtime.py` is running.
 - The repo now includes the missing spec-alignment modules: `failure/injector.py`, `auction/voronoi.py`, `simulation/webots_bridge.py`, `README.md`, and `requirements.txt`.
 - A real local peer runtime now exists via `simulation/peer_runtime.py` + `scripts/run_local_peers.py`, so heartbeat/claim/BFT/survivor flows can run across separate local processes even though the transport is not yet Vertex/FoxMQ.
+- The repo now also includes an optional FoxMQ-backed transport path plus cluster helper scripts, and an optional Webots-backed peer runtime path; both are designed against the official docs but have not yet been validated end-to-end in this CI environment.
+- `scripts/serve_live_runtime.py` now exposes aggregated peer snapshots over HTTP (`/snapshot.json`, `/state.json`, `/events.json`), and the rich console can consume that live snapshot feed in addition to replay and synthetic modes.
 - A packaged frontend entrypoint now exists via `package.json` + `scripts/build_frontend.py`, producing a deployable static shell in `dist/`.
 - `vercel.json` now wires Vercel to `npm run build` with `dist/` as the output directory, `docs/frontend-qa-checklist.md` documents the recommended manual browser QA pass, and `docs/vercel-deploy.md` documents first-time setup plus one-command preview/production deploys.
 

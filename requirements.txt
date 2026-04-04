@@ -1,4 +1,6 @@
 # Runtime dependencies
 # --------------------
-# Entropy Hunt's core simulation is intentionally standard-library-only.
-# This file exists so the repository layout matches the handoff spec.
+# Core simulation remains standard-library-first.
+# Optional integration paths:
+# - paho-mqtt  (required for --transport foxmq / FoxMQMeshBus)
+# - Webots Python controller module (provided by a Webots installation)

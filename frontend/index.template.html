@@ -38,12 +38,14 @@
         <article class="panel">
           <div class="panel-header">
             <h2>Replay artifacts</h2>
-            <span class="chip">drag into either console</span>
+            <span class="chip">replay or live snapshot path</span>
           </div>
           <ul class="artifact-list">{{ARTIFACT_LINKS}}</ul>
           <pre class="code-block"><code>python3 main.py --final-map final_map.json --svg-map final_map.svg --final-html final_map.html
 npm run build
-npm run preview</code></pre>
+npm run preview
+npm run live:peers
+npm run live:serve</code></pre>
         </article>
       </section>
 
@@ -72,7 +74,7 @@ npm run preview</code></pre>
           </div>
           <ul class="stack-list">
             <li><strong>Packaged shell</strong> — this `dist/` site for deployment and review.</li>
-            <li><strong>Rich console</strong> — replay-capable operations view in <code>console.html</code>.</li>
+            <li><strong>Rich console</strong> — replay-capable and live-snapshot-capable operations view in <code>console.html</code>.</li>
             <li><strong>Minimal mockup</strong> — compact reference console in <code>mockup.html</code>.</li>
             <li><strong>Python runtime</strong> — source of truth for simulation/export artifacts.</li>
           </ul>
@@ -83,9 +85,9 @@ npm run preview</code></pre>
             <h2>Known limits</h2>
           </div>
           <ul class="stack-list">
-            <li>Still a static/demo shell — no live Vertex/FoxMQ transport.</li>
-            <li>Webots bridge remains a dependency-free contract layer, not a live supervisor.</li>
-            <li>Replay mode visualizes backend artifacts; it does not stream real swarm state yet.</li>
+            <li>Live polling currently consumes aggregated JSON snapshots, not a direct FoxMQ stream.</li>
+            <li>FoxMQ and Webots paths are optional and not end-to-end validated in this CI environment.</li>
+            <li>The packaged shell remains a static site; live data requires running the local helper scripts alongside it.</li>
           </ul>
         </article>
       </section>

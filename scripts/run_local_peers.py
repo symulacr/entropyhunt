@@ -15,6 +15,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--grid", type=int, default=10)
     parser.add_argument("--tick-seconds", type=int, default=1)
     parser.add_argument("--output-dir", default="peer-runs")
+    parser.add_argument("--transport", choices=("local", "foxmq"), default="local")
+    parser.add_argument("--mqtt-host", default="127.0.0.1")
+    parser.add_argument("--mqtt-base-port", type=int, default=1883)
     return parser.parse_args()
 
 
@@ -29,11 +32,13 @@ def _peer_args(peer_index: int, count: int, base_port: int) -> list[str]:
 
 
 def _build_command(index: int, count: int, args: argparse.Namespace, output_dir: Path) -> list[str]:
-    return [
+    command = [
         sys.executable,
         "main.py",
         "--mode",
         "peer",
+        "--transport",
+        args.transport,
         "--duration",
         str(args.duration),
         "--grid",
@@ -42,8 +47,19 @@ def _build_command(index: int, count: int, args: argparse.Namespace, output_dir:
         str(args.tick_seconds),
         "--final-map",
         str(output_dir / f"drone_{index + 1}.json"),
-        *_peer_args(index, count, args.base_port),
     ]
+    if args.transport == "foxmq":
+        command.extend([
+            "--peer-id",
+            f"drone_{index + 1}",
+            "--mqtt-host",
+            args.mqtt_host,
+            "--mqtt-port",
+            str(args.mqtt_base_port + index),
+        ])
+    else:
+        command.extend(_peer_args(index, count, args.base_port))
+    return command
 
 
 def launch_processes(commands: Sequence[list[str]], *, cwd: Path) -> int:

@@ -30,6 +30,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=0)
     parser.add_argument("--peer", action="append", default=[])
+    parser.add_argument("--transport", choices=("local", "foxmq"), default="local")
+    parser.add_argument("--mqtt-host", default="127.0.0.1")
+    parser.add_argument("--mqtt-port", type=int, default=1883)
+    parser.add_argument("--mqtt-username", default=None)
+    parser.add_argument("--mqtt-password", default=None)
     return parser.parse_args()
 
 
@@ -106,6 +111,11 @@ def run_peer_mode(args: argparse.Namespace) -> int:
         host=args.host,
         port=args.port,
         peers=tuple(parse_peer_endpoint(value) for value in args.peer),
+        transport=args.transport,
+        mqtt_host=args.mqtt_host,
+        mqtt_port=args.mqtt_port,
+        mqtt_username=args.mqtt_username,
+        mqtt_password=args.mqtt_password,
         grid=args.grid,
         duration=args.duration,
         tick_seconds=args.tick_seconds,

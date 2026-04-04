@@ -92,6 +92,16 @@
   .btn.danger:hover {
     background: var(--color-background-danger);
   }
+  .live-input {
+    width: 180px;
+    height: 28px;
+    padding: 0 8px;
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: 8px;
+    font-size: 10px;
+    color: var(--color-text-secondary);
+    background: var(--color-background-primary);
+  }
   .btn.file {
     position: relative;
     overflow: hidden;
@@ -349,6 +359,13 @@
     <button class="btn" id="replay-reset" onclick="clearReplay()">
       clear replay
     </button>
+    <input class="live-input" id="live-url" value="http://127.0.0.1:8765/snapshot.json" />
+    <button class="btn" id="live-btn" onclick="connectLive()">
+      connect live
+    </button>
+    <button class="btn" id="live-stop" onclick="disconnectLive()">
+      stop live
+    </button>
     <button class="btn warn" id="packet-btn" onclick="dropPackets()">
       drop packets 20%
     </button>
@@ -471,6 +488,9 @@
   const demoButton = document.getElementById("demo-btn");
   const replayResetButton = document.getElementById("replay-reset");
   const replayInput = document.getElementById("replay-input");
+  const liveInput = document.getElementById("live-url");
+  const liveButton = document.getElementById("live-btn");
+  const liveStopButton = document.getElementById("live-stop");
   const canvasOutlineColor = "#0f1115";
 
   let speed = 2;
@@ -483,6 +503,8 @@
   let missionComplete = false;
   let events = [];
   let sourceMode = "synthetic";
+  let liveSource = "http://127.0.0.1:8765/snapshot.json";
+  let livePollHandle = null;
   const autoDemo = {
     enabled: false,
     packetLoss: false,
@@ -494,9 +516,11 @@
   function setSourceMode(mode) {
     sourceMode = mode;
     const chip = document.getElementById("mode-chip");
-    chip.textContent = mode === "replay" ? "replay snapshot" : "synthetic demo";
-    chip.classList.toggle("replay", mode === "replay");
+    chip.textContent = mode === "replay" ? "replay snapshot" : mode === "live" ? "live snapshot" : "synthetic demo";
+    chip.classList.toggle("replay", mode === "replay" || mode === "live");
     replayResetButton.disabled = mode !== "replay";
+    liveButton.disabled = mode === "live";
+    liveStopButton.disabled = mode !== "live";
   }
 
   const grid = Array.from({ length: GRID_SIZE }, (_, y) =>
@@ -606,16 +630,16 @@
     };
   }
 
-  function applyReplayPayload(payload) {
+  function applySnapshotPayload(payload, mode) {
     const rows = payload?.grid;
-    const summary = payload?.summary || {};
+    const summary = payload?.summary || payload || {};
     if (!Array.isArray(rows) || rows.length !== GRID_SIZE) {
-      throw new Error(`expected ${GRID_SIZE} replay rows`);
+      throw new Error(`expected ${GRID_SIZE} snapshot rows`);
     }
 
     rows.forEach((row, y) => {
       if (!Array.isArray(row) || row.length !== GRID_SIZE) {
-        throw new Error(`expected ${GRID_SIZE} replay columns in row ${y}`);
+        throw new Error(`expected ${GRID_SIZE} snapshot columns in row ${y}`);
       }
       row.forEach((cell, x) => {
         const replayCell = getCell(x, y);
@@ -629,7 +653,7 @@
     auctions = Number(summary.auctions ?? 0);
     dropouts = Number(summary.dropouts ?? 0);
     found = Boolean(summary.survivor_found);
-    missionComplete = true;
+    missionComplete = mode === "replay";
     packetDrop = false;
     autoDemo.enabled = false;
     autoDemo.packetLoss = false;
@@ -661,12 +685,61 @@
     renderDrones();
     renderLog();
     updateStats();
-    setSourceMode("replay");
+    setSourceMode(mode);
     setFooter(
-      found
-        ? "replay loaded — final simulation snapshot with survivor confirmation"
-        : "replay loaded — final simulation snapshot",
+      mode === "live"
+        ? "live snapshot connected — polling current peer state"
+        : found
+          ? "replay loaded — final simulation snapshot with survivor confirmation"
+          : "replay loaded — final simulation snapshot",
     );
+  }
+
+  function applyReplayPayload(payload) {
+    applySnapshotPayload(payload, "replay");
+  }
+
+  function applyLivePayload(payload) {
+    applySnapshotPayload(payload, "live");
+  }
+
+  async function pollLiveSnapshot() {
+    if (!liveSource) return;
+    const response = await fetch(liveSource, { cache: "no-store" });
+    if (!response.ok) throw new Error(`live snapshot request failed (${response.status})`);
+    applyLivePayload(await response.json());
+  }
+
+  function connectLive(nextSource) {
+    liveSource = (nextSource || liveInput.value || liveSource).trim();
+    liveInput.value = liveSource;
+    if (!liveSource) return;
+    if (livePollHandle) clearInterval(livePollHandle);
+    setSourceMode("live");
+    void pollLiveSnapshot().catch((error) => {
+      setFooter(`live snapshot failed — ${error.message}`);
+      addEvent("err", `live snapshot failed — ${error.message}`);
+    });
+    livePollHandle = setInterval(() => {
+      void pollLiveSnapshot().catch((error) => {
+        setFooter(`live snapshot failed — ${error.message}`);
+        addEvent("err", `live snapshot failed — ${error.message}`);
+      });
+    }, 1000);
+  }
+
+  function disconnectLive() {
+    if (sourceMode !== "live") return;
+    if (livePollHandle) {
+      clearInterval(livePollHandle);
+      livePollHandle = null;
+    }
+    if (window.location && typeof window.location.reload === "function") {
+      window.location.reload();
+      return;
+    }
+    setSourceMode("synthetic");
+    missionComplete = false;
   }
 
   function clearReplay() {
@@ -1299,7 +1372,7 @@
   }
 
   function tick() {
-    if (missionComplete || sourceMode === "replay") return;
+    if (missionComplete || sourceMode === "replay" || sourceMode === "live") return;
     for (let step = 0; step < speed; step += 1) {
       elapsed += 1;
       runAutoDemoSchedule();
@@ -1368,6 +1441,9 @@
   window.toggleAutoDemo = toggleAutoDemo;
   window.setSpeed = setSpeed;
   window.applyReplayPayload = applyReplayPayload;
+  window.applyLivePayload = applyLivePayload;
+  window.connectLive = connectLive;
+  window.disconnectLive = disconnectLive;
   window.clearReplay = clearReplay;
   window.drones = drones;
 
@@ -1383,6 +1459,7 @@
   setSourceMode("synthetic");
   setButtonState(packetButton, false, "drop packets on", "drop packets 20%");
   setButtonState(demoButton, false, "auto demo on", "auto demo off");
+  setSourceMode("synthetic");
   setFooter("mesh stable — entropy auctions active");
   setInterval(tick, TICK_MS);
 </script>
