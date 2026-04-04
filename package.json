@@ -7,7 +7,9 @@
     "build": "python3 scripts/build_frontend.py",
     "preview": "python3 -m http.server 4173 --directory dist",
     "start": "python3 -m http.server 4173 --directory dist",
-    "test:ui": "node --test entropy_hunt_ui.test.mjs"
+    "test:ui": "node --test entropy_hunt_ui.test.mjs",
+    "deploy:preview": "npm run build && npx vercel@latest deploy",
+    "deploy:prod": "npm run build && npx vercel@latest deploy --prod"
   },
   "engines": {
     "node": ">=18"

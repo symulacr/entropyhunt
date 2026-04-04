@@ -42,6 +42,7 @@ The build copies the current consoles and replay artifacts into `dist/`, and gen
 
 - `vercel.json` points Vercel at `npm run build` and the `dist/` output directory.
 - `docs/frontend-qa-checklist.md` captures the recommended manual browser QA pass before sharing or deployment.
+- `docs/vercel-deploy.md` documents first-time Vercel setup plus preview/production deploy commands.
 
 ## Frontend replay
 
