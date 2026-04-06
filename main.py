@@ -181,9 +181,9 @@ def run_peer_mode(args: argparse.Namespace) -> int:
     exit_code = 0
     try:
         summary = runtime.run()
-    except PeerFailureExit:
+    except PeerFailureExit as exc:
         summary = runtime.summary()
-        exit_code = 2
+        exit_code = exc.exit_code
     print(render_ascii_heatmap(runtime.certainty_map, list(runtime.peer_drones.values())))
     print(json.dumps(summary, indent=2))
     _render_exports(

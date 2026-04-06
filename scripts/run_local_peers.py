@@ -135,6 +135,7 @@ def _synthesize_proofs_from_outputs(output_dir: Path, proofs_path: Path) -> None
             if key in seen_keys:
                 continue
             seen_keys.add(key)
+            payload.setdefault("source", "runtime")
             merged.append(payload)
             if payload.get("type") == "bft_result" and len(payload.get("assignments", [])) > 1:
                 auction = {
@@ -142,6 +143,8 @@ def _synthesize_proofs_from_outputs(output_dir: Path, proofs_path: Path) -> None
                     "type": "auction",
                     "contest_id": payload.get("contest_id"),
                     "message": f"contest resolved for cell {payload.get('cell')}",
+                    "source": "derived",
+                    "derived_from": "bft_result",
                 }
                 auction_key = (auction.get("contest_id"), auction.get("type"), auction.get("t"))
                 if auction_key not in seen_keys:
@@ -165,6 +168,7 @@ def _synthesize_proofs_from_outputs(output_dir: Path, proofs_path: Path) -> None
             if key in seen_keys:
                 continue
             seen_keys.add(key)
+            event.setdefault("source", "snapshot")
             merged.append(event)
 
     merged.sort(

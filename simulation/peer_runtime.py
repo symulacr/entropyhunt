@@ -77,8 +77,22 @@ class PeerRuntimeConfig:
 
 
 def _starting_position(peer_id: str, peer_ids: list[str], grid: int) -> Coordinate:
-    _ = (peer_id, peer_ids, grid)
-    return (0, 0)
+    if grid <= 1:
+        return (0, 0)
+    ordered_peer_ids = sorted(dict.fromkeys(peer_ids or [peer_id]))
+    try:
+        index = ordered_peer_ids.index(peer_id)
+    except ValueError:
+        index = 0
+
+    max_index = grid - 1
+    perimeter: list[Coordinate] = [(x, 0) for x in range(grid)]
+    perimeter.extend((max_index, y) for y in range(1, grid))
+    perimeter.extend((x, max_index) for x in range(max_index - 1, -1, -1))
+    perimeter.extend((0, y) for y in range(max_index - 1, 0, -1))
+
+    step = max(1, len(perimeter) // max(1, len(ordered_peer_ids)))
+    return perimeter[(index * step) % len(perimeter)]
 
 
 class PeerRuntime:
@@ -132,6 +146,7 @@ class PeerRuntime:
         self._processed_rounds: set[int] = set()
         self._released_stale: set[str] = set()
         self._stale_since_ms: dict[str, int] = {}
+        self._forced_target_probe_logged = False
         env_tick_delay = os.getenv("ENTROPY_HUNT_TICK_DELAY_SECONDS")
         configured_delay = config.tick_delay_seconds
         if configured_delay is not None:
@@ -570,6 +585,14 @@ class PeerRuntime:
         )
         if self._should_force_target_probe(claimed_zones, blocked):
             selection = None
+            if not self._forced_target_probe_logged:
+                self._log(
+                    "forced_target_probe",
+                    "target probe forced after timeout to keep the demo converging",
+                    target=list(self.config.target),
+                    after_ms=TARGET_FORCE_AT_MS,
+                )
+                self._forced_target_probe_logged = True
             selection = type("ZoneSelectionProxy", (), {
                 "coordinate": self.config.target,
                 "certainty": self.certainty_map.cell(self.config.target).certainty,
@@ -612,8 +635,9 @@ class PeerRuntime:
             drone.status = "idle"
             return
         if drone.position != drone.target_cell:
-            drone.position = drone.target_cell
-            drone.status = "searching"
+            drone.step_towards_target()
+            self._publish_state()
+            return
         drone.status = "searching"
         updated = self.local_map.update_cell(
             drone.target_cell,
