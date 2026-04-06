@@ -579,6 +579,7 @@
         this.certainty = value;
       },
       owner: -1,
+      ownerId: null,
     })),
   );
 
@@ -641,6 +642,7 @@
       for (const cell of row) {
         if (cell.owner === index) {
           cell.owner = -1;
+          cell.ownerId = null;
         }
       }
     }
@@ -702,6 +704,7 @@
           this.certainty = value;
         },
         owner: cell.owner,
+        ownerId: cell.ownerId ?? null,
       })),
     );
   }
@@ -772,12 +775,50 @@
     return -1;
   }
 
+  function ownerIdFor(value, replayDrones) {
+    if (typeof value === "string") return value;
+    if (typeof value === "number" && value >= 0) {
+      return replayDrones[value]?.id || drones[value]?.id || null;
+    }
+    return null;
+  }
+
+  function ownerLabelForCell(cell) {
+    if (cell.owner >= 0 && drones[cell.owner]) return drones[cell.owner].id;
+    return cell.ownerId || "unowned";
+  }
+
+  function formatSnapshotLimitNote(hiddenDroneCount, hiddenEventCount) {
+    const parts = [];
+    if (hiddenDroneCount > 0) {
+      parts.push(`showing ${drones.length} of ${drones.length + hiddenDroneCount} drones`);
+    }
+    if (hiddenEventCount > 0) {
+      parts.push(`showing newest 24 of ${24 + hiddenEventCount} events`);
+    }
+    return parts.join(" · ");
+  }
+
   function applySnapshotPayload(payload, mode) {
     const rows = payload?.grid;
     const summary = payload?.summary || payload || {};
     const stats = payload?.stats || summary || {};
+    const replayDrones = Array.isArray(summary.drones) ? summary.drones : [];
+    const rawEvents = Array.isArray(payload?.events) ? payload.events : [];
     const targetValue = payload?.config?.target || summary?.target || [7, 3];
-    if (!Array.isArray(rows) || rows.length !== GRID_SIZE) {
+    if (!Array.isArray(rows)) {
+      throw new Error("snapshot grid missing");
+    }
+    const maxColumns = rows.reduce(
+      (max, row) => Math.max(max, Array.isArray(row) ? row.length : 0),
+      0,
+    );
+    if (rows.length > GRID_SIZE || maxColumns > GRID_SIZE) {
+      throw new Error(
+        `snapshot grid ${rows.length}x${maxColumns} exceeds browser limit ${GRID_SIZE}x${GRID_SIZE}; use the OpenTUI monitor for larger runs`,
+      );
+    }
+    if (rows.length !== GRID_SIZE) {
       throw new Error(`expected ${GRID_SIZE} snapshot rows`);
     }
     TARGET = { x: Number(targetValue[0] ?? 7), y: Number(targetValue[1] ?? 3) };
@@ -790,6 +831,7 @@
         const replayCell = getCell(x, y);
         replayCell.certainty = Number(cell.certainty ?? 0.5);
         replayCell.owner = ownerIndexFor(cell.owner);
+        replayCell.ownerId = ownerIdFor(cell.owner, replayDrones);
       });
     });
 
@@ -808,7 +850,6 @@
     setButtonState(packetButton, false, "drop packets on", "drop packets 20%");
     setButtonState(demoButton, false, "auto demo on", "auto demo off");
 
-    const replayDrones = Array.isArray(summary.drones) ? summary.drones : [];
     drones.forEach((drone, index) => {
       const replayDrone = replayDroneFor(drone, replayDrones, index);
       const position = replayDrone.position || START_POSITIONS[index];
@@ -834,25 +875,37 @@
           getCell(claimedX, claimedY).owner < 0
         ) {
           getCell(claimedX, claimedY).owner = index;
+          getCell(claimedX, claimedY).ownerId = replayDrone.id || drone.id;
         }
       }
     });
 
-    events = Array.isArray(payload.events)
-      ? payload.events.slice(-24).reverse().map(formatReplayEvent)
+    const hiddenDroneCount = Math.max(0, replayDrones.length - drones.length);
+    const hiddenEventCount = Math.max(0, rawEvents.length - 24);
+    events = rawEvents.length > 0
+      ? rawEvents.slice(-24).reverse().map(formatReplayEvent)
       : [];
+    if (hiddenDroneCount > 0 || hiddenEventCount > 0) {
+      events.unshift({
+        type: "info",
+        msg: `browser limit note — ${formatSnapshotLimitNote(hiddenDroneCount, hiddenEventCount)}`,
+        t: elapsed,
+      });
+      if (events.length > 24) events.pop();
+    }
 
     drawGrid();
     renderDrones();
     renderLog();
     updateStats();
     setSourceMode(mode);
+    const limitNote = formatSnapshotLimitNote(hiddenDroneCount, hiddenEventCount);
     setFooter(
       mode === "live"
-        ? "live snapshot connected — polling current peer state (demo controls disabled)"
+        ? `live snapshot connected — polling current peer state (demo controls disabled)${limitNote ? ` · ${limitNote}` : ""}`
         : found
-          ? "replay loaded — final simulation snapshot with survivor confirmation (read-only)"
-          : "replay loaded — final simulation snapshot (read-only)",
+          ? `replay loaded — final simulation snapshot with survivor confirmation (read-only)${limitNote ? ` · ${limitNote}` : ""}`
+          : `replay loaded — final simulation snapshot (read-only)${limitNote ? ` · ${limitNote}` : ""}`,
     );
   }
 
@@ -1554,7 +1607,7 @@
       return;
     }
     const cell = getCell(gridX, gridY);
-    const owner = cell.owner >= 0 ? drones[cell.owner].id : "unowned";
+    const owner = ownerLabelForCell(cell);
     tooltip.style.display = "block";
     tooltip.style.left = `${gridX * CELL_SIZE + CELL_SIZE + 2}px`;
     tooltip.style.top = `${gridY * CELL_SIZE}px`;

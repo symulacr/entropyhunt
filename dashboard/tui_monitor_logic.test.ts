@@ -244,6 +244,29 @@ test("normalizeSnapshot preserves claimed cells and discloses truncation", () =>
   expect(state.hiddenEventCount).toBeGreaterThan(0);
 });
 
+test("overview footer makes hidden large-run limits explicit", () => {
+  const message = buildMonitorFooterMessage({
+    state: {
+      ...sampleViewState(),
+      gridTruncated: true,
+      gridSize: 10,
+      hiddenDroneCount: 2,
+      hiddenEventCount: 7,
+    },
+    compactLayout: false,
+    displayMode: "overview",
+    focusedPanel: "heatmap",
+    cursorX: 0,
+    cursorY: 0,
+    selectedDrone: 0,
+    selectedEvent: 0,
+    tickLatencyMs: 8,
+  });
+  expect(message).toContain("grid capped to 10x10");
+  expect(message).toContain("+2 drones off-screen");
+  expect(message).toContain("+7 older events hidden");
+});
+
 
 test("layout metrics expand heatmap on wide terminals and stack on compact terminals", () => {
   const wide = computeLayoutMetrics(200, 46);

@@ -311,6 +311,72 @@ test("v2 replay import preserves drone identity, claim state, and read-only mode
   assert.equal(sandbox.document.getElementById("packet-btn").disabled, false);
 });
 
+test("v2 replay import makes browser large-run limits explicit without losing hidden owner identity", () => {
+  const { sandbox, exports } = loadSimulation(
+    "entropy_hunt_v2.html",
+    `({
+      applyReplayPayload,
+      get events(){return events;},
+      get grid(){return grid;}
+    })`,
+  );
+
+  exports.applyReplayPayload({
+    summary: {
+      duration_elapsed: 15,
+      drones: [
+        { id: "drone_1", alive: true, position: [0, 0], claimed_cell: [0, 0] },
+        { id: "drone_2", alive: true, position: [1, 1], claimed_cell: [1, 1] },
+        { id: "drone_3", alive: true, position: [2, 2], claimed_cell: [2, 2] },
+        { id: "drone_4", alive: true, position: [3, 3], claimed_cell: [3, 3] },
+        { id: "drone_5", alive: true, position: [4, 4], claimed_cell: [4, 4] },
+        { id: "drone_6", alive: true, position: [5, 5], claimed_cell: [5, 5] },
+        { id: "drone_7", alive: true, position: [6, 6], claimed_cell: [6, 6] },
+      ],
+    },
+    grid: Array.from({ length: 10 }, (_, y) =>
+      Array.from({ length: 10 }, (_, x) => ({
+        x,
+        y,
+        certainty: 0.5,
+        owner: x === 6 && y === 6 ? "drone_7" : -1,
+      })),
+    ),
+    events: Array.from({ length: 30 }, (_, index) => ({
+      t: index,
+      type: "info",
+      message: `event ${index}`,
+    })),
+  });
+
+  assert.match(
+    sandbox.document.getElementById("footer-msg").textContent,
+    /showing 5 of 7 drones · showing newest 24 of 30 events/i,
+  );
+  assert.match(exports.events[0].msg, /browser limit note/i);
+  assert.equal(exports.grid[6][6].owner, -1);
+  assert.equal(exports.grid[6][6].ownerId, "drone_7");
+});
+
+test("v2 replay rejects oversized grids with an explicit browser-limit error", () => {
+  const { exports } = loadSimulation(
+    "entropy_hunt_v2.html",
+    `({ applyReplayPayload })`,
+  );
+
+  assert.throws(
+    () =>
+      exports.applyReplayPayload({
+        summary: { duration_elapsed: 15, drones: [] },
+        grid: Array.from({ length: 12 }, (_, y) =>
+          Array.from({ length: 12 }, (_, x) => ({ x, y, certainty: 0.5 })),
+        ),
+        events: [],
+      }),
+    /exceeds browser limit 10x10; use the OpenTUI monitor for larger runs/i,
+  );
+});
+
 
 test("v2 live payload imports peer snapshot state without ending the session", () => {
   const { exports } = loadSimulation(
