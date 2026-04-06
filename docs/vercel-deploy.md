@@ -1,10 +1,10 @@
 # Vercel Deployment Guide
 
-This project now ships as a static shell built into `dist/`.
+This project ships as a static shell built into `dist/`.
 
 ## Prerequisites
 - Bun 1.3.10+
-- Node 18+ (for the Vercel CLI / `npx`)
+- Node 18+
 - Python 3.12+
 - a Vercel account and project
 
@@ -47,5 +47,6 @@ Both commands rebuild the static shell locally before invoking the Vercel CLI.
 5. Promote with `bun run deploy:prod` when the preview looks correct.
 
 ## Notes
-- The deployment is still a static/demo surface; it does not create live Vertex/FoxMQ connectivity.
-- If the build output directory changes, update `package.json`, `vercel.json`, and the deployment tests together.
+- The deployed output is still a static/demo surface; it does not create live Vertex/FoxMQ connectivity.
+- Live console polling still depends on local helper scripts such as `bun run live:peers` and `bun run live:serve`.
+- If the build output directory or packaging command changes, update `package.json`, `vercel.json`, and the deployment tests together.

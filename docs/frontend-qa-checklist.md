@@ -19,6 +19,7 @@ Use this checklist before sharing or deploying the packaged Entropy Hunt shell.
 - [ ] Mode chip flips from `synthetic demo` to `replay snapshot`.
 - [ ] Coverage/BFT/dropout metrics match the replay payload.
 - [ ] **Clear replay** restores or reloads back to synthetic mode.
+- [ ] Live polling is only exercised when the local helpers are running (`bun run live:peers` and `bun run live:serve`).
 
 ## Minimal mockup (`dist/mockup.html`)
 - [ ] Loads without console errors.
@@ -33,4 +34,4 @@ Use this checklist before sharing or deploying the packaged Entropy Hunt shell.
 ## Deployment smoke checks
 - [ ] Vercel/static host serves `dist/index.html` as the root page.
 - [ ] Static links remain relative and work on preview URLs.
-- [ ] No page implies live Vertex/FoxMQ integration.
+- [ ] No page implies live Vertex/FoxMQ integration without the local helper scripts.
