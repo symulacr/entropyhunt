@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from ros2_ws.src.entropy_hunt_ros2.entropy_hunt_ros2.ros_mesh import BINDINGS
+from entropy_hunt_ros2.ros_mesh import BINDINGS
 
 
 def test_bindings_cover_all_primary_swarm_topics() -> None:

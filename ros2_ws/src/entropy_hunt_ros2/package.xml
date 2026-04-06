@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>entropy_hunt_ros2</name>
+  <version>0.1.0</version>
+  <description>ROS 2 operator and drone nodes for Entropy Hunt.</description>
+  <maintainer email="maintainers@example.com">Entropy Hunt</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <depend>entropy_hunt_interfaces</depend>
+  <depend>launch</depend>
+  <depend>launch_ros</depend>
+  <depend>rclpy</depend>
+
+  <exec_depend>python3</exec_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

@@ -7,13 +7,14 @@ try:
     from rclpy.node import Node
 except ModuleNotFoundError:
     rclpy = None
-    Node = None  # type: ignore[assignment]
+    Node = None
 
 from .operator_state import OperatorState
 from .parameters import declare_operator_parameters, load_operator_parameters
 from .ros_mesh import BINDINGS, create_runtime_control_message, create_subscription, ensure_ros_messages_available
 from .operator_server import OperatorSnapshotServer, write_snapshot_file
 from .snapshot_builder import (
+    AssignmentPayload,
     apply_bft_result,
     apply_certainty_update,
     apply_claim,
@@ -24,8 +25,11 @@ from .snapshot_builder import (
 )
 
 
+OperatorNode: type[Any]
+
+
 if Node is not None:
-    class OperatorNode(Node):
+    class _OperatorNodeImpl(Node):
         def __init__(self) -> None:
             super().__init__("entropy_hunt_operator")
             declare_operator_parameters(self)
@@ -95,7 +99,7 @@ if Node is not None:
             )
 
         def _on_bft_result(self, message: Any) -> None:
-            assignments = [
+            assignments: list[AssignmentPayload] = [
                 {
                     "drone_id": str(assignment.drone_id),
                     "x": int(assignment.x),
@@ -192,8 +196,12 @@ if Node is not None:
             )
             write_snapshot_file(self.params.snapshot_path, snapshot)
 else:
-    class OperatorNode:  # pragma: no cover - placeholder when ROS deps are unavailable
+    class _OperatorNodePlaceholder:  # pragma: no cover - placeholder when ROS deps are unavailable
         pass
+
+    OperatorNode = _OperatorNodePlaceholder
+if Node is not None:
+    OperatorNode = _OperatorNodeImpl
 
 
 def main(args: list[str] | None = None) -> int:

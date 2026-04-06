@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from ros2_ws.src.entropy_hunt_ros2.entropy_hunt_ros2 import topic_names
+from entropy_hunt_ros2 import topic_names
 
 
 def test_topic_names_are_unique() -> None:

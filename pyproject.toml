@@ -24,3 +24,20 @@ no_implicit_optional = true
 warn_unused_ignores = true
 warn_redundant_casts = true
 strict_equality = true
+explicit_package_bases = true
+mypy_path = ["ros2_ws/src/entropy_hunt_ros2"]
+
+[[tool.mypy.overrides]]
+module = [
+    "entropy_hunt_interfaces",
+    "entropy_hunt_interfaces.*",
+    "launch",
+    "launch.*",
+    "launch_ros",
+    "launch_ros.*",
+    "rclpy",
+    "rclpy.*",
+    "setuptools",
+    "setuptools.*",
+]
+ignore_missing_imports = true

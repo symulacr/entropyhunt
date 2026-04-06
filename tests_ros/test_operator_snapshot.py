@@ -4,9 +4,9 @@ import json
 from pathlib import Path
 from urllib.request import Request, urlopen
 
-from ros2_ws.src.entropy_hunt_ros2.entropy_hunt_ros2.operator_server import OperatorSnapshotServer, write_snapshot_file
-from ros2_ws.src.entropy_hunt_ros2.entropy_hunt_ros2.operator_state import OperatorState
-from ros2_ws.src.entropy_hunt_ros2.entropy_hunt_ros2.snapshot_builder import build_snapshot
+from entropy_hunt_ros2.operator_server import OperatorSnapshotServer, write_snapshot_file
+from entropy_hunt_ros2.operator_state import OperatorState
+from entropy_hunt_ros2.snapshot_builder import build_snapshot
 
 
 def test_operator_snapshot_file_write(tmp_path: Path) -> None:

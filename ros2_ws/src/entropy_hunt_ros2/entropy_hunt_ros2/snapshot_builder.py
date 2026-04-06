@@ -1,9 +1,16 @@
 from __future__ import annotations
 
 from dataclasses import asdict
-from typing import Any
+from typing import Any, TypedDict
 
 from .operator_state import ClaimRecord, DroneRecord, EventRecord, OperatorState
+
+
+class AssignmentPayload(TypedDict):
+    drone_id: str
+    x: int
+    y: int
+    reason: str
 
 
 def _ensure_drone(state: OperatorState, drone_id: str) -> DroneRecord:
@@ -82,7 +89,7 @@ def apply_bft_result(
     contest_id: str,
     x: int,
     y: int,
-    assignments: list[dict[str, object]],
+    assignments: list[AssignmentPayload],
     rationale: str,
     timestamp_ms: int,
 ) -> None:

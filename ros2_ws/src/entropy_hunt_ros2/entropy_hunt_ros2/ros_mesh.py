@@ -6,7 +6,7 @@ from typing import Any
 try:
     from entropy_hunt_interfaces.msg import Assignment, BftRoundResult, CertaintyUpdate, Claim, DroneState, Heartbeat, RuntimeControl, SurvivorFound
 except ModuleNotFoundError:  # pragma: no cover - exercised only without ROS installed
-    Assignment = BftRoundResult = CertaintyUpdate = Claim = DroneState = Heartbeat = RuntimeControl = SurvivorFound = None  # type: ignore[assignment]
+    Assignment = BftRoundResult = CertaintyUpdate = Claim = DroneState = Heartbeat = RuntimeControl = SurvivorFound = None
 
 from .qos import coordination_qos, telemetry_qos
 from . import topic_names

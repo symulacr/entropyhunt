@@ -2,10 +2,22 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from math import log2
-from typing import Iterator, Mapping, TypeAlias
+from typing import Iterator, Mapping, NotRequired, TypedDict, TypeAlias
 
 Coordinate: TypeAlias = tuple[int, int]
-CellPayload: TypeAlias = dict[str, float | int | str | None]
+
+
+class CellPayload(TypedDict):
+    x: int
+    y: int
+    certainty: float
+    entropy: float
+    last_updated_ms: int
+    updated_by: str
+    decay_rate: float
+    owner: NotRequired[str]
+
+
 GridPayload: TypeAlias = list[list[CellPayload]]
 
 
@@ -185,13 +197,24 @@ class CertaintyMap:
                 )
 
     def to_rows(self, owners: Mapping[Coordinate, str] | None = None) -> GridPayload:
-        return [
-            [
-                self._cell_payload(cell, owners)
-                for cell in row
-            ]
-            for row in self._grid
-        ]
+        rows: GridPayload = []
+        for row in self._grid:
+            row_payload: list[CellPayload] = []
+            for cell in row:
+                payload: CellPayload = {
+                    "x": cell.x,
+                    "y": cell.y,
+                    "certainty": round(cell.certainty, 4),
+                    "entropy": round(shannon_entropy(cell.certainty), 4),
+                    "last_updated_ms": cell.last_updated_ms,
+                    "updated_by": cell.updated_by,
+                    "decay_rate": cell.decay_rate,
+                }
+                if owners and cell.coordinate in owners:
+                    payload["owner"] = owners[cell.coordinate]
+                row_payload.append(payload)
+            rows.append(row_payload)
+        return rows
 
     def _cell_payload(
         self,

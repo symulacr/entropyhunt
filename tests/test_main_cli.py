@@ -66,6 +66,20 @@ def test_run_stub_mode_accepts_tick_delay_seconds_without_crashing(tmp_path: Pat
     assert payload["summary"]["duration_elapsed"] == 0
 
 
+def test_run_stub_mode_uses_dashboard_default_tick_delay_when_flag_missing(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    delays: list[float] = []
+    monkeypatch.setattr(main, "TUIDashboard", _FakeDashboard)
+    monkeypatch.setattr(main.time, "sleep", lambda seconds: delays.append(seconds))
+
+    exit_code = main.run_stub_mode(_base_args(tmp_path, tick_delay_seconds=None))
+
+    assert exit_code == 0
+    assert delays == [_FakeDashboard().tick_delay_seconds]
+
+
 def test_main_rejects_control_file_outside_peer_mode(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(main, "parse_args", lambda: _base_args(tmp_path, control_file=str(tmp_path / "control.json")))
 

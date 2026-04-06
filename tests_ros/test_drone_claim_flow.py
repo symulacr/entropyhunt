@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from ros2_ws.src.entropy_hunt_ros2.entropy_hunt_ros2.snapshot_builder import (
+from entropy_hunt_ros2.snapshot_builder import (
     apply_bft_result,
     apply_claim,
     build_snapshot,
 )
-from ros2_ws.src.entropy_hunt_ros2.entropy_hunt_ros2.operator_state import OperatorState
+from entropy_hunt_ros2.operator_state import OperatorState
 
 
 def test_claim_and_bft_result_update_operator_state() -> None:

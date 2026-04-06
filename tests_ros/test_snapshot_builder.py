@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from ros2_ws.src.entropy_hunt_ros2.entropy_hunt_ros2.operator_state import OperatorState
-from ros2_ws.src.entropy_hunt_ros2.entropy_hunt_ros2.snapshot_builder import (
+from entropy_hunt_ros2.operator_state import OperatorState
+from entropy_hunt_ros2.snapshot_builder import (
     apply_certainty_update,
     apply_drone_state,
     apply_heartbeat,

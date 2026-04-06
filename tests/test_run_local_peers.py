@@ -33,17 +33,19 @@ class _FakeProcess:
         self.returncode = 130
 
 
-def test_launch_processes_returns_130_and_terminates_children_on_interrupt(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
+def test_launch_processes_returns_130_and_terminates_children_on_interrupt(monkeypatch: pytest.MonkeyPatch) -> None:
     first = _FakeProcess(interrupt_on_wait=True)
     second = _FakeProcess()
     processes = iter([first, second])
 
+    def fake_popen(command: list[str], cwd: Path) -> _FakeProcess:
+        _ = command, cwd
+        return next(processes)
+
     monkeypatch.setattr(
         run_local_peers.subprocess,
         "Popen",
-        lambda command, cwd: next(processes),
+        fake_popen,
     )
 
     exit_code = run_local_peers.launch_processes([["python3", "main.py"], ["python3", "main.py"]], cwd=Path("."))
@@ -62,10 +64,14 @@ def test_launch_processes_returns_highest_child_exit_code(monkeypatch: pytest.Mo
     second.returncode = 2
     processes = iter([first, second])
 
+    def fake_popen(command: list[str], cwd: Path) -> _FakeProcess:
+        _ = command, cwd
+        return next(processes)
+
     monkeypatch.setattr(
         run_local_peers.subprocess,
         "Popen",
-        lambda command, cwd: next(processes),
+        fake_popen,
     )
 
     exit_code = run_local_peers.launch_processes([["python3", "main.py"], ["python3", "main.py"]], cwd=Path("."))

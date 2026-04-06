@@ -6,8 +6,8 @@ from typing import Any
 try:
     from rclpy.qos import DurabilityPolicy, HistoryPolicy, QoSProfile, ReliabilityPolicy
 except ModuleNotFoundError:  # pragma: no cover - exercised only without ROS installed
-    DurabilityPolicy = HistoryPolicy = ReliabilityPolicy = None  # type: ignore[assignment]
-    QoSProfile = None  # type: ignore[assignment]
+    DurabilityPolicy = HistoryPolicy = ReliabilityPolicy = None
+    QoSProfile = None
 
 
 @dataclass(frozen=True, slots=True)

@@ -1,4 +1,7 @@
 from __future__ import annotations
+# mypy: disable-error-code=attr-defined
+
+from typing import Any
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
@@ -6,7 +9,7 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
 
-def _launch_setup(context, *_args, **_kwargs):
+def _launch_setup(context: Any, *_args: Any, **_kwargs: Any) -> list[Any]:
     count = int(LaunchConfiguration("count").perform(context))
     grid = int(LaunchConfiguration("grid").perform(context))
     target_x = int(LaunchConfiguration("target_x").perform(context))

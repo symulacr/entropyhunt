@@ -8,12 +8,12 @@ try:
     from rclpy.node import Node
 except ModuleNotFoundError:
     rclpy = None
-    Node = None  # type: ignore[assignment]
+    Node = None
 
 try:
     from entropy_hunt_interfaces.msg import BftRoundResult, Claim, DroneState, Heartbeat, RuntimeControl, SurvivorFound
 except ModuleNotFoundError:
-    BftRoundResult = Claim = DroneState = Heartbeat = RuntimeControl = SurvivorFound = None  # type: ignore[assignment]
+    BftRoundResult = Claim = DroneState = Heartbeat = RuntimeControl = SurvivorFound = None
 
 from .parameters import declare_drone_parameters, load_drone_parameters
 from .ros_mesh import (
@@ -30,8 +30,11 @@ from .ros_mesh import (
 )
 
 
+DroneNode: type[Any]
+
+
 if Node is not None and DroneState is not None and Heartbeat is not None and SurvivorFound is not None and Claim is not None and BftRoundResult is not None and RuntimeControl is not None:
-    class DroneNode(Node):
+    class _DroneNodeImpl(Node):
         def __init__(self) -> None:
             super().__init__("entropy_hunt_drone")
             declare_drone_parameters(self)
@@ -194,8 +197,12 @@ if Node is not None and DroneState is not None and Heartbeat is not None and Sur
                     )
                 )
 else:
-    class DroneNode:  # pragma: no cover - placeholder when ROS deps are unavailable
+    class _DroneNodePlaceholder:  # pragma: no cover - placeholder when ROS deps are unavailable
         pass
+
+    DroneNode = _DroneNodePlaceholder
+if Node is not None and DroneState is not None and Heartbeat is not None and SurvivorFound is not None and Claim is not None and BftRoundResult is not None and RuntimeControl is not None:
+    DroneNode = _DroneNodeImpl
 
 
 def main(args: list[str] | None = None) -> int:
