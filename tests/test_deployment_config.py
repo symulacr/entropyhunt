@@ -15,7 +15,6 @@ def test_vercel_config_targets_packaged_shell() -> None:
     assert payload["outputDirectory"] == "dist"
     assert payload["bunVersion"] == "1.x"
 
-
 def test_package_scripts_include_vercel_deploy_commands() -> None:
     payload = json.loads(Path("package.json").read_text())
     scripts = payload["scripts"]
