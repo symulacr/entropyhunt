@@ -1,6 +1,6 @@
 # Entropy Hunt
 
-Entropy Hunt is a deterministic swarm-search demo for the Vertex Swarm Challenge Track 2 brief. Treat this repo as a **local demo + replay/inspection project**, not production ops software.
+Entropy Hunt is a deterministic swarm-search demo for the Vertex Swarm Challenge Track 2 brief. Treat this repo as a local demo + replay/inspection project, not production ops software.
 
 ## Commands
 
@@ -29,8 +29,3 @@ mypy tests/test_deployment_config.py tests/test_frontend_build.py tests/test_liv
 - `dist/console.html` / `entropy_hunt_v2.html` are experimental replay/live inspectors.
 - `entropy_hunt_mockup.html` is source-only and not deployed.
 - ROS 2, Webots, Vertex, and FoxMQ lanes remain experimental.
-
-## Deploy / QA
-
-- `docs/frontend-qa-checklist.md`
-- `docs/vercel-deploy.md`
