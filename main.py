@@ -11,7 +11,7 @@ from typing import Any, Sequence
 from dashboard.tui import TUIDashboard
 from core.mesh import VertexMeshBus
 from simulation.peer_protocol import parse_peer_endpoint
-from simulation.peer_runtime import PeerRuntime, PeerRuntimeConfig
+from simulation.peer_runtime import PeerFailureExit, PeerRuntime, PeerRuntimeConfig
 from simulation.stub import EntropyHuntSimulation, SimulationConfig
 from viz.heatmap import render_ascii_heatmap, render_html_snapshot, render_svg_heatmap
 
@@ -91,7 +91,6 @@ def run_stub_mode(args: argparse.Namespace) -> int:
         grid=args.grid,
         duration=args.duration,
         tick_seconds=args.tick_seconds,
-        tick_delay_seconds=args.tick_delay_seconds,
         target=(target_x, target_y),
         fail_drone=args.fail_drone,
         fail_at=args.fail_at,
@@ -99,11 +98,14 @@ def run_stub_mode(args: argparse.Namespace) -> int:
         seed=args.seed,
         final_map_path=args.final_map,
         proofs_path=args.proofs,
-        control_file=args.control_file,
     )
     mesh_factory = VertexMeshBus if args.mesh == "real" else None
     simulation = EntropyHuntSimulation(config, mesh_factory=mesh_factory)
-    dashboard = TUIDashboard()
+    dashboard = TUIDashboard(
+        tick_delay_seconds=max(0.0, float(args.tick_delay_seconds))
+        if args.tick_delay_seconds is not None
+        else TUIDashboard.tick_delay_seconds
+    )
     record_dir = Path("demo_frames")
     if args.record:
         shutil.rmtree(record_dir, ignore_errors=True)
@@ -176,7 +178,12 @@ def run_peer_mode(args: argparse.Namespace) -> int:
         control_file=args.control_file,
     )
     runtime = PeerRuntime(config)
-    summary = runtime.run()
+    exit_code = 0
+    try:
+        summary = runtime.run()
+    except PeerFailureExit:
+        summary = runtime.summary()
+        exit_code = 2
     print(render_ascii_heatmap(runtime.certainty_map, list(runtime.peer_drones.values())))
     print(json.dumps(summary, indent=2))
     _render_exports(
@@ -189,11 +196,13 @@ def run_peer_mode(args: argparse.Namespace) -> int:
         svg_map=args.svg_map,
         final_html=args.final_html,
     )
-    return 0
+    return exit_code
 
 
 def main() -> int:
     args = parse_args()
+    if args.mode != "peer" and args.control_file:
+        raise SystemExit("--control-file is only supported in peer mode")
     if args.mode == "peer":
         return run_peer_mode(args)
     return run_stub_mode(args)
