@@ -80,3 +80,4 @@ ros2_ws/src/entropy_hunt_ros2/package.xml
 ros2_ws/src/entropy_hunt_ros2/setup.cfg
 ros2_ws/src/entropy_hunt_ros2/setup.py
 ros2_ws/src/entropy_hunt_ros2/resource/entropy_hunt_ros2
+.vercel
