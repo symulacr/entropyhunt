@@ -20,7 +20,6 @@ Use this checklist before sharing or deploying the packaged Entropy Hunt static 
 - [ ] Coverage/BFT/dropout metrics match the replay payload.
 - [ ] **Clear replay** restores synthetic mode without a full page reload.
 - [ ] Live polling is only exercised when the local helpers are running (`bun run live:peers` and `bun run live:serve`).
-- [ ] The page copy/presentation does not imply a production-ready or parity-grade live operator surface.
 
 ## Artifact checks
 - [ ] `dist/artifacts/final_map.json` exists and is downloadable.
