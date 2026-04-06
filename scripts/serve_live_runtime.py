@@ -40,9 +40,23 @@ def load_peer_payloads(snapshot_dir: Path) -> list[dict[str, Any]]:
 
 
 def merge_peer_payloads(snapshot_dir: Path) -> dict[str, Any]:
+    control = load_control_payload(snapshot_dir / "control.json")
     payloads = load_peer_payloads(snapshot_dir)
     if not payloads:
-        return {"summary": {"peer_count": 0}, "events": [], "grid": [], "config": {}}
+        return {
+            "summary": {"peer_count": 0, "drones": []},
+            "events": [],
+            "grid": [],
+            "config": {
+                **control,
+                "control_url": "/control",
+                "control_capabilities": {
+                    "tick_seconds": "live",
+                    "tick_delay_seconds": "live",
+                    "requested_drone_count": "next_run",
+                },
+            },
+        }
 
     base = max(payloads, key=lambda item: int(item.get("summary", {}).get("duration_elapsed", 0)))
     drones: dict[str, dict[str, Any]] = {}
@@ -51,8 +65,6 @@ def merge_peer_payloads(snapshot_dir: Path) -> dict[str, Any]:
     bft_rounds = 0
     dropouts = 0
     survivor_receipts = 0
-    control = load_control_payload(snapshot_dir / "control.json")
-
     for payload in payloads:
         summary = payload.get("summary", {})
         for drone in summary.get("drones", []):
