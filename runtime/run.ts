@@ -440,7 +440,13 @@ async function main(): Promise<number> {
 
     emitRunStatus(`waiting for snapshot readiness at ${paths.snapshotUrl}`);
     await Promise.race([
-      waitForRuntimeReady(paths.outputDir, paths.snapshotUrl, readinessTimeoutMs, options.readinessPollMs),
+      waitForRuntimeReady(
+        paths.outputDir,
+        paths.snapshotUrl,
+        readinessTimeoutMs,
+        options.readinessPollMs,
+        options.mode === "peer" ? options.count : undefined,
+      ),
       waitForExit(launcher).then((code) => {
         throw new Error(`Launcher exited before readiness check completed (code ${code})`);
       }),

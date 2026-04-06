@@ -112,3 +112,23 @@ def test_peer_runtime_logs_when_target_probe_is_forced() -> None:
     runtime._maybe_claim_zone()
 
     assert any(event["type"] == "forced_target_probe" for event in runtime.events)
+
+
+def test_peer_runtime_snapshot_exports_claimed_cells_and_owner_rows(tmp_path: Path) -> None:
+    output_path = tmp_path / "snapshot.json"
+    runtime = PeerRuntime(
+        PeerRuntimeConfig(
+            peer_id="drone_1",
+            grid=4,
+            duration=5,
+            tick_delay_seconds=0.0,
+            final_map_path=str(output_path),
+        )
+    )
+    runtime.local_drone.set_assignment((1, 1))
+    runtime.save_final_map(output_path)
+
+    payload = json.loads(output_path.read_text())
+    assert payload["summary"]["drones"][0]["claimed_cell"] == [1, 1]
+    assert payload["grid"][1][1]["owner"] == "drone_1"
+    assert payload["local_grid"][1][1]["owner"] == "drone_1"

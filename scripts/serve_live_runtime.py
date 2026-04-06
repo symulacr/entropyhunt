@@ -77,7 +77,7 @@ def merge_peer_payloads(snapshot_dir: Path) -> dict[str, Any]:
             continue
         seen_event_keys.add(key)
         deduped_events.append(event)
-    grid_size = int(base.get("config", {}).get("grid", 0))
+    grid_size = int(base.get("config", {}).get("grid", len(base.get("grid", []))))
     merged_grid = base.get("grid", [])
     if grid_size and payloads:
         merged_grid = []

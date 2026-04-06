@@ -316,6 +316,13 @@ class PeerRuntime:
             if drone.alive and drone.reachable and drone.claimed_cell is not None
         }
 
+    def _claimed_owner_map(self) -> dict[Coordinate, str]:
+        return {
+            drone.claimed_cell: drone.drone_id
+            for drone in self.peer_drones.values()
+            if drone.alive and drone.reachable and drone.claimed_cell is not None
+        }
+
     def _publish_heartbeat(self) -> None:
         if not self.local_drone.alive or not self.local_drone.reachable:
             return
@@ -762,6 +769,7 @@ class PeerRuntime:
                     "reachable": drone.reachable,
                     "position": drone.position,
                     "target": drone.target_cell,
+                    "claimed_cell": drone.claimed_cell,
                     "status": drone.status,
                     "searched_cells": drone.searched_cells,
                 }
@@ -771,6 +779,7 @@ class PeerRuntime:
 
     def save_final_map(self, path: Path) -> None:
         summary = self.summary()
+        claimed_owner_map = self._claimed_owner_map()
         payload = {
             "summary": summary,
             "stats": {
@@ -783,8 +792,8 @@ class PeerRuntime:
             },
             "config": self._runtime_config_payload(),
             "events": self.events,
-            "grid": self.certainty_map.to_rows(),
-            "local_grid": self.local_map.to_rows(),
+            "grid": self.certainty_map.to_rows(claimed_owner_map),
+            "local_grid": self.local_map.to_rows(claimed_owner_map),
         }
         path.write_text(json.dumps(payload, indent=2) + "\n")
 

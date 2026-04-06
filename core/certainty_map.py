@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from math import log2
-from typing import Iterator, TypeAlias
+from typing import Iterator, Mapping, TypeAlias
 
 Coordinate: TypeAlias = tuple[int, int]
-CellPayload: TypeAlias = dict[str, float | int | str]
+CellPayload: TypeAlias = dict[str, float | int | str | None]
 GridPayload: TypeAlias = list[list[CellPayload]]
 
 
@@ -174,10 +174,11 @@ class CertaintyMap:
                     now_ms=cell.last_updated_ms,
                 )
 
-    def to_rows(self) -> GridPayload:
+    def to_rows(self, owners: Mapping[Coordinate, str] | None = None) -> GridPayload:
         return [
             [
-                {
+                (
+                    {
                     "x": cell.x,
                     "y": cell.y,
                     "certainty": round(cell.certainty, 4),
@@ -185,7 +186,9 @@ class CertaintyMap:
                     "last_updated_ms": cell.last_updated_ms,
                     "updated_by": cell.updated_by,
                     "decay_rate": cell.decay_rate,
-                }
+                    }
+                    | ({"owner": owners[cell.coordinate]} if owners and cell.coordinate in owners else {})
+                )
                 for cell in row
             ]
             for row in self._grid

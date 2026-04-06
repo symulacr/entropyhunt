@@ -711,6 +711,7 @@ class EntropyHuntSimulation:
                     "alive": drone.alive,
                     "position": list(drone.position),
                     "target": list(drone.target_cell) if drone.target_cell is not None else None,
+                    "claimed_cell": list(drone.claimed_cell) if drone.claimed_cell is not None else None,
                     "status": drone.status,
                     "searched_cells": drone.searched_cells,
                 }
@@ -731,9 +732,17 @@ class EntropyHuntSimulation:
     def partition_boundary_cells(self) -> tuple[Coordinate, ...]:
         return voronoi_boundary_cells(self.partition_snapshot(), size=self.config.grid)
 
+    def _claimed_owner_map(self) -> dict[Coordinate, str]:
+        return {
+            drone.claimed_cell: drone.drone_id
+            for drone in self.drones
+            if drone.alive and drone.reachable and drone.claimed_cell is not None
+        }
+
     def save_final_map(self, path: Path) -> None:
         partitions = self.partition_snapshot()
         summary = self.summary()
+        claimed_owner_map = self._claimed_owner_map()
         payload = {
             "summary": summary,
             "stats": {
@@ -746,7 +755,7 @@ class EntropyHuntSimulation:
             },
             "config": asdict(self.config),
             "events": self.events,
-            "grid": self.certainty_map.to_rows(),
+            "grid": self.certainty_map.to_rows(claimed_owner_map),
             "partitions": [
                 {"drone_id": partition.drone_id, "cells": list(partition.cells)}
                 for partition in partitions
