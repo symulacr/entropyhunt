@@ -124,7 +124,7 @@ function loadSimulation(htmlPath, exportExpr, randomValues = []) {
 }
 
 test("v2 entropy helper matches Shannon expectations", () => {
-  const { exports } = loadSimulation("entropy_hunt_v2.html", `({ H })`);
+  const { exports } = loadSimulation("frontend/console_source.html", `({ H })`);
   assert.equal(exports.H(0), 0);
   assert.equal(exports.H(1), 0);
   assert.ok(Math.abs(exports.H(0.5) - 1) < 1e-9);
@@ -132,7 +132,7 @@ test("v2 entropy helper matches Shannon expectations", () => {
 
 test("v2 maxEntropyCell chooses the best eligible cell", () => {
   const { exports } = loadSimulation(
-    "entropy_hunt_v2.html",
+    "frontend/console_source.html",
     `({ maxEntropyCell, get grid(){return grid;} })`,
   );
   for (const row of exports.grid) {
@@ -153,7 +153,7 @@ test("v2 maxEntropyCell chooses the best eligible cell", () => {
 
 test("v2 contested auction prefers the nearer drone deterministically", () => {
   const { exports } = loadSimulation(
-    "entropy_hunt_v2.html",
+    "frontend/console_source.html",
     `({ assignTargets, get grid(){return grid;}, get drones(){return drones;}, get auctions(){return auctions;}, get events(){return events;} })`,
   );
   for (const row of exports.grid) {
@@ -199,7 +199,7 @@ test("v2 contested auction prefers the nearer drone deterministically", () => {
 
 test("v2 reviveAll re-randomizes x and y independently", () => {
   const { sandbox, exports } = loadSimulation(
-    "entropy_hunt_v2.html",
+    "frontend/console_source.html",
     `({ reviveAll, get drones(){return drones;} })`,
   );
   const drone = exports.drones[0];
@@ -214,7 +214,7 @@ test("v2 reviveAll re-randomizes x and y independently", () => {
 
 test("v2 replay payload imports simulation output into the console state", () => {
   const { exports } = loadSimulation(
-    "entropy_hunt_v2.html",
+    "frontend/console_source.html",
     `({
       applyReplayPayload,
       get sourceMode(){return sourceMode;},
@@ -268,7 +268,7 @@ test("v2 replay payload imports simulation output into the console state", () =>
 
 test("v2 replay import preserves drone identity, claim state, and read-only mode", () => {
   const { sandbox, exports } = loadSimulation(
-    "entropy_hunt_v2.html",
+    "frontend/console_source.html",
     `({
       applyReplayPayload,
       clearReplay,
@@ -321,7 +321,7 @@ test("v2 replay import preserves drone identity, claim state, and read-only mode
 
 test("v2 replay import makes browser large-run limits explicit without losing hidden owner identity", () => {
   const { sandbox, exports } = loadSimulation(
-    "entropy_hunt_v2.html",
+    "frontend/console_source.html",
     `({
       applyReplayPayload,
       get events(){return events;},
@@ -368,7 +368,7 @@ test("v2 replay import makes browser large-run limits explicit without losing hi
 
 test("v2 replay rejects oversized grids with an explicit browser-limit error", () => {
   const { exports } = loadSimulation(
-    "entropy_hunt_v2.html",
+    "frontend/console_source.html",
     `({ applyReplayPayload })`,
   );
 
@@ -388,7 +388,7 @@ test("v2 replay rejects oversized grids with an explicit browser-limit error", (
 
 test("v2 live payload imports peer snapshot state without ending the session", () => {
   const { sandbox, exports } = loadSimulation(
-    "entropy_hunt_v2.html",
+    "frontend/console_source.html",
     `({
       applyLivePayload,
       get sourceMode(){return sourceMode;},
@@ -440,110 +440,9 @@ test("v2 live payload imports peer snapshot state without ending the session", (
   );
 });
 
-test("mockup reconnect path re-randomizes x and y independently", () => {
-  const { sandbox, exports } = loadSimulation(
-    "entropy_hunt_mockup.html",
-    `({ get drones(){return drones;}, get elapsed(){return elapsed;}, set elapsed(v){ elapsed = v; } })`,
-  );
-
-  assert.equal(sandbox.__intervals.length, 1);
-  exports.elapsed = 14;
-
-  sandbox.Math.__setRandom([0.1, 0.2, 0.7, 0.3]);
-  sandbox.__intervals[0].fn();
-
-  const drone = exports.drones[1];
-  assert.equal(drone.x, 7);
-  assert.equal(drone.y, 3);
-});
-
-test("mockup replay payload imports final map snapshots", () => {
-  const { exports } = loadSimulation(
-    "entropy_hunt_mockup.html",
-    `({
-      applyReplayPayload,
-      get replayMode(){return replayMode;},
-      get drones(){return drones;},
-      get events(){return events;},
-      get grid(){return grid;},
-      get elapsed(){return elapsed;},
-      get bftRound(){return bftRound;}
-    })`,
-  );
-
-  const payload = {
-    summary: {
-      duration_elapsed: 30,
-      bft_rounds: 14,
-      auctions: 2,
-      drones: [
-        { alive: true, position: [1, 1], target: [1, 1], status: "searching", searched_cells: 28 },
-        { alive: false, position: [1, 2], target: null, status: "stale", searched_cells: 10 },
-      ],
-    },
-    events: [{ t: 12, type: "stale", message: "drone_2 heartbeat timeout" }],
-    grid: Array.from({ length: 10 }, (_, y) =>
-      Array.from({ length: 10 }, (_, x) => ({
-        x,
-        y,
-        certainty: x === 1 && y === 1 ? 0.95 : 0.5,
-      })),
-    ),
-  };
-
-  exports.applyReplayPayload(payload);
-
-  assert.equal(exports.replayMode, true);
-  assert.equal(exports.elapsed, 30);
-  assert.equal(exports.bftRound, 14);
-  assert.equal(exports.drones[0].x, 1);
-  assert.equal(exports.drones[1].status, "stale");
-  assert.equal(exports.grid[1][1], 0.95);
-  assert.match(exports.events[0].msg, /heartbeat timeout/i);
-});
-
-test("mockup replay preserves drone ids and claimed cells", () => {
-  const { exports } = loadSimulation(
-    "entropy_hunt_mockup.html",
-    `({
-      applyReplayPayload,
-      clearReplay,
-      get replayMode(){return replayMode;},
-      get drones(){return drones;},
-      get claimed(){return claimed;}
-    })`,
-  );
-
-  exports.applyReplayPayload({
-    summary: {
-      duration_elapsed: 12,
-      drones: [
-        { id: "drone_2", alive: true, position: [1, 1], target: [2, 1], status: "searching", claimed_cell: [2, 1] },
-        { id: "drone_1", alive: false, position: [3, 2], target: null, status: "stale" },
-      ],
-    },
-    grid: Array.from({ length: 10 }, (_, y) =>
-      Array.from({ length: 10 }, (_, x) => ({
-        x,
-        y,
-        certainty: 0.5,
-        owner: x === 2 && y === 1 ? "drone_2" : -1,
-      })),
-    ),
-    events: [],
-  });
-
-  assert.equal(exports.replayMode, true);
-  assert.equal(exports.drones[0].id, "drone_2");
-  assert.equal(exports.claimed[1][2], 0);
-
-  exports.clearReplay();
-  assert.equal(exports.replayMode, false);
-});
-
 test("v2 auto demo drives staged packet loss, contention, dropout, and survivor milestones", () => {
   const { exports } = loadSimulation(
-    "entropy_hunt_v2.html",
+    "frontend/console_source.html",
     `({
       toggleAutoDemo,
       tick,

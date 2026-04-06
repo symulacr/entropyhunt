@@ -8,6 +8,7 @@ __pycache__/
 **/__pycache__/
 *.pyc
 *.jsonl
+bun.lock
 build/
 dist/
 peer-runs/
@@ -25,6 +26,8 @@ proofs_stress_8x10.jsonl
 critic.md
 entropy_hunt.md
 entropy_hunt_mockup.html
+entropy_hunt_v2.html
+entropy_hunt_ui.test.mjs
 docs/frontend-qa-checklist.md
 docs/vercel-deploy.md
 submission/

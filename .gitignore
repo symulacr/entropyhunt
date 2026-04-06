@@ -15,6 +15,7 @@ __pycache__/
 
 # Node/Bun build/runtime outputs
 node_modules/
+bun.lock
 dist/
 build/
 runtime/session.json
@@ -57,6 +58,8 @@ webots_world/webots_final_map.json
 critic.md
 entropy_hunt.md
 entropy_hunt_mockup.html
+entropy_hunt_v2.html
+entropy_hunt_ui.test.mjs
 submission/
 docs/frontend-qa-checklist.md
 docs/vercel-deploy.md

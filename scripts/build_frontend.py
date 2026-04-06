@@ -9,7 +9,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parent.parent
 FRONTEND_DIR = ROOT / "frontend"
-ARTIFACT_DIR = ROOT
+ARTIFACT_DIR = FRONTEND_DIR / "artifacts"
 
 
 def _load_payload() -> dict[str, Any]:
@@ -108,10 +108,10 @@ def build_site(out_dir: Path) -> None:
     (out_dir / "artifacts").mkdir(parents=True)
 
     shutil.copy2(FRONTEND_DIR / "assets" / "shell.css", out_dir / "assets" / "shell.css")
-    shutil.copy2(ROOT / "entropy_hunt_v2.html", out_dir / "console.html")
-    shutil.copy2(ROOT / "final_map.json", out_dir / "artifacts" / "final_map.json")
-    shutil.copy2(ROOT / "final_map.svg", out_dir / "artifacts" / "final_map.svg")
-    shutil.copy2(ROOT / "final_map.html", out_dir / "artifacts" / "final_map.html")
+    shutil.copy2(FRONTEND_DIR / "console_source.html", out_dir / "console.html")
+    shutil.copy2(ARTIFACT_DIR / "final_map.json", out_dir / "artifacts" / "final_map.json")
+    shutil.copy2(ARTIFACT_DIR / "final_map.svg", out_dir / "artifacts" / "final_map.svg")
+    shutil.copy2(ARTIFACT_DIR / "final_map.html", out_dir / "artifacts" / "final_map.html")
 
     template = (FRONTEND_DIR / "index.template.html").read_text()
     html = (

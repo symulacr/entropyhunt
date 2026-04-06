@@ -17,7 +17,7 @@ python3 main.py --final-map final_map.json --final-html entropy_hunt_final.html 
 
 ```bash
 pytest -q tests/test_deployment_config.py tests/test_frontend_build.py tests/test_live_runtime_server.py tests/test_live_runtime_control.py
-node --test entropy_hunt_ui.test.mjs
+node --test tests/entropy_hunt_ui.test.mjs
 ruff check tests/test_deployment_config.py tests/test_frontend_build.py tests/test_live_runtime_server.py tests/test_live_runtime_control.py
 mypy tests/test_deployment_config.py tests/test_frontend_build.py tests/test_live_runtime_server.py tests/test_live_runtime_control.py scripts/serve_live_runtime.py scripts/build_frontend.py
 ```
@@ -26,6 +26,5 @@ mypy tests/test_deployment_config.py tests/test_frontend_build.py tests/test_liv
 
 - `bun run hunt` is the main supported local-demo path.
 - `python3 main.py --mode stub` is a backup debug/artifact lane.
-- `dist/console.html` / `entropy_hunt_v2.html` are experimental replay/live inspectors.
-- `entropy_hunt_mockup.html` is source-only and not deployed.
+- `dist/console.html` is the experimental replay/live inspector.
 - ROS 2, Webots, Vertex, and FoxMQ lanes remain experimental.
