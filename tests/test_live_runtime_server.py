@@ -67,3 +67,17 @@ def test_merge_peer_payloads_ignores_control_file_for_peer_count(tmp_path: Path)
     assert merged["summary"]["peer_count"] == 1
     assert merged["config"]["requested_drone_count"] == 4
     assert merged["config"]["tick_delay_seconds"] == 0.2
+
+
+def test_merge_peer_payloads_returns_control_config_without_runtime_payloads(tmp_path: Path) -> None:
+    (tmp_path / "control.json").write_text(
+        json.dumps({"tick_delay_seconds": 0.15, "requested_drone_count": 4})
+    )
+
+    merged = merge_peer_payloads(tmp_path)
+
+    assert merged["summary"]["peer_count"] == 0
+    assert merged["summary"]["drones"] == []
+    assert merged["config"]["tick_delay_seconds"] == 0.15
+    assert merged["config"]["requested_drone_count"] == 4
+    assert merged["config"]["control_url"] == "/control"
