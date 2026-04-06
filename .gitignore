@@ -52,7 +52,10 @@ webots_world/webots_final_map.json
 
 # Large or review-only artifacts that should not be pushed by default
 critic.md
+entropy_hunt.md
+entropy_hunt_mockup.html
 submission/
+webots_world/README.md
 
 # Generated replay/demo artifacts
 entropy_hunt_final.html

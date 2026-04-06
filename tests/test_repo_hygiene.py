@@ -41,6 +41,9 @@ def test_generated_or_local_noise_remains_gitignored() -> None:
         "final_map.json",
         "test-final-map.json",
         "critic.md",
+        "entropy_hunt.md",
+        "entropy_hunt_mockup.html",
+        "webots_world/README.md",
         "__pycache__/x.pyc",
     ]:
         assert _ignored(path) is True, path
@@ -54,7 +57,10 @@ def test_vercelignore_exists_and_filters_local_runtime_noise() -> None:
         "runtime/sessions/",
         "proofs.jsonl",
         "critic.md",
+        "entropy_hunt.md",
+        "entropy_hunt_mockup.html",
         "tests/",
         "tests_ros/",
+        "webots_world/README.md",
     ]:
         assert pattern in text
