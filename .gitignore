@@ -49,6 +49,7 @@ ros2_ws/**/*.pyc
 
 # Webots/runtime snapshots
 foxmq.d/
+webots_world/controllers/
 webots_world/webots_snapshot.json
 webots_world/webots_final_map.json
 

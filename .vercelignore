@@ -34,5 +34,6 @@ test-full-duration-map.json
 tests/
 tests_ros/
 dashboard/__fixtures__/
+webots_world/controllers/
 webots_world/README.md
 webots_world/entropy_hunt.wbt
