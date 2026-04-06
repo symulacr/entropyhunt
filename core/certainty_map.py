@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from math import log2
-from typing import Iterator, Mapping, NotRequired, TypedDict, TypeAlias
+from typing import Iterator, Mapping, NotRequired, TypedDict, TypeAlias, cast
 
 Coordinate: TypeAlias = tuple[int, int]
 
@@ -54,12 +54,12 @@ def shannon_entropy(certainty: float) -> float:
 
 
 def _payload_float(payload: CellPayload, key: str, default: float = 0.0) -> float:
-    value = payload.get(key, default)
+    value = cast(float | int | str | None, payload.get(key, default))
     return default if value is None else float(value)
 
 
 def _payload_int(payload: CellPayload, key: str, default: int = 0) -> int:
-    value = payload.get(key, default)
+    value = cast(float | int | str | None, payload.get(key, default))
     return default if value is None else int(value)
 
 

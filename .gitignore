@@ -50,34 +50,14 @@ foxmq.d/
 webots_world/webots_snapshot.json
 webots_world/webots_final_map.json
 
-# Strict code-only boundary: docs, writeups, prototypes
-README.md
-CLAUDE.md
-docs/
+# Large or review-only artifacts that should not be pushed by default
+critic.md
 submission/
-entropy_hunt.md
-entropy_hunt_mockup.html
-entropy_hunt_v2.html
-demo.typescript
-webots_world/README.md
-dashboard/__fixtures__/*.txt
-docker/ros2-humble.Dockerfile
-frontend/index.template.html
-frontend/assets/shell.css
-webots_world/entropy_hunt.wbt
 
-# Absolute-narrow whitelist trim: keep runtime manifest, drop auxiliary package/build metadata
-package.json
-bun.lock
-bunfig.toml
-tsconfig.json
-pyproject.toml
-requirements.txt
-vercel.json
-ros2_ws/src/entropy_hunt_interfaces/CMakeLists.txt
-ros2_ws/src/entropy_hunt_interfaces/package.xml
-ros2_ws/src/entropy_hunt_ros2/package.xml
-ros2_ws/src/entropy_hunt_ros2/setup.cfg
-ros2_ws/src/entropy_hunt_ros2/setup.py
-ros2_ws/src/entropy_hunt_ros2/resource/entropy_hunt_ros2
-.vercel
+# Generated replay/demo artifacts
+entropy_hunt_final.html
+final_map.html
+final_map.json
+final_map.svg
+test-final-map.json
+test-full-duration-map.json
