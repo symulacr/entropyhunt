@@ -27,7 +27,6 @@ def test_core_source_and_product_files_are_not_gitignored() -> None:
         "vercel.json",
         "ros2_ws/src/entropy_hunt_interfaces/package.xml",
         "ros2_ws/src/entropy_hunt_ros2/setup.py",
-        "webots_world/entropy_hunt.wbt",
         "dashboard/__fixtures__/tui_monitor_map.txt",
     ]:
         assert _ignored(path) is False, path
@@ -44,6 +43,7 @@ def test_generated_or_local_noise_remains_gitignored() -> None:
         "entropy_hunt.md",
         "entropy_hunt_mockup.html",
         "webots_world/README.md",
+        "webots_world/entropy_hunt.wbt",
         "__pycache__/x.pyc",
     ]:
         assert _ignored(path) is True, path
@@ -61,6 +61,8 @@ def test_vercelignore_exists_and_filters_local_runtime_noise() -> None:
         "entropy_hunt_mockup.html",
         "tests/",
         "tests_ros/",
+        "dashboard/__fixtures__/",
         "webots_world/README.md",
+        "webots_world/entropy_hunt.wbt",
     ]:
         assert pattern in text
