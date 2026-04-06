@@ -24,10 +24,18 @@ def load_control_payload(control_path: Path) -> dict[str, Any]:
 def load_peer_payloads(snapshot_dir: Path) -> list[dict[str, Any]]:
     payloads: list[dict[str, Any]] = []
     for path in sorted(snapshot_dir.glob("*.json")):
+        if path.name == "control.json":
+            continue
         try:
-            payloads.append(json.loads(path.read_text()))
+            payload = json.loads(path.read_text())
         except json.JSONDecodeError:
             continue
+        if not isinstance(payload, dict):
+            continue
+        summary = payload.get("summary")
+        if not isinstance(summary, dict):
+            continue
+        payloads.append(payload)
     return payloads
 
 

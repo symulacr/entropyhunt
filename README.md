@@ -1,6 +1,6 @@
 # Entropy Hunt
 
-Entropy Hunt is a deterministic, entropy-driven swarm-search demo for the Vertex Swarm Challenge Track 2 brief. The repository now ships several aligned prototype surfaces:
+Entropy Hunt is a deterministic, entropy-driven swarm-search demo for the Vertex Swarm Challenge Track 2 brief. The repository ships several demo-oriented surfaces with different maturity levels:
 
 - a **pure Python coordination simulation** (`main.py --mode stub`)
 - a **local multi-process peer runtime** (`main.py --mode peer`, `scripts/run_local_peers.py`)
@@ -9,7 +9,7 @@ Entropy Hunt is a deterministic, entropy-driven swarm-search demo for the Vertex
 - a **packaged static app shell** built into `dist/` via `bun run build`
 - two **static operator consoles** (`entropy_hunt_v2.html`, `entropy_hunt_mockup.html`)
 
-The implementation stays CI-friendly and standard-library-only while still covering the core demo loop: entropy-based zone selection, BFT-style claim resolution, heartbeat failure handling, survivor confirmation, and replayable output artifacts.
+The Python runtime stays standard-library-only and covers the core demo loop: entropy-based zone selection, claim resolution, heartbeat failure handling, survivor confirmation, and replayable output artifacts. Operator packaging and live-monitoring surfaces remain local-demo tooling, not production-ready control software.
 
 ## Bun-first demo entrypoint
 
@@ -63,13 +63,13 @@ To pass custom flags through to the Python launcher, forward them after `--`:
 bun run hunt -- --count 8 --duration 240 --output-dir peer-runs-custom
 ```
 
-The single-process fallback command remains the reliable, fully-verified path:
+The single-process stub command remains the simplest source-level debug lane:
 
 ```bash
 python3 main.py --drones 5 --grid 10 --duration 180 --target 7,3 --fail drone_2 --fail-at 60
 ```
 
-That fallback still renders a live terminal dashboard from tick 0, appends every runtime event to `proofs.jsonl`, and writes `final_map.json` at the end of the run.
+Treat that stub lane as a backup/demo path rather than a parity-grade operator surface. It is still useful for local debugging and direct artifact generation, but the peer runtime is the current Bun-first operator path and the multi-process proof/readiness story remains partially synthetic.
 
 ## Quick start
 
@@ -79,7 +79,7 @@ That fallback still renders a live terminal dashboard from tick 0, appends every
 bun run hunt
 ```
 
-This is the primary operator path: Bun drives the multi-process peer launcher, the snapshot server, and the OpenTUI monitor while the Python engine does the swarm simulation.
+This is the current operator path: Bun drives the multi-process peer launcher, the snapshot server, and the OpenTUI monitor while the Python engine does the swarm simulation.
 
 ### 2) Generate backend artifacts
 
@@ -107,7 +107,7 @@ This launches one process per drone in `--mode peer`, starts the snapshot server
 bun run hunt:serve
 ```
 
-This exposes `http://127.0.0.1:8765/snapshot.json`, `state.json`, and `events.json` for live polling from `entropy_hunt_v2.html`.
+This exposes `http://127.0.0.1:8765/snapshot.json`, `state.json`, and `events.json` for live polling from `entropy_hunt_v2.html`. The server rereads and re-merges peer JSON on demand, so it is intended for local demos and operator inspection rather than high-throughput production streaming.
 
 ### 5) Build the packaged frontend shell
 
@@ -142,15 +142,15 @@ Then use **Load replay** and select `final_map.json` to inspect a real backend-g
 ## Verification
 
 ```bash
-pytest -q
+pytest -q tests/test_deployment_config.py tests/test_frontend_build.py tests/test_live_runtime_server.py tests/test_live_runtime_control.py
 node --test entropy_hunt_ui.test.mjs
-ruff check .
-mypy .
+ruff check tests/test_deployment_config.py tests/test_frontend_build.py tests/test_live_runtime_server.py tests/test_live_runtime_control.py
+mypy tests/test_deployment_config.py tests/test_frontend_build.py tests/test_live_runtime_server.py tests/test_live_runtime_control.py scripts/serve_live_runtime.py scripts/build_frontend.py
 ```
 
 ## What is real and what is not
 
-- Coordination layer: the separate-process peer demo runs as five Python peer processes plus a local snapshot server, and the OpenTUI monitor runs separately under Bun. The peers communicate over local UDP socket transport (`LocalPeerMeshBus`) and publish JSON snapshots that the monitor renders live. The `NullBus` load-bearing test still proves that the single-process fallback loses contested-claim quorum and result delivery when transport is removed.
+- Coordination layer: the separate-process peer demo runs as five Python peer processes plus a local snapshot server, and the OpenTUI monitor runs separately under Bun. The peers communicate over local UDP socket transport (`LocalPeerMeshBus`) and publish JSON snapshots that the monitor renders live. The snapshot server merges JSON files on request; it is a local observability helper, not a durable streaming backend. The `NullBus` load-bearing test still proves that the single-process fallback loses contested-claim quorum and result delivery when transport is removed.
 - BFT: the primary stub demo now exchanges real contest and vote messages between five in-process drone replicas over the mesh bus, and quorum is `N/2 + 1` (3 of 5). The local UDP peer runtime still publishes confirmed claim results from a coordinator; it is not a production Byzantine implementation. Multi-process mode uses coordinator-confirmed result finalization. The coordinator is elected deterministically by peer index and rotates on dropout. This is crash-fault-tolerant but not Byzantine-fault-tolerant. The stub mode uses genuine peer-vote collection with N/2+1 quorum. Full BFT across the multi-process path is the next engineering milestone.
 - Certainty maps: the multi-process path keeps one local certainty map per peer process and merges peer snapshots by taking the max certainty per cell. The merged map drives zone selection; the local map drives that peer’s own search updates.
 - Simulation: the multi-process peer runtime plus `dashboard/tui_monitor_v2.ts` is the primary separate-process monitor path. The Python monitor remains a fallback and the terminal stub remains the single-process backup. The Webots path exists, but live Webots integration has not been validated end-to-end in this environment.
