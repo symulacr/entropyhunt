@@ -19,7 +19,6 @@ def _ignored(path: str) -> bool:
 def test_core_source_and_product_files_are_not_gitignored() -> None:
     for path in [
         "README.md",
-        "docs/frontend-qa-checklist.md",
         "package.json",
         "frontend/assets/shell.css",
         "frontend/index.template.html",
@@ -42,6 +41,8 @@ def test_generated_or_local_noise_remains_gitignored() -> None:
         "critic.md",
         "entropy_hunt.md",
         "entropy_hunt_mockup.html",
+        "docs/frontend-qa-checklist.md",
+        "docs/vercel-deploy.md",
         "webots_world/README.md",
         "webots_world/entropy_hunt.wbt",
         "__pycache__/x.pyc",
@@ -59,6 +60,8 @@ def test_vercelignore_exists_and_filters_local_runtime_noise() -> None:
         "critic.md",
         "entropy_hunt.md",
         "entropy_hunt_mockup.html",
+        "docs/frontend-qa-checklist.md",
+        "docs/vercel-deploy.md",
         "tests/",
         "tests_ros/",
         "dashboard/__fixtures__/",
