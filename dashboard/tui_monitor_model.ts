@@ -9,6 +9,7 @@ export type DroneView = {
   y: number;
   tx: number | null;
   ty: number | null;
+  claimedCell: { x: number; y: number } | null;
   status: string;
   offline: boolean;
   entropy: number;
@@ -51,6 +52,9 @@ export type ViewState = {
   events: EventView[];
   survivorFound: boolean;
   staleData: boolean;
+  hiddenDroneCount: number;
+  hiddenEventCount: number;
+  gridTruncated: boolean;
 };
 
 export type LayoutMetrics = {
@@ -116,6 +120,14 @@ function normalizeTarget(value: unknown): { x: number; y: number } {
   return { x: 7, y: 3 };
 }
 
+function normalizeClaimedCell(value: unknown): { x: number; y: number } | null {
+  if (!Array.isArray(value)) return null;
+  const x = Number(value[0]);
+  const y = Number(value[1]);
+  if (!Number.isFinite(x) || !Number.isFinite(y)) return null;
+  return { x, y };
+}
+
 function sourceLabelFor(url: string, snapshot: Snapshot): string {
   const mode = snapshot.config?.source_mode;
   if (mode === "synthetic" || mode === "live" || mode === "replay") return mode;
@@ -147,18 +159,27 @@ export function normalizeSnapshot(snapshot: Snapshot, sourceUrl: string, staleDa
   const summary = (snapshot.summary ?? {}) as Record<string, unknown>;
   const stats = (snapshot.stats ?? summary) as Record<string, unknown>;
   const config = (snapshot.config ?? {}) as Record<string, unknown>;
-  const grid = toGrid(snapshot);
+  const rawGrid = toGrid(snapshot);
   const target = normalizeTarget(config.target ?? summary.target);
   const sourceLabel = sourceLabelFor(sourceUrl, snapshot);
   const rawMesh = String(config.mesh_mode ?? summary.mesh ?? config.transport ?? "real").toLowerCase();
   const meshMode = rawMesh === "stub" || rawMesh === "local" ? "stub" : "real";
-  const rawGridSize = config.grid_size ?? config.grid ?? grid.length ?? MAX_GRID_DIMENSION;
+  const rawGridSize = config.grid_size ?? config.grid ?? rawGrid.length ?? MAX_GRID_DIMENSION;
   const gridSize = clamp(Number(rawGridSize), 1, MAX_GRID_DIMENSION);
+  const gridTruncated =
+    Number(rawGridSize) > MAX_GRID_DIMENSION ||
+    rawGrid.length > MAX_GRID_DIMENSION ||
+    rawGrid.some((row) => row.length > MAX_GRID_DIMENSION);
+  const grid = rawGrid
+    .slice(0, MAX_GRID_DIMENSION)
+    .map((row) => row.slice(0, MAX_GRID_DIMENSION));
   const dronesRaw = (summary.drones as Array<Record<string, unknown>> | undefined) ?? (snapshot.drones ?? []);
+  const hiddenDroneCount = Math.max(0, dronesRaw.length - MAX_DRONE_LINES);
 
   const drones = dronesRaw.slice(0, MAX_DRONE_LINES).map((drone) => {
     const position = Array.isArray(drone.position) ? drone.position : [drone.x ?? 0, drone.y ?? 0];
     const targetPos = Array.isArray(drone.target) ? drone.target : [drone.tx ?? null, drone.ty ?? null];
+    const claimedCell = normalizeClaimedCell(drone.claimed_cell);
     const x = Number(position[0] ?? 0);
     const y = Number(position[1] ?? 0);
     const certainty = Number(grid[y]?.[x]?.certainty ?? 0.5);
@@ -170,6 +191,7 @@ export function normalizeSnapshot(snapshot: Snapshot, sourceUrl: string, staleDa
       y,
       tx: targetPos[0] == null ? null : Number(targetPos[0]),
       ty: targetPos[1] == null ? null : Number(targetPos[1]),
+      claimedCell,
       status: mapStatus(typeof drone.status === "string" ? drone.status : undefined, offline),
       offline,
       entropy,
@@ -177,7 +199,9 @@ export function normalizeSnapshot(snapshot: Snapshot, sourceUrl: string, staleDa
     } satisfies DroneView;
   });
 
-  const events = (Array.isArray(snapshot.events) ? snapshot.events : [])
+  const rawEvents = Array.isArray(snapshot.events) ? snapshot.events : [];
+  const hiddenEventCount = Math.max(0, rawEvents.length - MAX_EVENT_LINES);
+  const events = rawEvents
     .slice(-MAX_EVENT_LINES)
     .reverse()
     .map((event) => ({
@@ -185,6 +209,18 @@ export function normalizeSnapshot(snapshot: Snapshot, sourceUrl: string, staleDa
       type: String(event?.type ?? "info"),
       msg: String(event?.msg ?? event?.message ?? ""),
     }));
+
+  drones.forEach((drone, index) => {
+    const claimedCell = drone.claimedCell;
+    if (!claimedCell) return;
+    if (claimedCell.y < 0 || claimedCell.y >= grid.length) return;
+    if (claimedCell.x < 0 || claimedCell.x >= (grid[claimedCell.y]?.length ?? 0)) return;
+    const cell = grid[claimedCell.y]?.[claimedCell.x];
+    if (!cell) return;
+    if (typeof cell.owner !== "number" || cell.owner < 0) {
+      grid[claimedCell.y]![claimedCell.x] = { ...cell, owner: index };
+    }
+  });
 
   return {
     elapsed: Number(stats.duration_elapsed ?? summary.duration_elapsed ?? stats.elapsed ?? snapshot.t ?? 0),
@@ -216,6 +252,9 @@ export function normalizeSnapshot(snapshot: Snapshot, sourceUrl: string, staleDa
     events,
     survivorFound: Boolean(summary.survivor_found ?? snapshot.survivor_found),
     staleData,
+    hiddenDroneCount,
+    hiddenEventCount,
+    gridTruncated,
   };
 }
 

@@ -87,6 +87,7 @@ export interface SnapshotDrone {
   readonly searched_cells?: number;
   readonly position?: GridTuple | number[];
   readonly target?: GridTuple | number[] | null;
+  readonly claimed_cell?: GridTuple | number[] | null;
   readonly x?: number;
   readonly y?: number;
   readonly tx?: number | null;

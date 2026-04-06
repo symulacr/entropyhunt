@@ -9,6 +9,7 @@ import {
   computeLayoutMetrics,
   hitTestHeatmapCell,
   logicalHeatmapRowForRenderIndex,
+  normalizeSnapshot,
 } from "./tui_monitor_model.ts";
 import { parseMonitorArgs } from "./tui_monitor_io.ts";
 import { runMonitorController } from "./tui_monitor_controller.ts";
@@ -19,6 +20,7 @@ export {
   computeLayoutMetrics,
   hitTestHeatmapCell,
   logicalHeatmapRowForRenderIndex,
+  normalizeSnapshot,
 };
 export type {
   DisplayMode,

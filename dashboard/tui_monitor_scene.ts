@@ -34,10 +34,6 @@ export type MonitorScene = {
   contextColumn: BoxRenderable;
   rosterBox: BoxRenderable;
   droneRows: TextRenderable[];
-  detailBox: BoxRenderable;
-  detailTitle: TextRenderable;
-  detailLine1: TextRenderable;
-  detailLine2: TextRenderable;
   eventsBox: BoxRenderable;
   eventRows: TextRenderable[];
   footerBox: BoxRenderable;
@@ -195,26 +191,6 @@ export function createMonitorScene(args: {
   contextColumn.add(rosterBox);
   const droneRows = createTextRows({ renderer, parent: rosterBox, count: MAX_DRONE_LINES, prefix: "drone-row", fg: PANEL_THEME.textPrimary, bg: COLORS.headerBg });
 
-  const detailBox = new BoxRenderable(renderer, {
-    id: "detail-box",
-    flexDirection: "column",
-    border: true,
-    borderColor: COLORS.border,
-    backgroundColor: COLORS.headerBg,
-    padding: 1,
-    gap: 0,
-    title: " focus detail ",
-    titleAlignment: "left",
-    visible: false,
-  });
-  const detailTitle = new TextRenderable(renderer, { id: "detail-title", content: "", fg: PANEL_THEME.textPrimary, bg: COLORS.headerBg, wrapMode: "none", truncate: true });
-  const detailLine1 = new TextRenderable(renderer, { id: "detail-line1", content: "", fg: PANEL_THEME.textSecondary, bg: COLORS.headerBg, wrapMode: "none", truncate: true });
-  const detailLine2 = new TextRenderable(renderer, { id: "detail-line2", content: "", fg: PANEL_THEME.textMuted, bg: COLORS.headerBg, wrapMode: "none", truncate: true });
-  detailBox.add(detailTitle);
-  detailBox.add(detailLine1);
-  detailBox.add(detailLine2);
-  contextColumn.add(detailBox);
-
   const eventsBox = new BoxRenderable(renderer, {
     id: "events-box",
     flexDirection: "column",
@@ -279,10 +255,6 @@ export function createMonitorScene(args: {
     contextColumn,
     rosterBox,
     droneRows,
-    detailBox,
-    detailTitle,
-    detailLine1,
-    detailLine2,
     eventsBox,
     eventRows,
     footerBox,

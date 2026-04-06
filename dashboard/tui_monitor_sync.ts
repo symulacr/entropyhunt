@@ -92,7 +92,6 @@ export function syncMonitorFrame(args: {
     contextColumn: scene.contextColumn,
     rosterBox: scene.rosterBox,
     eventsBox: scene.eventsBox,
-    detailBox: scene.detailBox,
     footerBox: scene.footerBox,
     compactStatsText: scene.compactStatsText,
     statCards: scene.statCards,

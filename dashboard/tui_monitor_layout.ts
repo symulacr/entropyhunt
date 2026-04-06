@@ -23,7 +23,6 @@ export function applyMonitorLayout(args: {
   contextColumn: BoxRenderable;
   rosterBox: BoxRenderable;
   eventsBox: BoxRenderable;
-  detailBox: BoxRenderable;
   footerBox: BoxRenderable;
   compactStatsText: TextRenderable;
   statCards: BoxRenderable[];
@@ -50,7 +49,6 @@ export function applyMonitorLayout(args: {
     contextColumn,
     rosterBox,
     eventsBox,
-    detailBox,
     footerBox,
     compactStatsText,
     statCards,
@@ -122,11 +120,6 @@ export function applyMonitorLayout(args: {
   eventsBox.padding = compactLayout ? 0 : 1;
   eventsBox.title = compactLayout ? " alerts " : " attention & timeline ";
   eventsBox.flexGrow = 1;
-  detailBox.visible = false;
-  detailBox.height = 0;
-  detailBox.flexGrow = 0;
-  detailBox.padding = compactLayout ? 0 : 1;
-  detailBox.title = compactLayout ? " focus " : " focus detail ";
   footerBox.padding = compactLayout ? 0 : 1;
   footerBox.height = displayMode === "map" ? 1 : footerHeight;
   compactStatsText.visible = compactLayout;

@@ -66,6 +66,9 @@ export function sampleViewState(): ViewState {
     ],
     survivorFound: true,
     staleData: false,
+    hiddenDroneCount: 0,
+    hiddenEventCount: 0,
+    gridTruncated: false,
   };
 }
 

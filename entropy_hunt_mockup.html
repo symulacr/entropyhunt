@@ -214,7 +214,7 @@
     <div class="tab active">hunt console</div>
     <div class="tab">entropy map</div>
     <div class="tab">bft log</div>
-    <div class="tab" id="mode-pill">synthetic demo</div>
+    <div class="tab" id="mode-pill">experimental synthetic reference</div>
     <div style="flex: 1"></div>
     <label class="tab file">
       load replay
@@ -228,7 +228,7 @@
         border-right: none;
       "
     >
-      mesh: 5 peers
+      experimental reference view
     </div>
   </div>
   <div class="stats">
@@ -309,11 +309,14 @@
     elapsed = 0,
     events = [];
   let replayMode = false;
+  let syntheticBaseline = null;
 
   function setReplayMode(active) {
     replayMode = active;
     const pill = document.getElementById("mode-pill");
-    pill.textContent = active ? "replay snapshot" : "synthetic demo";
+    pill.textContent = active
+      ? "replay snapshot"
+      : "experimental synthetic reference";
     pill.classList.toggle("mode-replay", active);
   }
 
@@ -365,6 +368,56 @@
     }[type] || "claim";
   }
 
+  function cloneGridState(rows) {
+    return rows.map((row) => [...row]);
+  }
+
+  function cloneClaimedState(rows) {
+    return rows.map((row) => [...row]);
+  }
+
+  function cloneDroneState(entries) {
+    return entries.map((drone) => ({ ...drone }));
+  }
+
+  function captureSyntheticBaseline() {
+    syntheticBaseline = {
+      grid: cloneGridState(grid),
+      claimed: cloneClaimedState(claimed),
+      drones: cloneDroneState(drones),
+      bftRound,
+      auctions,
+      elapsed,
+      events: events.map((event) => ({ ...event })),
+    };
+  }
+
+  function restoreSyntheticState() {
+    if (!syntheticBaseline) return;
+    grid = cloneGridState(syntheticBaseline.grid);
+    claimed = cloneClaimedState(syntheticBaseline.claimed);
+    drones = cloneDroneState(syntheticBaseline.drones);
+    bftRound = syntheticBaseline.bftRound;
+    auctions = syntheticBaseline.auctions;
+    elapsed = syntheticBaseline.elapsed;
+    events = syntheticBaseline.events.map((event) => ({ ...event }));
+    setReplayMode(false);
+    drawGrid();
+    renderSide();
+  }
+
+  function replayDroneFor(index, replayDrones) {
+    return replayDrones[index] || {};
+  }
+
+  function ownerIndexFor(value, replayDrones) {
+    if (typeof value === "number") return value;
+    if (typeof value === "string") {
+      return replayDrones.findIndex((drone) => drone && drone.id === value);
+    }
+    return -1;
+  }
+
   function applyReplayPayload(payload) {
     if (!payload || !Array.isArray(payload.grid) || !payload.summary) {
       throw new Error("expected final_map-style payload");
@@ -375,17 +428,33 @@
     }
 
     grid = rows.map((row) => row.map((cell) => Number(cell.certainty ?? 0.5)));
-    claimed = Array.from({ length: G }, () => Array(G).fill(-1));
-
     const replayDrones = Array.isArray(payload.summary.drones)
       ? payload.summary.drones
       : [];
+    claimed = rows.map((row) =>
+      row.map((cell) => ownerIndexFor(cell.owner, replayDrones)),
+    );
+
     drones = droneColors.map((color, i) => {
-      const replayDrone = replayDrones[i] || {};
+      const replayDrone = replayDroneFor(i, replayDrones);
       const position = replayDrone.position || [0, 0];
       const target = replayDrone.target || [null, null];
+      if (Array.isArray(replayDrone.claimed_cell)) {
+        const [claimedX, claimedY] = replayDrone.claimed_cell;
+        if (
+          Number.isInteger(claimedX) &&
+          Number.isInteger(claimedY) &&
+          claimedX >= 0 &&
+          claimedY >= 0 &&
+          claimedX < G &&
+          claimedY < G &&
+          claimed[claimedY][claimedX] < 0
+        ) {
+          claimed[claimedY][claimedX] = i;
+        }
+      }
       return {
-        id: droneNames[i],
+        id: replayDrone.id || droneNames[i],
         color,
         x: position[0],
         y: position[1],
@@ -413,11 +482,7 @@
 
   function clearReplay() {
     if (!replayMode) return;
-    if (window.location && typeof window.location.reload === "function") {
-      window.location.reload();
-      return;
-    }
-    setReplayMode(false);
+    restoreSyntheticState();
   }
 
   function decay() {
@@ -569,14 +634,9 @@
     document.getElementById("sv-auc").textContent = auctions;
     document.getElementById("sv-time").textContent = elapsed + "s";
     document.getElementById("tick2").textContent =
-      "[t=" +
-      elapsed +
-      "s · bft:" +
-      bftRound +
-      "] coverage " +
-      cov +
-      "% · avg H=" +
-      avgEntropy();
+      replayMode
+        ? "[replay] experimental reference view — use the packaged replay console for the supported browser surface"
+        : "[synthetic] experimental reference view — local demo state only";
 
     if (cov >= 90 && !window._foundLogged) {
       window._foundLogged = true;
@@ -613,6 +673,7 @@
   }
 
   setReplayMode(false);
+  captureSyntheticBaseline();
 
   setInterval(() => {
     if (replayMode) return;

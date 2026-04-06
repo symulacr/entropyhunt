@@ -28,11 +28,16 @@ export function buildCompactHeaderLine(state: ViewState): ReturnType<typeof t> {
 }
 
 export function buildSubheaderLine(state: ViewState): ReturnType<typeof t> {
-  return t`${withFg(PANEL_THEME.textMuted)("source")} ${withFg(PANEL_THEME.textSecondary)(state.sourceUrl)}`;
+  const warnings = [
+    state.gridTruncated ? `grid capped to ${state.gridSize}x${state.gridSize}` : "",
+    state.hiddenDroneCount > 0 ? `+${state.hiddenDroneCount} hidden drones` : "",
+    state.hiddenEventCount > 0 ? `+${state.hiddenEventCount} hidden events` : "",
+  ].filter(Boolean).join(" · ");
+  return t`${withFg(PANEL_THEME.textMuted)("source")} ${withFg(PANEL_THEME.textSecondary)(state.sourceUrl)}${warnings ? withFg(PANEL_THEME.textMuted)(` · ${warnings}`) : ""}`;
 }
 
 export function buildCompactSubheaderLine(state: ViewState): ReturnType<typeof t> {
-  return t`${withFg(PANEL_THEME.textMuted)(`target [${state.target.x},${state.target.y}]`)} ${withBg(INTERACTION_THEME.navigate.bg)(withFg(INTERACTION_THEME.navigate.fg)(" move "))} ${withBg(INTERACTION_THEME.switch.bg)(withFg(INTERACTION_THEME.switch.fg)(" views "))} ${withBg(INTERACTION_THEME.quit.bg)(withFg(INTERACTION_THEME.quit.fg)(" quit "))}`;
+  return t`${withFg(PANEL_THEME.textMuted)(`target [${state.target.x},${state.target.y}]`)} ${withBg(INTERACTION_THEME.navigate.bg)(withFg(INTERACTION_THEME.navigate.fg)(" move "))} ${withBg(INTERACTION_THEME.switch.bg)(withFg(INTERACTION_THEME.switch.fg)(" views "))} ${withBg(INTERACTION_THEME.select.bg)(withFg(INTERACTION_THEME.select.fg)(" h/r/e focus "))} ${withBg(INTERACTION_THEME.quit.bg)(withFg(INTERACTION_THEME.quit.fg)(" quit "))}`;
 }
 
 export function buildInspectorLine(state: ViewState, cursorX: number, cursorY: number, compact = false): ReturnType<typeof t> {

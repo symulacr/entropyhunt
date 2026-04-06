@@ -1,0 +1,32 @@
+┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│                                                                                                                      │
+│ entropy hunt track 2 · search & rescue  LIVE SNAPSHOT   MESH=REAL   BFT 31                                           │
+│ source http://127.0.0.1:8765/snapshot.json                                                                           │
+│  1 overview   2 detail   3 map   4 config   5 graphs                                                                 │
+│coverage: 73% scanned · uncertainty: 0.61 · claims: 7 settled · health: 1 lost link · 1m 32s · rt 8ms                 │
+│                                                                                                                      │
+│                                                                                                                      │
+│                                                                                                                      │
+│                                                                                                                      │
+│           ┌─ speed & stats ──────────────────────────────────────────────────────────────────────────────┐           │
+│           │ state    survivor confirmed                                                                  │           │
+│           │ y↑ coverage/entropy/latency · x→ oldest to newest (24 samples)                               │           │
+│           │ ┌ coverage [73%] ──────────────────────────…   ┌ uncertainty [0.61] ──────────────────────…  │           │
+│           │ │trend ▂▂▂▂▂▃▃▃▃▄▄▄▅▅▅▅▆▆▆▆ ↑              …   │trend ▇▇▇▇▇▇▇▇▆▆▆▆▆▆▆▆▅▅▅▅ ↓              …  │           │
+│           │ └──────────────────────────────────────────…   └──────────────────────────────────────────…  │           │
+│           │ ┌ latency [9ms] ───────────────────────────…   ┌ speed [1.00s] ───────────────────────────…  │           │
+│           │ │trend ██▇▇▇▇▇▆▆▆▆▅▅▅▅▅▄▄▄▄ ↓              …   │tick 1.00s · drones 3                     …  │           │
+│           │ └──────────────────────────────────────────…   └──────────────────────────────────────────…  │           │
+│           │ [ DRONE FOCUS ]                                                                              │           │
+│           │ focus    drone_1 [1,0] → [3,2] · searching                                                   │           │
+│           │ scan     ▄▄▄▄▄▄▅▅▅▅▅▅▆▆▆▆▆▆▇▇▇▇▇▇████ ↑        entropy  ████████████████████████████ ↓       │           │
+│           │ agent    ▶ d1 scan ▄▄▅▅▆▇▇█ 19 · H ████████ 0.96 · searching                                 │           │
+│           │ agent    · d2 scan ▃▃▄▄▅▅▅▆ 13 · H ▆▆▆▆▆▆▆▆ 0.68 · transit                                   │           │
+│           │ agent    · d3 scan ▂▂▃▃▃▃▃▄ 7 · H ▅▄▄▄▄▄▄▄ 0.43 · offline                                    │           │
+│           │ claims   7 settled · bft 31                    health   1 lost link                          │           │
+│           │ target   [3,2]                                 request  4 next launch                        │           │
+│           │                                                                                              │           │
+│           └──────────────────────────────────────────────────────────────────────────────────────────────┘           │
+│● graphs live history · coverage / uncertainty / auctions / dropouts / latency · rt=8ms                               │
+│                                                                                                                      │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘

@@ -20,18 +20,18 @@ def test_frontend_build_creates_packaged_shell(tmp_path: Path) -> None:
 
     assert (out_dir / "index.html").exists()
     assert (out_dir / "console.html").exists()
-    assert (out_dir / "mockup.html").exists()
     assert (out_dir / "artifacts" / "final_map.json").exists()
     assert (out_dir / "artifacts" / "final_map.svg").exists()
     assert (out_dir / "artifacts" / "final_map.html").exists()
 
     assert "Latest verified run" in index_html
     assert "./console.html" in index_html
-    assert "./mockup.html" in index_html
     assert "./artifacts/final_map.html" in index_html
     assert "bun run build" in index_html
     assert "bun run preview" in index_html
     assert "bun run live:peers" in index_html
     assert "bun run live:serve" in index_html
     assert "npm run " not in index_html
+    assert "mockup.html" not in index_html
+    assert "read-only replay viewer" in index_html
     assert "live data requires running the local helper scripts alongside it" in index_html

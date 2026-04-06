@@ -47,21 +47,26 @@ export function buildMonitorFooterMessage(args: {
   tickLatencyMs: number;
 }) {
   const { state, compactLayout, displayMode, controlStatus = "", focusedPanel, cursorX, cursorY, selectedDrone, selectedEvent, tickLatencyMs } = args;
+  const truncationNote = [
+    state.gridTruncated ? `grid capped to ${state.gridSize}x${state.gridSize}` : "",
+    state.hiddenDroneCount > 0 ? `+${state.hiddenDroneCount} drones off-screen` : "",
+    state.hiddenEventCount > 0 ? `+${state.hiddenEventCount} older events hidden` : "",
+  ].filter(Boolean).join(" · ");
   if (displayMode === "config") {
     const configFocus = selectedEvent === 0 ? "speed" : "next-run drone count";
     const capability = selectedEvent === 0
       ? speedControlCapability(state.controlCapabilities)
       : state.controlCapabilities.requested_drone_count;
     const modeLabel = capability === "live" ? "config live" : capability === "next_run" ? "config next run" : "config read-only";
-    return `${modeLabel} · editing ${configFocus} · ${controlStatus || "ready"} · ←/→ adjust`;
+    return `${modeLabel} · editing ${configFocus} · ${controlStatus || "ready"} · ↑/↓ choose · ←/→ adjust${truncationNote ? ` · ${truncationNote}` : ""}`;
   }
   if (displayMode === "graphs") {
     const focusedDrone = state.drones[Math.max(0, Math.min(selectedDrone, Math.max(0, state.drones.length - 1)))];
-    return `graphs live history · ${focusedDrone ? focusedDrone.id : "no drone"} selected · ↑/↓ agents · rt=${Math.max(0, Math.round(tickLatencyMs))}ms`;
+    return `graphs live history · ${focusedDrone ? focusedDrone.id : "no drone"} selected · ↑/↓ agents · tab views${truncationNote ? ` · ${truncationNote}` : ""} · rt=${Math.max(0, Math.round(tickLatencyMs))}ms`;
   }
   if (displayMode === "detail") {
     const focusedDrone = state.drones[Math.max(0, Math.min(selectedDrone, Math.max(0, state.drones.length - 1)))];
-    return `drone detail · ${focusedDrone ? focusedDrone.id : "no drone"} selected · ↑/↓ agents · rt=${Math.max(0, Math.round(tickLatencyMs))}ms`;
+    return `drone detail · ${focusedDrone ? focusedDrone.id : "no drone"} selected · ↑/↓ agents · enter follows${truncationNote ? ` · ${truncationNote}` : ""} · rt=${Math.max(0, Math.round(tickLatencyMs))}ms`;
   }
   const statusMessage = compactLayout
     ? state.survivorFound
@@ -82,5 +87,5 @@ export function buildMonitorFooterMessage(args: {
     .map((chunk) => chunk.text)
     .join("");
 
-  return `${statusMessage} · ${focusMessage}`;
+  return `${statusMessage} · ${focusMessage}${truncationNote ? ` · ${truncationNote}` : ""}`;
 }

@@ -25,8 +25,8 @@ import type {
  * The HTML reference uses a light operator surface nested inside a dark shell:
  * crisp header chips, compact stat cards, a monochrome entropy legend, semantic
  * roster chips, and a footer/status strip with live-state pulse cues. This file
- * centralizes those decisions so the OpenTUI monitor can reach parity instead
- * of hand-tuning colors inline.
+ * centralizes those decisions so the OpenTUI monitor stays aligned with the
+ * shipped browser surface instead of hand-tuning colors inline.
  */
 
 export const HTML_V2_CSS_VARS = {

@@ -266,6 +266,51 @@ test("v2 replay payload imports simulation output into the console state", () =>
   assert.match(exports.events[0].msg, /survivor found/i);
 });
 
+test("v2 replay import preserves drone identity, claim state, and read-only mode", () => {
+  const { sandbox, exports } = loadSimulation(
+    "entropy_hunt_v2.html",
+    `({
+      applyReplayPayload,
+      clearReplay,
+      get sourceMode(){return sourceMode;},
+      get drones(){return drones;},
+      get grid(){return grid;}
+    })`,
+  );
+
+  exports.applyReplayPayload({
+    summary: {
+      duration_elapsed: 15,
+      drones: [
+        { id: "drone_2", alive: true, position: [4, 4], target: [4, 4], status: "searching", claimed_cell: [4, 4] },
+        { id: "drone_1", alive: true, position: [2, 3], target: [2, 3], status: "claiming", claimed_cell: [2, 3] },
+      ],
+    },
+    grid: Array.from({ length: 10 }, (_, y) =>
+      Array.from({ length: 10 }, (_, x) => ({
+        x,
+        y,
+        certainty: 0.5,
+        owner: x === 4 && y === 4 ? "drone_2" : -1,
+      })),
+    ),
+    events: [],
+  });
+
+  assert.equal(exports.sourceMode, "replay");
+  assert.equal(exports.drones[0].id, "drone_1");
+  assert.equal(exports.drones[0].x, 2);
+  assert.equal(exports.drones[0].y, 3);
+  assert.equal(exports.grid[4][4].owner, 1);
+  assert.equal(exports.grid[3][2].owner, 0);
+  assert.equal(sandbox.document.getElementById("packet-btn").disabled, true);
+  assert.equal(sandbox.document.getElementById("kill-btn").disabled, true);
+
+  exports.clearReplay();
+  assert.equal(exports.sourceMode, "synthetic");
+  assert.equal(sandbox.document.getElementById("packet-btn").disabled, false);
+});
+
 
 test("v2 live payload imports peer snapshot state without ending the session", () => {
   const { exports } = loadSimulation(
@@ -377,6 +422,45 @@ test("mockup replay payload imports final map snapshots", () => {
   assert.equal(exports.drones[1].status, "stale");
   assert.equal(exports.grid[1][1], 0.95);
   assert.match(exports.events[0].msg, /heartbeat timeout/i);
+});
+
+test("mockup replay preserves drone ids and claimed cells", () => {
+  const { exports } = loadSimulation(
+    "entropy_hunt_mockup.html",
+    `({
+      applyReplayPayload,
+      clearReplay,
+      get replayMode(){return replayMode;},
+      get drones(){return drones;},
+      get claimed(){return claimed;}
+    })`,
+  );
+
+  exports.applyReplayPayload({
+    summary: {
+      duration_elapsed: 12,
+      drones: [
+        { id: "drone_2", alive: true, position: [1, 1], target: [2, 1], status: "searching", claimed_cell: [2, 1] },
+        { id: "drone_1", alive: false, position: [3, 2], target: null, status: "stale" },
+      ],
+    },
+    grid: Array.from({ length: 10 }, (_, y) =>
+      Array.from({ length: 10 }, (_, x) => ({
+        x,
+        y,
+        certainty: 0.5,
+        owner: x === 2 && y === 1 ? "drone_2" : -1,
+      })),
+    ),
+    events: [],
+  });
+
+  assert.equal(exports.replayMode, true);
+  assert.equal(exports.drones[0].id, "drone_2");
+  assert.equal(exports.claimed[1][2], 0);
+
+  exports.clearReplay();
+  assert.equal(exports.replayMode, false);
 });
 
 test("v2 auto demo drives staged packet loss, contention, dropout, and survivor milestones", () => {

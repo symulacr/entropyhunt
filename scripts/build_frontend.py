@@ -55,11 +55,10 @@ def _summary_cards(summary: dict[str, Any]) -> str:
 
 def _artifact_links() -> str:
     links = [
-        ("./artifacts/final_map.json", "Replay payload", "load this into either console"),
+        ("./artifacts/final_map.json", "Replay payload", "load this into the replay console or the source-only reference mockup"),
         ("./artifacts/final_map.svg", "Heatmap SVG", "standalone snapshot for docs or slides"),
         ("./artifacts/final_map.html", "Final dashboard", "self-contained HTML snapshot"),
-        ("./console.html", "Rich console", "interactive replay/demo operations surface"),
-        ("./mockup.html", "Minimal mockup", "compact visual reference console"),
+        ("./console.html", "Replay console", "read-only replay viewer; live mode still needs local helper scripts"),
     ]
     return "".join(
         f'<li><a href="{href}">{escape(label)}</a> — {escape(note)}</li>' for href, label, note in links
@@ -110,7 +109,6 @@ def build_site(out_dir: Path) -> None:
 
     shutil.copy2(FRONTEND_DIR / "assets" / "shell.css", out_dir / "assets" / "shell.css")
     shutil.copy2(ROOT / "entropy_hunt_v2.html", out_dir / "console.html")
-    shutil.copy2(ROOT / "entropy_hunt_mockup.html", out_dir / "mockup.html")
     shutil.copy2(ROOT / "final_map.json", out_dir / "artifacts" / "final_map.json")
     shutil.copy2(ROOT / "final_map.svg", out_dir / "artifacts" / "final_map.svg")
     shutil.copy2(ROOT / "final_map.html", out_dir / "artifacts" / "final_map.html")

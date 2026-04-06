@@ -5,6 +5,7 @@ import {
   computeLayoutMetrics,
   hitTestHeatmapCell,
   logicalHeatmapRowForRenderIndex,
+  normalizeSnapshot,
   type MonitorUiState,
   type ViewState,
 } from "./tui_monitor_v2.ts";
@@ -211,6 +212,36 @@ test("config footer treats tick_seconds fallback as live speed control", () => {
     tickLatencyMs: 8,
   });
   expect(message).toContain("config live");
+});
+
+test("normalizeSnapshot preserves claimed cells and discloses truncation", () => {
+  const state = normalizeSnapshot(
+    {
+      config: { grid_size: 12, drone_count: 7 },
+      summary: {
+        drones: [
+          { id: "drone_1", position: [1, 1], claimed_cell: [2, 2], searched_cells: 4 },
+          { id: "drone_2", position: [3, 3], searched_cells: 2 },
+          { id: "drone_3", position: [4, 4] },
+          { id: "drone_4", position: [5, 5] },
+          { id: "drone_5", position: [6, 6] },
+          { id: "drone_6", position: [7, 7] },
+        ],
+      },
+      grid: Array.from({ length: 12 }, (_, y) =>
+        Array.from({ length: 12 }, (_, x) => ({ x, y, certainty: 0.5 })),
+      ),
+      events: Array.from({ length: 20 }, (_, index) => ({ t: index, type: "info", message: `e${index}` })),
+    },
+    "http://127.0.0.1:8765/snapshot.json",
+    false,
+  );
+
+  expect(state.grid[2]?.[2]?.owner).toBe(0);
+  expect(state.drones[0]?.claimedCell).toEqual({ x: 2, y: 2 });
+  expect(state.gridTruncated).toBe(true);
+  expect(state.hiddenDroneCount).toBeGreaterThan(0);
+  expect(state.hiddenEventCount).toBeGreaterThan(0);
 });
 
 

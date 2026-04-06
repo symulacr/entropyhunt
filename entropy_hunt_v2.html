@@ -59,6 +59,20 @@
   .spacer {
     flex: 1;
   }
+  .header-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-left: 8px;
+    border-left: 0.5px solid var(--color-border-tertiary);
+  }
+  .header-group-label {
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-tertiary);
+    white-space: nowrap;
+  }
   .btn {
     font-size: 10px;
     padding: 4px 10px;
@@ -91,6 +105,11 @@
   }
   .btn.danger:hover {
     background: var(--color-background-danger);
+  }
+  .btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+    background: none;
   }
   .live-input {
     width: 180px;
@@ -350,30 +369,39 @@
   <div class="header">
     <span class="header-title">entropy hunt</span>
     <span class="header-tag">track 2 · search &amp; rescue</span>
-    <span class="header-mode" id="mode-chip">synthetic demo</span>
+    <span class="header-mode" id="mode-chip">demo-only synthetic</span>
     <span class="spacer"></span>
-    <label class="btn file">
-      load replay
-      <input id="replay-input" type="file" accept="application/json" />
-    </label>
-    <button class="btn" id="replay-reset" onclick="clearReplay()">
-      clear replay
-    </button>
-    <input class="live-input" id="live-url" value="http://127.0.0.1:8765/snapshot.json" />
-    <button class="btn" id="live-btn" onclick="connectLive()">
-      connect live
-    </button>
-    <button class="btn" id="live-stop" onclick="disconnectLive()">
-      stop live
-    </button>
-    <button class="btn warn" id="packet-btn" onclick="dropPackets()">
-      drop packets 20%
-    </button>
-    <button class="btn" id="demo-btn" onclick="toggleAutoDemo()">
-      auto demo off
-    </button>
-    <button class="btn danger" onclick="killRandom()">kill drone</button>
-    <button class="btn" onclick="reviveAll()">revive all</button>
+    <div class="header-group">
+      <span class="header-group-label">replay</span>
+      <label class="btn file">
+        load replay
+        <input id="replay-input" type="file" accept="application/json" />
+      </label>
+      <button class="btn" id="replay-reset" onclick="clearReplay()">
+        clear replay
+      </button>
+    </div>
+    <div class="header-group">
+      <span class="header-group-label">live local helper</span>
+      <input class="live-input" id="live-url" value="http://127.0.0.1:8765/snapshot.json" />
+      <button class="btn" id="live-btn" onclick="connectLive()">
+        connect live
+      </button>
+      <button class="btn" id="live-stop" onclick="disconnectLive()">
+        stop live
+      </button>
+    </div>
+    <div class="header-group">
+      <span class="header-group-label">demo-only controls</span>
+      <button class="btn warn" id="packet-btn" onclick="dropPackets()">
+        drop packets 20%
+      </button>
+      <button class="btn" id="demo-btn" onclick="toggleAutoDemo()">
+        auto demo off
+      </button>
+      <button class="btn danger" id="kill-btn" onclick="killRandom()">kill drone</button>
+      <button class="btn" id="revive-btn" onclick="reviveAll()">revive all</button>
+    </div>
   </div>
 
   <div class="kv-bar">
@@ -486,6 +514,8 @@
   const tooltip = document.getElementById("tip");
   const packetButton = document.getElementById("packet-btn");
   const demoButton = document.getElementById("demo-btn");
+  const killButton = document.getElementById("kill-btn");
+  const reviveButton = document.getElementById("revive-btn");
   const replayResetButton = document.getElementById("replay-reset");
   const replayInput = document.getElementById("replay-input");
   const liveInput = document.getElementById("live-url");
@@ -505,6 +535,7 @@
   let sourceMode = "synthetic";
   let liveSource = "http://127.0.0.1:8765/snapshot.json";
   let livePollHandle = null;
+  let syntheticBaseline = null;
   const autoDemo = {
     enabled: false,
     packetLoss: false,
@@ -516,14 +547,27 @@
   function setSourceMode(mode) {
     sourceMode = mode;
     const chip = document.getElementById("mode-chip");
-    chip.textContent = mode === "replay" ? "replay snapshot" : mode === "live" ? "live snapshot" : "synthetic demo";
+    chip.textContent =
+      mode === "replay"
+        ? "replay snapshot (read-only)"
+        : mode === "live"
+          ? "live snapshot (read-only)"
+          : "demo-only synthetic";
     chip.classList.toggle("replay", mode === "replay" || mode === "live");
     replayResetButton.disabled = mode !== "replay";
     liveButton.disabled = mode === "live";
     liveStopButton.disabled = mode !== "live";
+    updateDemoControls();
   }
 
-  const grid = Array.from({ length: GRID_SIZE }, (_, y) =>
+  function updateDemoControls() {
+    const demoLocked = sourceMode !== "synthetic";
+    [packetButton, demoButton, killButton, reviveButton].forEach((button) => {
+      if (button) button.disabled = demoLocked;
+    });
+  }
+
+  let grid = Array.from({ length: GRID_SIZE }, (_, y) =>
     Array.from({ length: GRID_SIZE }, (_, x) => ({
       x,
       y,
@@ -538,7 +582,7 @@
     })),
   );
 
-  const drones = NAMES.map((id, index) => {
+  let drones = NAMES.map((id, index) => {
     const [x, y] = START_POSITIONS[index];
     return {
       id,
@@ -645,6 +689,89 @@
     };
   }
 
+  function cloneGridState(rows) {
+    return rows.map((row) =>
+      row.map((cell) => ({
+        x: cell.x,
+        y: cell.y,
+        certainty: cell.certainty,
+        get c() {
+          return this.certainty;
+        },
+        set c(value) {
+          this.certainty = value;
+        },
+        owner: cell.owner,
+      })),
+    );
+  }
+
+  function cloneDroneState(entries) {
+    return entries.map((drone) => ({ ...drone }));
+  }
+
+  function captureSyntheticBaseline() {
+    syntheticBaseline = {
+      grid: cloneGridState(grid),
+      drones: cloneDroneState(drones),
+      elapsed,
+      bftRounds,
+      auctions,
+      dropouts,
+      found,
+      missionComplete,
+      events: events.map((event) => ({ ...event })),
+      packetDrop,
+    };
+  }
+
+  function restoreSyntheticState() {
+    if (!syntheticBaseline) return;
+    if (livePollHandle) {
+      clearInterval(livePollHandle);
+      livePollHandle = null;
+    }
+    grid = cloneGridState(syntheticBaseline.grid);
+    drones = cloneDroneState(syntheticBaseline.drones);
+    elapsed = syntheticBaseline.elapsed;
+    bftRounds = syntheticBaseline.bftRounds;
+    auctions = syntheticBaseline.auctions;
+    dropouts = syntheticBaseline.dropouts;
+    found = syntheticBaseline.found;
+    missionComplete = syntheticBaseline.missionComplete;
+    events = syntheticBaseline.events.map((event) => ({ ...event }));
+    packetDrop = syntheticBaseline.packetDrop;
+    autoDemo.enabled = false;
+    autoDemo.packetLoss = false;
+    autoDemo.contention = false;
+    autoDemo.dropout = false;
+    autoDemo.survivor = false;
+    setButtonState(packetButton, false, "drop packets on", "drop packets 20%");
+    setButtonState(demoButton, false, "auto demo on", "auto demo off");
+    setSourceMode("synthetic");
+    drawGrid();
+    renderDrones();
+    renderLog();
+    updateStats();
+    setFooter("demo-only synthetic mode — local controls can mutate state");
+  }
+
+  function replayDroneFor(drone, replayDrones, fallbackIndex) {
+    return (
+      replayDrones.find((entry) => entry && entry.id === drone.id) ||
+      replayDrones[fallbackIndex] ||
+      {}
+    );
+  }
+
+  function ownerIndexFor(value) {
+    if (typeof value === "number") return value;
+    if (typeof value === "string") {
+      return drones.findIndex((drone) => drone.id === value);
+    }
+    return -1;
+  }
+
   function applySnapshotPayload(payload, mode) {
     const rows = payload?.grid;
     const summary = payload?.summary || payload || {};
@@ -662,7 +789,7 @@
       row.forEach((cell, x) => {
         const replayCell = getCell(x, y);
         replayCell.certainty = Number(cell.certainty ?? 0.5);
-        replayCell.owner = -1;
+        replayCell.owner = ownerIndexFor(cell.owner);
       });
     });
 
@@ -683,7 +810,7 @@
 
     const replayDrones = Array.isArray(summary.drones) ? summary.drones : [];
     drones.forEach((drone, index) => {
-      const replayDrone = replayDrones[index] || {};
+      const replayDrone = replayDroneFor(drone, replayDrones, index);
       const position = replayDrone.position || START_POSITIONS[index];
       const target = replayDrone.target || null;
       drone.x = position[0];
@@ -695,6 +822,20 @@
         replayDrone.status || (drone.stale ? "offline" : "idle"),
       );
       drone.cells = Number(replayDrone.searched_cells ?? drone.cells ?? 0);
+      if (Array.isArray(replayDrone.claimed_cell)) {
+        const [claimedX, claimedY] = replayDrone.claimed_cell;
+        if (
+          Number.isInteger(claimedX) &&
+          Number.isInteger(claimedY) &&
+          claimedX >= 0 &&
+          claimedY >= 0 &&
+          claimedX < GRID_SIZE &&
+          claimedY < GRID_SIZE &&
+          getCell(claimedX, claimedY).owner < 0
+        ) {
+          getCell(claimedX, claimedY).owner = index;
+        }
+      }
     });
 
     events = Array.isArray(payload.events)
@@ -708,10 +849,10 @@
     setSourceMode(mode);
     setFooter(
       mode === "live"
-        ? "live snapshot connected — polling current peer state"
+        ? "live snapshot connected — polling current peer state (demo controls disabled)"
         : found
-          ? "replay loaded — final simulation snapshot with survivor confirmation"
-          : "replay loaded — final simulation snapshot",
+          ? "replay loaded — final simulation snapshot with survivor confirmation (read-only)"
+          : "replay loaded — final simulation snapshot (read-only)",
     );
   }
 
@@ -754,22 +895,12 @@
       clearInterval(livePollHandle);
       livePollHandle = null;
     }
-    if (window.location && typeof window.location.reload === "function") {
-      window.location.reload();
-      return;
-    }
-    setSourceMode("synthetic");
-    missionComplete = false;
+    restoreSyntheticState();
   }
 
   function clearReplay() {
     if (sourceMode !== "replay") return;
-    if (window.location && typeof window.location.reload === "function") {
-      window.location.reload();
-      return;
-    }
-    setSourceMode("synthetic");
-    missionComplete = false;
+    restoreSyntheticState();
   }
 
   function buildCandidates(drone, reserved) {
@@ -1140,12 +1271,14 @@
           drone.tx == null || drone.ty == null
             ? "[--,--]"
             : `[${drone.tx},${drone.ty}]`;
-        return `<div class="drone-row${drone.stale ? " stale" : ""}" onclick="killDrone(drones[${index}])">
+        const ownership =
+          drone.tx == null || drone.ty == null ? "unclaimed" : `claim [${drone.tx},${drone.ty}]`;
+        return `<div class="drone-row${drone.stale ? " stale" : ""}" onclick="killDroneById('${drone.id}')">
       <div class="dr-dot" style="background:${drone.color}"></div>
       <span class="dr-name">${drone.id}</span>
       <span class="dr-pos">[${drone.x},${drone.y}]</span>
       <span class="dr-target">→${target}</span>
-      <span class="dr-h">H=${currentEntropy} · cells=${drone.cells}</span>
+      <span class="dr-h">H=${currentEntropy} · cells=${drone.cells} · ${ownership}</span>
       ${chip}
     </div>`;
       })
@@ -1324,6 +1457,7 @@
   }
 
   function killDrone(drone) {
+    if (sourceMode !== "synthetic") return;
     if (drone.stale) return;
     const index = drones.indexOf(drone);
     releaseClaim(index);
@@ -1342,12 +1476,14 @@
   }
 
   function killRandom() {
+    if (sourceMode !== "synthetic") return;
     const alive = drones.filter((drone) => !drone.stale);
     if (!alive.length) return;
     killDrone(alive[Math.floor(Math.random() * alive.length)]);
   }
 
   function reviveAll() {
+    if (sourceMode !== "synthetic") return;
     drones.forEach((drone, index) => {
       if (!drone.stale) return;
       drone.stale = false;
@@ -1358,6 +1494,7 @@
   }
 
   function dropPackets() {
+    if (sourceMode !== "synthetic") return;
     setPacketDrop(!packetDrop, "mock message-delay mode");
     setFooter(
       packetDrop
@@ -1367,6 +1504,7 @@
   }
 
   function toggleAutoDemo(forceState) {
+    if (sourceMode !== "synthetic") return;
     const nextState =
       typeof forceState === "boolean" ? forceState : !autoDemo.enabled;
     autoDemo.enabled = nextState;
@@ -1426,6 +1564,7 @@
     tooltip.style.display = "none";
   });
   canvas.addEventListener("click", (event) => {
+    if (sourceMode !== "synthetic") return;
     const rect = canvas.getBoundingClientRect();
     const gridX = Math.floor((event.clientX - rect.left) / CELL_SIZE);
     const gridY = Math.floor((event.clientY - rect.top) / CELL_SIZE);
@@ -1457,6 +1596,11 @@
   }
 
   window.killDrone = killDrone;
+  window.killDroneById = (droneId) => {
+    if (sourceMode !== "synthetic") return;
+    const drone = getDroneById(droneId);
+    if (drone) killDrone(drone);
+  };
   window.killRandom = killRandom;
   window.reviveAll = reviveAll;
   window.dropPackets = dropPackets;
@@ -1482,6 +1626,7 @@
   setButtonState(packetButton, false, "drop packets on", "drop packets 20%");
   setButtonState(demoButton, false, "auto demo on", "auto demo off");
   setSourceMode("synthetic");
-  setFooter("mesh stable — entropy auctions active");
+  setFooter("demo-only synthetic mode — local controls can mutate state");
+  captureSyntheticBaseline();
   setInterval(tick, TICK_MS);
 </script>
