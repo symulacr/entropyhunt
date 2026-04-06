@@ -4,8 +4,8 @@ Use this checklist before sharing or deploying the packaged Entropy Hunt shell.
 
 ## Preconditions
 - `python3 main.py --final-map final_map.json --svg-map final_map.svg --final-html final_map.html`
-- `npm run build`
-- `npm run preview`
+- `bun run build`
+- `bun run preview`
 
 ## Landing shell (`dist/index.html`)
 - [ ] Page loads without missing CSS or broken links.
