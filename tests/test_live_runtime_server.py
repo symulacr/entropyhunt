@@ -2,7 +2,11 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Any
 
+import pytest
+
+from scripts import serve_live_runtime
 from scripts.serve_live_runtime import merge_peer_payloads
 
 
@@ -81,3 +85,48 @@ def test_merge_peer_payloads_returns_control_config_without_runtime_payloads(tmp
     assert merged["config"]["tick_delay_seconds"] == 0.15
     assert merged["config"]["requested_drone_count"] == 4
     assert merged["config"]["control_url"] == "/control"
+
+
+def test_snapshot_http_server_caches_merged_payload_until_snapshot_files_change(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    (tmp_path / "drone_1.json").write_text(
+        json.dumps(
+            {
+                "summary": {"duration_elapsed": 1, "drones": [{"id": "drone_1"}]},
+                "config": {"drone_count": 1},
+                "grid": [[{"certainty": 0.5, "entropy": 1.0, "x": 0, "y": 0}]],
+                "events": [],
+            }
+        )
+    )
+
+    calls: list[dict[str, Any]] = []
+    original_merge = serve_live_runtime.merge_peer_payloads
+
+    def counting_merge(snapshot_dir: Path) -> dict[str, Any]:
+        merged = original_merge(snapshot_dir)
+        calls.append(merged)
+        return merged
+
+    monkeypatch.setattr(serve_live_runtime, "merge_peer_payloads", counting_merge)
+    server = serve_live_runtime.SnapshotHTTPServer(
+        ("127.0.0.1", 0),
+        serve_live_runtime.LiveRuntimeRequestHandler,
+        snapshot_dir=tmp_path,
+    )
+    try:
+        first = server.get_merged_payload()
+        second = server.get_merged_payload()
+
+        assert first is second
+        assert len(calls) == 1
+
+        (tmp_path / "control.json").write_text(json.dumps({"tick_delay_seconds": 0.25}))
+        third = server.get_merged_payload()
+
+        assert len(calls) == 2
+        assert third["config"]["tick_delay_seconds"] == 0.25
+    finally:
+        server.server_close()

@@ -5,6 +5,8 @@ import threading
 from pathlib import Path
 from urllib.request import Request, urlopen
 
+import pytest
+
 from scripts import serve_live_runtime
 
 
@@ -61,6 +63,37 @@ def test_control_endpoint_updates_control_file(tmp_path: Path) -> None:
             snapshot = json.loads(response.read().decode("utf-8"))
         assert snapshot["config"]["requested_drone_count"] == 6
         assert snapshot["config"]["tick_delay_seconds"] == 0.15
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=1)
+
+
+def test_control_endpoint_get_does_not_trigger_snapshot_merge(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    (tmp_path / "control.json").write_text(
+        json.dumps({"tick_delay_seconds": 0.1, "requested_drone_count": 2})
+    )
+
+    def unexpected_merge(_snapshot_dir: Path) -> dict[str, object]:
+        raise AssertionError("merge_peer_payloads should not run for /control GET")
+
+    monkeypatch.setattr(serve_live_runtime, "merge_peer_payloads", unexpected_merge)
+    server = serve_live_runtime.SnapshotHTTPServer(
+        ("127.0.0.1", 0),
+        serve_live_runtime.LiveRuntimeRequestHandler,
+        snapshot_dir=tmp_path,
+    )
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        port = server.server_address[1]
+        with urlopen(f"http://127.0.0.1:{port}/control") as response:
+            payload = json.loads(response.read().decode("utf-8"))
+        assert payload["tick_delay_seconds"] == 0.1
+        assert payload["requested_drone_count"] == 2
     finally:
         server.shutdown()
         server.server_close()

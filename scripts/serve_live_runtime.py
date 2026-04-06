@@ -9,6 +9,7 @@ from typing import Any, cast
 
 
 CONTROL_KEYS = {"tick_seconds", "tick_delay_seconds", "requested_drone_count"}
+SnapshotSignature = tuple[tuple[str, int, int], ...]
 
 
 def load_control_payload(control_path: Path) -> dict[str, Any]:
@@ -142,6 +143,25 @@ class SnapshotHTTPServer(ThreadingHTTPServer):
         super().__init__(server_address, handler_class)
         self.snapshot_dir = snapshot_dir
         self.control_path = snapshot_dir / "control.json"
+        self._merged_cache: dict[str, Any] | None = None
+        self._merged_signature: SnapshotSignature | None = None
+
+    def _snapshot_signature(self) -> SnapshotSignature:
+        entries: list[tuple[str, int, int]] = []
+        for path in sorted(self.snapshot_dir.glob("*.json")):
+            try:
+                stat = path.stat()
+            except FileNotFoundError:
+                continue
+            entries.append((path.name, stat.st_mtime_ns, stat.st_size))
+        return tuple(entries)
+
+    def get_merged_payload(self) -> dict[str, Any]:
+        signature = self._snapshot_signature()
+        if self._merged_cache is None or signature != self._merged_signature:
+            self._merged_cache = merge_peer_payloads(self.snapshot_dir)
+            self._merged_signature = signature
+        return self._merged_cache
 
 
 class LiveRuntimeRequestHandler(BaseHTTPRequestHandler):
@@ -155,13 +175,12 @@ class LiveRuntimeRequestHandler(BaseHTTPRequestHandler):
         self.wfile.write(encoded)
 
     def do_GET(self) -> None:  # noqa: N802
-        snapshot_dir = cast(SnapshotHTTPServer, self.server).snapshot_dir
-        merged = merge_peer_payloads(snapshot_dir)
-        if self.path in {"/snapshot.json", "/snapshot"}:
-            self._write_json(merged)
-            return
         if self.path in {"/control.json", "/control"}:
             self._write_json(load_control_payload(cast(SnapshotHTTPServer, self.server).control_path))
+            return
+        merged = cast(SnapshotHTTPServer, self.server).get_merged_payload()
+        if self.path in {"/snapshot.json", "/snapshot"}:
+            self._write_json(merged)
             return
         if self.path in {"/state.json", "/state"}:
             self._write_json(merged["summary"])
