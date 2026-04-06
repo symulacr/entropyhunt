@@ -14,9 +14,9 @@
           <h1>Entropy Hunt</h1>
           <p class="lede">
             A buildable frontend shell for the entropy-driven swarm-search demo.
-            It packages the replay artifacts, static operator consoles, and the
-            latest verified simulation snapshot into one static site. Live
-            snapshots still require local helper scripts.
+            It packages one primary replay console, the latest verified
+            simulation snapshot, and supporting artifacts into one static site.
+            Live snapshots still require local helper scripts.
           </p>
         </div>
         <div class="hero-actions">
@@ -74,8 +74,8 @@ bun run live:serve</code></pre>
           </div>
           <ul class="stack-list">
             <li><strong>Packaged shell</strong> — this `dist/` site for deployment and review.</li>
-            <li><strong>Rich console</strong> — replay-capable console in <code>console.html</code>; live polling works only when the local helper scripts are running.</li>
-            <li><strong>Minimal mockup</strong> — compact reference console in <code>mockup.html</code>.</li>
+            <li><strong>Replay console</strong> — the primary browser surface in <code>console.html</code>; live polling works only when the local helper scripts are running.</li>
+            <li><strong>Reference mockup</strong> — source-only file kept outside <code>dist/</code> for experiments, not for packaged deployment.</li>
             <li><strong>Python runtime</strong> — source of truth for simulation/export artifacts.</li>
           </ul>
         </article>

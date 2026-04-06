@@ -55,7 +55,7 @@ def _summary_cards(summary: dict[str, Any]) -> str:
 
 def _artifact_links() -> str:
     links = [
-        ("./artifacts/final_map.json", "Replay payload", "load this into the replay console or the source-only reference mockup"),
+        ("./artifacts/final_map.json", "Replay payload", "load this into the packaged replay console"),
         ("./artifacts/final_map.svg", "Heatmap SVG", "standalone snapshot for docs or slides"),
         ("./artifacts/final_map.html", "Final dashboard", "self-contained HTML snapshot"),
         ("./console.html", "Replay console", "read-only replay viewer; live mode still needs local helper scripts"),

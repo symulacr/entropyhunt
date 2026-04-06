@@ -11,22 +11,16 @@ Use this checklist before sharing or deploying the packaged Entropy Hunt static 
 - [ ] Page loads without missing CSS or broken links.
 - [ ] Summary cards match the latest `final_map.json` values.
 - [ ] Snapshot preview renders the exported SVG.
-- [ ] Links to `console.html`, `mockup.html`, and `artifacts/final_map.html` open correctly.
+- [ ] Links to `console.html` and `artifacts/final_map.html` open correctly.
 
 ## Rich console (`dist/console.html`, experimental browser inspector)
 - [ ] Default load shows synthetic demo mode.
 - [ ] **Load replay** accepts `dist/artifacts/final_map.json`.
 - [ ] Mode chip flips from `synthetic demo` to `replay snapshot`.
 - [ ] Coverage/BFT/dropout metrics match the replay payload.
-- [ ] **Clear replay** restores or reloads back to synthetic mode.
+- [ ] **Clear replay** restores synthetic mode without a full page reload.
 - [ ] Live polling is only exercised when the local helpers are running (`bun run live:peers` and `bun run live:serve`).
 - [ ] The page copy/presentation does not imply a production-ready or parity-grade live operator surface.
-
-## Minimal mockup (`dist/mockup.html`, prototype replay surface)
-- [ ] Loads without console errors.
-- [ ] **Load replay** accepts `dist/artifacts/final_map.json`.
-- [ ] Replay state updates metrics and event log.
-- [ ] The page is still framed as a mockup/prototype rather than an authoritative operator UI.
 
 ## Artifact checks
 - [ ] `dist/artifacts/final_map.json` exists and is downloadable.

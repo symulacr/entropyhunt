@@ -7,7 +7,7 @@ Entropy Hunt is a deterministic, entropy-driven swarm-search demo for the Vertex
 - an **optional FoxMQ/Vertex adapter lane** (`core/mesh.py`, `scripts/setup_foxmq.py`, `scripts/run_foxmq_cluster.py`)
 - an **optional Webots-backed peer runtime lane** (`simulation/webots_runtime.py`, `webots_world/`)
 - a **packaged static replay/share shell** built into `dist/` via `bun run build`
-- two **browser prototypes** (`entropy_hunt_v2.html`, `entropy_hunt_mockup.html`)
+- one **primary browser inspector** (`entropy_hunt_v2.html`) plus a source-only reference mockup (`entropy_hunt_mockup.html`)
 
 The Python runtime stays standard-library-only and covers the core demo loop: entropy-based zone selection, claim resolution, heartbeat failure handling, survivor confirmation, and replayable output artifacts. Operator packaging and live-monitoring surfaces remain local-demo tooling, not production-ready control software.
 
@@ -20,7 +20,7 @@ Use the repo with the following expectations:
 | `bun run hunt` peer runtime + OpenTUI | current local-demo monitor path for the separate-process swarm | **best-supported local demo path**, still not parity-grade distributed BFT or production ops |
 | `python3 main.py --mode stub` | source-level debugging, artifact generation, single-process demo runs | **debug/demo lane**, not the main operator story |
 | `entropy_hunt_v2.html` / `dist/console.html` | replay inspection and optional local snapshot polling | **experimental browser inspector** with synthetic/demo affordances |
-| `entropy_hunt_mockup.html` / `dist/mockup.html` | minimal replay prototype and visual reference | **prototype only**, replay/demo oriented |
+| `entropy_hunt_mockup.html` | minimal replay prototype and visual reference | **source-only prototype**, not part of the packaged deploy surface |
 | ROS 2 commands | bring-up and contract experimentation | **experimental lane**, not a parity-grade port |
 | Webots runtime | controller integration experiments | **experimental lane**, not validated end-to-end here |
 | Vertex / FoxMQ adapters | transport bring-up toward the target architecture | **adapter/bring-up lane**, not a validated live deployment |
@@ -135,7 +135,7 @@ Then preview it locally:
 bun run preview
 ```
 
-The build copies the current browser prototypes and replay artifacts into `dist/`, and generates a landing-shell `dist/index.html` from the latest `final_map.json` + `final_map.svg`. Treat that output as a static replay/share artifact, not as a production live-ops console.
+The build copies the primary replay console and replay artifacts into `dist/`, and generates a landing-shell `dist/index.html` from the latest `final_map.json` + `final_map.svg`. Treat that output as a static replay/share artifact, not as a production live-ops console. The compact mockup remains source-only and is not packaged for deployment.
 
 
 ### 6) Deploy the static replay/share shell to Vercel or any static host
@@ -146,15 +146,14 @@ The build copies the current browser prototypes and replay artifacts into `dist/
 
 ## Browser surfaces (prototype / replay)
 
-Open either browser prototype directly in a browser, or use the packaged copies in `dist/`:
+Open the primary browser inspector directly in a browser, or use the packaged copy in `dist/`:
 
 - `entropy_hunt_v2.html`
-- `entropy_hunt_mockup.html`
 
 Use **Load replay** and select `final_map.json` to inspect a real backend-generated snapshot instead of the synthetic inline demo.
 
 - `entropy_hunt_v2.html` / `dist/console.html` is the richer experimental inspector. It can also connect to `http://127.0.0.1:8765/snapshot.json` when `bun run hunt:serve` is running, but that flow is still meant for local demos.
-- `entropy_hunt_mockup.html` / `dist/mockup.html` is a lighter prototype/replay surface. Keep it framed as a mockup, not as the authoritative operator UI.
+- `entropy_hunt_mockup.html` remains in the repo only as a source-only prototype/reference view. Keep it framed as a mockup, not as the authoritative operator UI or a packaged deployment target.
 
 ## Verification
 
@@ -210,7 +209,7 @@ Latest peer-run check (5 peers, 180 ticks, drone_2 dropped at `t=60`):
 - `simulation/peer_runtime.py` — multi-process peer runtime
 - `frontend/index.template.html` — packaged app-shell template
 - `entropy_hunt_v2.html` — richer experimental browser inspector
-- `entropy_hunt_mockup.html` — minimal replayable prototype/mockup
+- `entropy_hunt_mockup.html` — source-only experimental mockup
 - `scripts/build_frontend.py` — static packaging build step
 - `scripts/run_local_peers.py` — launch helper for multi-peer local demos
 - `scripts/setup_foxmq.py` / `scripts/run_foxmq_cluster.py` — FoxMQ cluster helpers

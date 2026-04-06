@@ -20,6 +20,7 @@ def test_frontend_build_creates_packaged_shell(tmp_path: Path) -> None:
 
     assert (out_dir / "index.html").exists()
     assert (out_dir / "console.html").exists()
+    assert not (out_dir / "mockup.html").exists()
     assert (out_dir / "artifacts" / "final_map.json").exists()
 
     index_html = (out_dir / "index.html").read_text()
@@ -29,3 +30,4 @@ def test_frontend_build_creates_packaged_shell(tmp_path: Path) -> None:
     assert "bun run live:peers" in index_html
     assert "bun run live:serve" in index_html
     assert "local helper scripts" in index_html
+    assert "mockup.html" not in index_html

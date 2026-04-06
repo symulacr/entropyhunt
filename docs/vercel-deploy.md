@@ -48,6 +48,7 @@ Both commands rebuild the static shell locally before invoking the Vercel CLI.
 
 ## Notes
 - The deployed output is still a static/demo surface; it does not create live Vertex/FoxMQ connectivity.
-- `dist/console.html` is an experimental browser inspector and `dist/mockup.html` is a prototype/replay surface; neither should be presented as a production operator console.
+- `dist/console.html` is an experimental browser inspector; it is the only packaged browser surface and should not be presented as a production operator console.
+- `entropy_hunt_mockup.html` remains source-only for prototype/reference use and is not part of the packaged deploy surface.
 - Live console polling still depends on local helper scripts such as `bun run live:peers` and `bun run live:serve`.
 - If the build output directory or packaging command changes, update `package.json`, `vercel.json`, and the deployment tests together.
