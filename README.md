@@ -4,12 +4,26 @@ Entropy Hunt is a deterministic, entropy-driven swarm-search demo for the Vertex
 
 - a **pure Python coordination simulation** (`main.py --mode stub`)
 - a **local multi-process peer runtime** (`main.py --mode peer`, `scripts/run_local_peers.py`)
-- an **optional FoxMQ-backed transport path** (`core/mesh.py`, `scripts/setup_foxmq.py`, `scripts/run_foxmq_cluster.py`)
-- an **optional Webots-backed peer runtime path** (`simulation/webots_runtime.py`, `webots_world/`)
-- a **packaged static app shell** built into `dist/` via `bun run build`
-- two **static operator consoles** (`entropy_hunt_v2.html`, `entropy_hunt_mockup.html`)
+- an **optional FoxMQ/Vertex adapter lane** (`core/mesh.py`, `scripts/setup_foxmq.py`, `scripts/run_foxmq_cluster.py`)
+- an **optional Webots-backed peer runtime lane** (`simulation/webots_runtime.py`, `webots_world/`)
+- a **packaged static replay/share shell** built into `dist/` via `bun run build`
+- two **browser prototypes** (`entropy_hunt_v2.html`, `entropy_hunt_mockup.html`)
 
 The Python runtime stays standard-library-only and covers the core demo loop: entropy-based zone selection, claim resolution, heartbeat failure handling, survivor confirmation, and replayable output artifacts. Operator packaging and live-monitoring surfaces remain local-demo tooling, not production-ready control software.
+
+## Maturity guide
+
+Use the repo with the following expectations:
+
+| Surface / lane | What it is good for now | Current maturity |
+| --- | --- | --- |
+| `bun run hunt` peer runtime + OpenTUI | current local-demo monitor path for the separate-process swarm | **best-supported local demo path**, still not parity-grade distributed BFT or production ops |
+| `python3 main.py --mode stub` | source-level debugging, artifact generation, single-process demo runs | **debug/demo lane**, not the main operator story |
+| `entropy_hunt_v2.html` / `dist/console.html` | replay inspection and optional local snapshot polling | **experimental browser inspector** with synthetic/demo affordances |
+| `entropy_hunt_mockup.html` / `dist/mockup.html` | minimal replay prototype and visual reference | **prototype only**, replay/demo oriented |
+| ROS 2 commands | bring-up and contract experimentation | **experimental lane**, not a parity-grade port |
+| Webots runtime | controller integration experiments | **experimental lane**, not validated end-to-end here |
+| Vertex / FoxMQ adapters | transport bring-up toward the target architecture | **adapter/bring-up lane**, not a validated live deployment |
 
 ## Bun-first demo entrypoint
 
@@ -29,11 +43,11 @@ Runtime mode matrix:
 
 | Command | Lane | Requires | Status |
 | --- | --- | --- | --- |
-| `bun run hunt` | peer | Python | default / current |
-| `bun run hunt -- --mode ros2 --ros-runtime host` | ROS 2 host | ROS 2 + colcon | experimental |
-| `bun run hunt -- --mode ros2 --ros-runtime docker` | ROS 2 docker | Docker | experimental |
-| `bun run hunt:ros2` | ROS 2 host | ROS 2 + colcon | shortcut |
-| `bun run hunt:ros2:docker` | ROS 2 docker | Docker | shortcut |
+| `bun run hunt` | peer | Python | current local-demo baseline |
+| `bun run hunt -- --mode ros2 --ros-runtime host` | ROS 2 host | ROS 2 + colcon | experimental bring-up |
+| `bun run hunt -- --mode ros2 --ros-runtime docker` | ROS 2 docker | Docker | experimental bring-up |
+| `bun run hunt:ros2` | ROS 2 host | ROS 2 + colcon | experimental shortcut |
+| `bun run hunt:ros2:docker` | ROS 2 docker | Docker | experimental shortcut |
 
 That single Bun command:
 - allocates free ports
@@ -73,13 +87,13 @@ Treat that stub lane as a backup/demo path rather than a parity-grade operator s
 
 ## Quick start
 
-### 1) Run the Bun-first live demo
+### 1) Run the current local-demo operator path
 
 ```bash
 bun run hunt
 ```
 
-This is the current operator path: Bun drives the multi-process peer launcher, the snapshot server, and the OpenTUI monitor while the Python engine does the swarm simulation.
+This is the current recommended local-demo operator path: Bun drives the multi-process peer launcher, the snapshot server, and the OpenTUI monitor while the Python engine does the swarm simulation.
 
 ### 2) Generate backend artifacts
 
@@ -109,7 +123,7 @@ bun run hunt:serve
 
 This exposes `http://127.0.0.1:8765/snapshot.json`, `state.json`, and `events.json` for live polling from `entropy_hunt_v2.html`. The server rereads and re-merges peer JSON on demand, so it is intended for local demos and operator inspection rather than high-throughput production streaming.
 
-### 5) Build the packaged frontend shell
+### 5) Build the packaged static shell
 
 ```bash
 bun run build
@@ -121,23 +135,26 @@ Then preview it locally:
 bun run preview
 ```
 
-The build copies the current consoles and replay artifacts into `dist/`, and generates a landing-shell `dist/index.html` from the latest `final_map.json` + `final_map.svg`.
+The build copies the current browser prototypes and replay artifacts into `dist/`, and generates a landing-shell `dist/index.html` from the latest `final_map.json` + `final_map.svg`. Treat that output as a static replay/share artifact, not as a production live-ops console.
 
 
-### 6) Deploy to Vercel or any static host
+### 6) Deploy the static replay/share shell to Vercel or any static host
 
 - `vercel.json` points Vercel at `bun run build` and the `dist/` output directory.
 - `docs/frontend-qa-checklist.md` captures the recommended manual browser QA pass before sharing or deployment.
 - `docs/vercel-deploy.md` documents first-time Vercel setup plus preview/production deploy commands.
 
-## Frontend replay / live console
+## Browser surfaces (prototype / replay)
 
-Open either static console directly in a browser, or use the packaged copies in `dist/`:
+Open either browser prototype directly in a browser, or use the packaged copies in `dist/`:
 
 - `entropy_hunt_v2.html`
 - `entropy_hunt_mockup.html`
 
-Then use **Load replay** and select `final_map.json` to inspect a real backend-generated snapshot instead of the synthetic inline demo. The rich console can also connect to `http://127.0.0.1:8765/snapshot.json` when `bun run hunt:serve` is running.
+Use **Load replay** and select `final_map.json` to inspect a real backend-generated snapshot instead of the synthetic inline demo.
+
+- `entropy_hunt_v2.html` / `dist/console.html` is the richer experimental inspector. It can also connect to `http://127.0.0.1:8765/snapshot.json` when `bun run hunt:serve` is running, but that flow is still meant for local demos.
+- `entropy_hunt_mockup.html` / `dist/mockup.html` is a lighter prototype/replay surface. Keep it framed as a mockup, not as the authoritative operator UI.
 
 ## Verification
 
@@ -154,6 +171,7 @@ mypy tests/test_deployment_config.py tests/test_frontend_build.py tests/test_liv
 - BFT: the primary stub demo now exchanges real contest and vote messages between five in-process drone replicas over the mesh bus, and quorum is `N/2 + 1` (3 of 5). The local UDP peer runtime still publishes confirmed claim results from a coordinator; it is not a production Byzantine implementation. Multi-process mode uses coordinator-confirmed result finalization. The coordinator is elected deterministically by peer index and rotates on dropout. This is crash-fault-tolerant but not Byzantine-fault-tolerant. The stub mode uses genuine peer-vote collection with N/2+1 quorum. Full BFT across the multi-process path is the next engineering milestone.
 - Certainty maps: the multi-process path keeps one local certainty map per peer process and merges peer snapshots by taking the max certainty per cell. The merged map drives zone selection; the local map drives that peer’s own search updates.
 - Simulation: the multi-process peer runtime plus `dashboard/tui_monitor_v2.ts` is the primary separate-process monitor path. The Python monitor remains a fallback and the terminal stub remains the single-process backup. The Webots path exists, but live Webots integration has not been validated end-to-end in this environment.
+- Port/adaptor lanes: ROS 2, Webots, and Vertex/FoxMQ remain experimental or bring-up surfaces. They are useful for integration work, but this repo should not describe them as parity-grade ports of the main peer runtime until they have matching behavior and end-to-end validation.
 
 ## Current architecture
 
@@ -191,12 +209,12 @@ Latest peer-run check (5 peers, 180 ticks, drone_2 dropped at `t=60`):
 - `simulation/stub.py` — demo runtime
 - `simulation/peer_runtime.py` — multi-process peer runtime
 - `frontend/index.template.html` — packaged app-shell template
-- `entropy_hunt_v2.html` — richer operator console
-- `entropy_hunt_mockup.html` — minimal replayable mockup
+- `entropy_hunt_v2.html` — richer experimental browser inspector
+- `entropy_hunt_mockup.html` — minimal replayable prototype/mockup
 - `scripts/build_frontend.py` — static packaging build step
 - `scripts/run_local_peers.py` — launch helper for multi-peer local demos
 - `scripts/setup_foxmq.py` / `scripts/run_foxmq_cluster.py` — FoxMQ cluster helpers
-- `simulation/webots_controller.py` / `simulation/webots_runtime.py` — Webots controller + runtime bridge
+- `simulation/webots_controller.py` / `simulation/webots_runtime.py` — experimental Webots controller + runtime bridge
 - `entropy_hunt_ui.test.mjs` — static-console regression tests
 
 ## Dependency policy

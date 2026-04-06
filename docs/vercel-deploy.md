@@ -1,6 +1,6 @@
 # Vercel Deployment Guide
 
-This project ships as a static shell built into `dist/`.
+This project ships as a static replay/share shell built into `dist/`.
 
 ## Prerequisites
 - Bun 1.3.10+
@@ -9,7 +9,7 @@ This project ships as a static shell built into `dist/`.
 - a Vercel account and project
 
 ## First-time setup
-1. Run `bun run build` locally to confirm the packaged shell builds.
+1. Run `bun run build` locally to confirm the packaged static shell builds.
 2. Run `npx vercel@latest` once and follow the prompts to link the local folder to a Vercel project.
 3. Confirm `vercel.json` still points Vercel at:
    - `buildCommand`: `bun run build`
@@ -36,10 +36,10 @@ Both commands rebuild the static shell locally before invoking the Vercel CLI.
    ```
 2. Run verification:
    ```bash
-   pytest -q
+   pytest -q tests/test_deployment_config.py tests/test_frontend_build.py tests/test_live_runtime_server.py tests/test_live_runtime_control.py
    node --test entropy_hunt_ui.test.mjs
-   ruff check .
-   mypy .
+   ruff check tests/test_deployment_config.py tests/test_frontend_build.py tests/test_live_runtime_server.py tests/test_live_runtime_control.py
+   mypy tests/test_deployment_config.py tests/test_frontend_build.py tests/test_live_runtime_server.py tests/test_live_runtime_control.py scripts/serve_live_runtime.py scripts/build_frontend.py
    bun run build
    ```
 3. Walk through `docs/frontend-qa-checklist.md`.
@@ -48,5 +48,6 @@ Both commands rebuild the static shell locally before invoking the Vercel CLI.
 
 ## Notes
 - The deployed output is still a static/demo surface; it does not create live Vertex/FoxMQ connectivity.
+- `dist/console.html` is an experimental browser inspector and `dist/mockup.html` is a prototype/replay surface; neither should be presented as a production operator console.
 - Live console polling still depends on local helper scripts such as `bun run live:peers` and `bun run live:serve`.
 - If the build output directory or packaging command changes, update `package.json`, `vercel.json`, and the deployment tests together.

@@ -1,6 +1,6 @@
 # Webots World Assets
 
-This directory contains an optional Webots-backed lane for Entropy Hunt.
+This directory contains an optional, experimental Webots-backed lane for Entropy Hunt.
 
 ## Files
 - `entropy_hunt.wbt` — minimal arena with DEF-named drones, target, and supervisor robot
@@ -8,8 +8,10 @@ This directory contains an optional Webots-backed lane for Entropy Hunt.
 
 ## Notes
 - This lane is optional for CI.
+- This is a bring-up/integration lane, not a parity-grade replacement for the main peer runtime.
 - It expects the Webots Python `controller` module to be available at runtime.
 - The supervisor controller writes a JSON snapshot to `webots_world/webots_snapshot.json` on every successful simulation step.
+- End-to-end Webots execution is not validated in this repository's default CI/dev flow.
 
 ## Environment variables
 - `ENTROPYHUNT_PEER_ID` / `ENTROPYHUNT_DRONE_DEF` select which logical peer / DEF node the controller should drive.
