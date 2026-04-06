@@ -42,6 +42,12 @@ STALE_TIMEOUT_TICK_MULTIPLIER = 20
 TARGET_FORCE_AT_MS = 100_000
 
 
+class PeerFailureExit(RuntimeError):
+    def __init__(self, message: str, *, exit_code: int = 2) -> None:
+        super().__init__(message)
+        self.exit_code = exit_code
+
+
 @dataclass(frozen=True, slots=True)
 class PeerRuntimeConfig:
     peer_id: str
@@ -540,10 +546,7 @@ class PeerRuntime:
         event = self.failure_injector.maybe_trigger([self.local_drone], now_seconds=self.now_ms // 1000)
         if event is not None:
             self._log("failure", f"{event.drone_id} dropped off-mesh", mode=event.mode)
-            if self.config.final_map_path:
-                self.save_final_map(Path(self.config.final_map_path))
-            self.mesh.close()
-            os._exit(0)
+            raise PeerFailureExit(f"{event.drone_id} dropped off-mesh", exit_code=2)
 
     def _maybe_claim_zone(self) -> None:
         if (self.survivor_found and self.config.stop_on_survivor) or not self.local_drone.alive or not self.local_drone.reachable:
@@ -763,13 +766,19 @@ class PeerRuntime:
 
     def run(self) -> dict[str, Any]:
         self.bootstrap()
-        while self.now_ms < self.config.duration * 1000:
-            self.tick()
-            time.sleep(self._tick_delay_seconds)
-            if self.survivor_found and self.config.stop_on_survivor:
-                break
-        summary = self.summary()
-        if self.config.final_map_path:
-            self.save_final_map(Path(self.config.final_map_path))
-        self.mesh.close()
-        return summary
+        try:
+            while self.now_ms < self.config.duration * 1000:
+                self.tick()
+                time.sleep(self._tick_delay_seconds)
+                if self.survivor_found and self.config.stop_on_survivor:
+                    break
+            summary = self.summary()
+            if self.config.final_map_path:
+                self.save_final_map(Path(self.config.final_map_path))
+            return summary
+        except PeerFailureExit:
+            if self.config.final_map_path:
+                self.save_final_map(Path(self.config.final_map_path))
+            raise
+        finally:
+            self.mesh.close()
