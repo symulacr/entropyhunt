@@ -1,8 +1,0 @@
-{"event":"session_start","session_id":"omx-1775280502017-qe342x","pid":3000317,"timestamp":"2026-04-04T05:28:22.357Z","_ts":"2026-04-04T05:28:22.357Z"}
-{"event":"session_start","session_id":"omx-1775316445895-wzx8jw","pid":2600052,"timestamp":"2026-04-04T15:27:25.933Z","_ts":"2026-04-04T15:27:25.934Z"}
-{"event":"session_end","session_id":"omx-1775316445895-wzx8jw","timestamp":"2026-04-04T17:02:53.009Z","_ts":"2026-04-04T17:02:53.011Z"}
-{"event":"session_start","session_id":"omx-1775322175580-zqoi4x","pid":2977772,"timestamp":"2026-04-04T17:02:55.675Z","_ts":"2026-04-04T17:02:55.676Z"}
-{"event":"session_end","session_id":"omx-1775322175580-zqoi4x","timestamp":"2026-04-04T21:54:18.613Z","_ts":"2026-04-04T21:54:18.614Z"}
-{"event":"session_start","session_id":"omx-1775339888385-lqimfu","pid":54634,"timestamp":"2026-04-04T21:58:08.757Z","_ts":"2026-04-04T21:58:08.758Z"}
-{"event":"session_end","session_id":"omx-1775339888385-lqimfu","timestamp":"2026-04-04T22:00:56.259Z","_ts":"2026-04-04T22:00:56.260Z"}
-{"event":"session_start","session_id":"omx-1775340058295-croclb","pid":68202,"timestamp":"2026-04-04T22:00:58.395Z","_ts":"2026-04-04T22:00:58.396Z"}

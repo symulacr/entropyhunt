@@ -1,5 +1,6 @@
 # Core local/editor noise
 .DS_Store
+.vercel/
 
 # Python caches and local tooling
 __pycache__/
@@ -21,6 +22,7 @@ runtime/sessions/
 runtime/logs/
 runtime/snapshots/
 runtime/proofs.jsonl
+*.jsonl
 
 # Runtime/demo outputs
 peer-runs/

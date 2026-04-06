@@ -1,8 +1,0 @@
-{
-  "nudgeCount": 111,
-  "lastNudgeAt": "2026-04-06T05:05:12.069Z",
-  "lastSignature": "payload:notify-fallback-watcher-stall|stalled-turn-14|stall:proceed_intent",
-  "lastSemanticSignature": "stall:proceed_intent",
-  "pendingSignature": "payload:019d612b-f07a-7fe2-92b2-4e51e3022078|019d6130-42aa-7ff1-98c7-39ccd1d12755|stall:proceed_intent",
-  "pendingSince": "2026-04-06T05:07:32.844Z"
-}
