@@ -112,6 +112,12 @@ def test_synthesize_proofs_marks_runtime_and_derived_event_provenance(tmp_path: 
     failure = next(event for event in events if event["type"] == "failure")
 
     assert bft_result["source"] == "runtime"
+    assert bft_result["source_mode"] == "peer"
     assert auction["source"] == "derived"
+    assert auction["source_mode"] == "peer"
+    assert auction["synthetic"] is True
     assert auction["derived_from"] == "bft_result"
     assert failure["source"] == "snapshot"
+    assert failure["source_mode"] == "peer"
+    assert failure["snapshot_file"] == "drone_1.json"
+    assert failure["synthetic"] is False

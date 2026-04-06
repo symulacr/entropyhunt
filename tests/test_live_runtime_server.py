@@ -71,6 +71,9 @@ def test_merge_peer_payloads_ignores_control_file_for_peer_count(tmp_path: Path)
     assert merged["summary"]["peer_count"] == 1
     assert merged["config"]["requested_drone_count"] == 4
     assert merged["config"]["tick_delay_seconds"] == 0.2
+    assert merged["config"]["source_mode"] == "peer-merged-live"
+    assert merged["config"]["snapshot_provenance"] == "merged-live"
+    assert merged["config"]["synthetic"] is False
 
 
 def test_merge_peer_payloads_returns_control_config_without_runtime_payloads(tmp_path: Path) -> None:
@@ -85,6 +88,9 @@ def test_merge_peer_payloads_returns_control_config_without_runtime_payloads(tmp
     assert merged["config"]["tick_delay_seconds"] == 0.15
     assert merged["config"]["requested_drone_count"] == 4
     assert merged["config"]["control_url"] == "/control"
+    assert merged["config"]["source_mode"] == "peer-merged-live"
+    assert merged["config"]["snapshot_provenance"] == "control-only-placeholder"
+    assert merged["config"]["synthetic"] is True
 
 
 def test_snapshot_http_server_caches_merged_payload_until_snapshot_files_change(

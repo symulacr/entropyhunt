@@ -176,6 +176,15 @@ class PeerRuntime:
         payload["tick_seconds"] = self._tick_seconds
         payload["tick_delay_seconds"] = self._tick_delay_seconds
         payload["requested_drone_count"] = self._requested_drone_count
+        payload["source_mode"] = "peer"
+        payload["snapshot_provenance"] = "peer-runtime-export"
+        payload["synthetic"] = False
+        payload["control_capabilities"] = {
+            "tick_seconds": "live" if self._control_file is not None else "unavailable",
+            "tick_delay_seconds": "live" if self._control_file is not None else "unavailable",
+            "requested_drone_count": "next_run" if self._control_file is not None else "unavailable",
+        }
+        payload["control_path"] = str(self._control_file) if self._control_file is not None else ""
         return payload
 
     def _apply_runtime_control(self) -> None:
@@ -214,7 +223,17 @@ class PeerRuntime:
             )
 
     def _log(self, event_type: str, message: str, **data: Any) -> None:
-        self.events.append({"t": self.now_ms // 1000, "type": event_type, "message": message, **data})
+        self.events.append(
+            {
+                "t": self.now_ms // 1000,
+                "type": event_type,
+                "message": message,
+                "source": "runtime",
+                "source_mode": "peer",
+                "synthetic": False,
+                **data,
+            }
+        )
 
     def _ensure_peer_map(self, drone_id: str) -> CertaintyMap:
         peer_map = self.peer_maps.get(drone_id)
@@ -276,6 +295,9 @@ class PeerRuntime:
                 "cell": list(round_payload.cell),
                 "assignments": [asdict(assignment) for assignment in round_payload.assignments],
                 "released_by": round_payload.released_by,
+                "source": "runtime",
+                "source_mode": "peer",
+                "synthetic": False,
             }
             handle.write(json.dumps(payload) + "\n")
             handle.flush()

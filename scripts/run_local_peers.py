@@ -136,6 +136,8 @@ def _synthesize_proofs_from_outputs(output_dir: Path, proofs_path: Path) -> None
                 continue
             seen_keys.add(key)
             payload.setdefault("source", "runtime")
+            payload.setdefault("source_mode", "peer")
+            payload.setdefault("synthetic", False)
             merged.append(payload)
             if payload.get("type") == "bft_result" and len(payload.get("assignments", [])) > 1:
                 auction = {
@@ -144,7 +146,9 @@ def _synthesize_proofs_from_outputs(output_dir: Path, proofs_path: Path) -> None
                     "contest_id": payload.get("contest_id"),
                     "message": f"contest resolved for cell {payload.get('cell')}",
                     "source": "derived",
+                    "source_mode": str(payload.get("source_mode", "peer")),
                     "derived_from": "bft_result",
+                    "synthetic": True,
                 }
                 auction_key = (auction.get("contest_id"), auction.get("type"), auction.get("t"))
                 if auction_key not in seen_keys:
@@ -156,6 +160,8 @@ def _synthesize_proofs_from_outputs(output_dir: Path, proofs_path: Path) -> None
             payload = json.loads(snapshot_path.read_text())
         except json.JSONDecodeError:
             continue
+        config = payload.get("config", {})
+        summary = payload.get("summary", {})
         for event in payload.get("events", []):
             event_type = str(event.get("type", ""))
             if event_type not in FAILOVER_EVENT_TYPES:
@@ -169,6 +175,11 @@ def _synthesize_proofs_from_outputs(output_dir: Path, proofs_path: Path) -> None
                 continue
             seen_keys.add(key)
             event.setdefault("source", "snapshot")
+            event.setdefault("source_mode", str(config.get("source_mode", "peer")))
+            event.setdefault("synthetic", False)
+            event.setdefault("snapshot_file", snapshot_path.name)
+            if isinstance(summary, dict) and summary.get("peer_id") is not None:
+                event.setdefault("peer_id", str(summary.get("peer_id")))
             merged.append(event)
 
     merged.sort(

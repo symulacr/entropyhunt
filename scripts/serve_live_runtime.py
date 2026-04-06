@@ -50,6 +50,9 @@ def merge_peer_payloads(snapshot_dir: Path) -> dict[str, Any]:
             "grid": [],
             "config": {
                 **control,
+                "source_mode": "peer-merged-live",
+                "snapshot_provenance": "control-only-placeholder",
+                "synthetic": True,
                 "control_url": "/control",
                 "control_capabilities": {
                     "tick_seconds": "live",
@@ -122,6 +125,9 @@ def merge_peer_payloads(snapshot_dir: Path) -> dict[str, Any]:
     merged_config.update(control)
     if "requested_drone_count" not in merged_config:
         merged_config["requested_drone_count"] = merged_config.get("drone_count", len(payloads))
+    merged_config["source_mode"] = "peer-merged-live"
+    merged_config["snapshot_provenance"] = "merged-live"
+    merged_config["synthetic"] = False
     merged_config["control_url"] = "/control"
     merged_config["control_capabilities"] = {
         "tick_seconds": "live",

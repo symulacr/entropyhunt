@@ -132,3 +132,6 @@ def test_peer_runtime_snapshot_exports_claimed_cells_and_owner_rows(tmp_path: Pa
     assert payload["summary"]["drones"][0]["claimed_cell"] == [1, 1]
     assert payload["grid"][1][1]["owner"] == "drone_1"
     assert payload["local_grid"][1][1]["owner"] == "drone_1"
+    assert payload["config"]["source_mode"] == "peer"
+    assert payload["config"]["snapshot_provenance"] == "peer-runtime-export"
+    assert payload["config"]["control_capabilities"]["requested_drone_count"] == "unavailable"

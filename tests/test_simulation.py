@@ -97,6 +97,9 @@ def test_default_demo_emits_proofs_in_required_order(tmp_path: Path) -> None:
     assert reclaim["t"] - failure["t"] <= 5
     assert survivor["t"] > 90
     assert len(events) >= 20
+    assert all(event["source"] == "runtime" for event in events)
+    assert all(event["source_mode"] == "stub" for event in events)
+    assert all(event["synthetic"] is False for event in events)
 
 
 def test_saved_final_map_includes_bridge_and_partition_metadata(tmp_path: Path) -> None:
@@ -117,6 +120,9 @@ def test_saved_final_map_includes_bridge_and_partition_metadata(tmp_path: Path) 
     assert "bridge_snapshot" in payload
     assert "partitions" in payload
     assert "partition_boundaries" in payload
+    assert payload["config"]["source_mode"] == "stub"
+    assert payload["config"]["snapshot_provenance"] == "stub-runtime-export"
+    assert payload["config"]["synthetic"] is False
 
 
 def test_null_bus_breaks_contested_claim_quorum(tmp_path: Path) -> None:

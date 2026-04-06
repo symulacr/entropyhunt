@@ -133,7 +133,15 @@ class EntropyHuntSimulation:
         return self.now_ms // 1000
 
     def _log(self, event_type: str, message: str, **data: Any) -> None:
-        payload = {"t": self._seconds(), "type": event_type, "message": message, **data}
+        payload = {
+            "t": self._seconds(),
+            "type": event_type,
+            "message": message,
+            "source": "runtime",
+            "source_mode": "stub",
+            "synthetic": False,
+            **data,
+        }
         self.events.append(payload)
         with self.proofs_path.open("a", encoding="utf-8") as handle:
             handle.write(json.dumps(payload) + "\n")
@@ -743,6 +751,18 @@ class EntropyHuntSimulation:
         partitions = self.partition_snapshot()
         summary = self.summary()
         claimed_owner_map = self._claimed_owner_map()
+        config = {
+            **asdict(self.config),
+            "source_mode": "stub",
+            "snapshot_provenance": "stub-runtime-export",
+            "synthetic": False,
+            "requested_drone_count": self.config.drones,
+            "control_capabilities": {
+                "tick_seconds": "unavailable",
+                "tick_delay_seconds": "unavailable",
+                "requested_drone_count": "unavailable",
+            },
+        }
         payload = {
             "summary": summary,
             "stats": {
@@ -753,7 +773,7 @@ class EntropyHuntSimulation:
                 "bft_rounds": summary["bft_rounds"],
                 "elapsed": summary["duration_elapsed"],
             },
-            "config": asdict(self.config),
+            "config": config,
             "events": self.events,
             "grid": self.certainty_map.to_rows(claimed_owner_map),
             "partitions": [
