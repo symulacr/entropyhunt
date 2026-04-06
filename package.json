@@ -2,18 +2,44 @@
   "name": "entropy-hunt-frontend-shell",
   "private": true,
   "version": "0.1.0",
-  "description": "Packaged static shell for the Entropy Hunt demo surfaces",
+  "description": "Bun-first runtime shell and static frontend packaging for Entropy Hunt",
   "scripts": {
     "build": "python3 scripts/build_frontend.py",
+    "build:launcher": "mkdir -p build && bun build --compile --outfile=build/entropyhunt runtime/run.ts",
+    "build:monitor": "mkdir -p build && bun build --compile --outfile=build/entropyhunt-monitor dashboard/tui_monitor_v2.ts",
     "preview": "python3 -m http.server 4173 --directory dist",
     "start": "python3 -m http.server 4173 --directory dist",
     "test:ui": "node --test entropy_hunt_ui.test.mjs",
-    "deploy:preview": "npm run build && npx vercel@latest deploy",
-    "deploy:prod": "npm run build && npx vercel@latest deploy --prod",
-    "live:peers": "python3 scripts/run_local_peers.py --count 5 --duration 30 --output-dir peer-runs",
-    "live:serve": "python3 scripts/serve_live_runtime.py --snapshot-dir peer-runs"
+    "deploy:preview": "bun run build && npx vercel@latest deploy",
+    "deploy:prod": "bun run build && npx vercel@latest deploy --prod",
+    "hunt": "./runtime/hunt.sh",
+    "hunt:peer": "./runtime/hunt.sh --mode peer",
+    "hunt:ros2": "./runtime/hunt.sh --mode ros2 --ros-runtime host",
+    "hunt:ros2:docker": "./runtime/hunt.sh --mode ros2 --ros-runtime docker",
+    "hunt:debug": "./runtime/hunt.sh --show-launcher",
+    "hunt:demo": "bun run hunt -- --preset demo",
+    "hunt:monitor": "./runtime/hunt-monitor.sh --source http://127.0.0.1:8765/snapshot.json",
+    "hunt:peers": "python3 scripts/run_local_peers.py --count 5 --duration 180 --target 7,3 --fail drone_2 --fail-at 60 --output-dir peer-runs --proofs-path proofs.jsonl",
+    "hunt:serve": "python3 scripts/serve_live_runtime.py --snapshot-dir peer-runs",
+    "hunt:stress:peers": "./runtime/hunt.sh --preset stress-peers",
+    "hunt:stress:grid": "./runtime/hunt.sh --preset stress-grid",
+    "hunt:clean": "bun --silent runtime/clean.ts",
+    "ros2:validate": "./scripts/ros2_phase3_validate.sh",
+    "ros2:validate:docker": "./scripts/ros2_phase3_validate_docker.sh",
+    "live:peers": "bun run hunt",
+    "live:serve": "bun run hunt:serve"
   },
   "engines": {
+    "bun": ">=1.3.10",
     "node": ">=18"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@opentui/core": "^0.1.96"
   }
 }

@@ -1,0 +1,3 @@
+float32 tick_seconds
+int32 requested_drone_count
+int64 timestamp_ms

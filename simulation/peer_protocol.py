@@ -43,6 +43,7 @@ class BftRoundPayload:
     cell: Coordinate
     assignments: tuple[AssignmentPayload, ...]
     rationale: str
+    contest_id: str | None = None
     released_by: str | None = None
 
 
@@ -81,7 +82,7 @@ def drone_state_topic(drone_id: str) -> str:
 
 
 def bft_round_topic(round_id: int) -> str:
-    return f"swarm/bft_round/{round_id}"
+    return f"swarm/bft_result/{round_id}"
 
 
 def survivor_ack_topic(drone_id: str) -> str:
@@ -132,6 +133,7 @@ def make_bft_round_payload(
     cell: Coordinate,
     assignments: list[dict[str, Any]],
     rationale: str,
+    contest_id: str | None = None,
     released_by: str | None = None,
 ) -> dict[str, Any]:
     return {
@@ -139,6 +141,7 @@ def make_bft_round_payload(
         "cell": list(cell),
         "assignments": assignments,
         "rationale": rationale,
+        "contest_id": contest_id,
         "released_by": released_by,
     }
 
@@ -210,6 +213,7 @@ def parse_bft_round_payload(payload: dict[str, Any]) -> BftRoundPayload:
         cell=_coordinate(payload["cell"]),
         assignments=assignments,
         rationale=str(payload["rationale"]),
+        contest_id=str(payload["contest_id"]) if payload.get("contest_id") is not None else None,
         released_by=str(payload["released_by"]) if payload.get("released_by") is not None else None,
     )
 

@@ -16,7 +16,7 @@
 
 The target system is a 5-drone search coordination system where the swarm's collective next action is always: send the next available drone to the zone of highest joint uncertainty — maximum information entropy. No pre-assigned grid sectors. No central planner. No ROS master node. The search pattern is not programmed; it emerges from the swarm's shared certainty state.
 
-The coordination problem is genuine: when two drones simultaneously lock onto the same high-entropy zone, they must P2P-auction the zone boundary using BFT consensus. The auction output determines which drone takes which sub-zone. Remove Vertex and the auction has no Byzantine-resistant arbitration. Remove FoxMQ and the shared certainty map does not exist.
+The coordination problem is genuine: when two drones simultaneously lock onto the same high-entropy zone, they must P2P-auction the zone boundary using BFT consensus. The auction output determines which drone takes which sub-zone. In the current repository, the primary demo proves this with an in-process mesh bus and load-bearing vote delivery; live Vertex/FoxMQ parity remains the target architecture, not a validated deployment claim.
 
 **Minimum demo requirement:** 5 simulated drones, Webots or equivalent. Mocked sensor data is explicitly permitted by the Track 2 brief. The focus is the mesh coordination logic, not the sensor accuracy.
 
@@ -25,6 +25,7 @@ The coordination problem is genuine: when two drones simultaneously lock onto th
 This repository currently contains a **working local prototype**, not the full live stack described in the handoff:
 
 - runnable Python stub simulation: `main.py --mode stub` -> `simulation/stub.py`
+- primary single-command terminal demo with a live ANSI dashboard + `proofs.jsonl`: `python3 main.py --drones 5 --grid 10 --duration 180 --target 7,3 --fail drone_2 --fail-at 60`
 - runnable local multi-process peer runtime: `main.py --mode peer` / `scripts/run_local_peers.py`
 - optional FoxMQ-backed transport helpers and cluster scripts for moving from local UDP transport toward the target broker path
 - optional Webots-backed peer runtime/controller path in `simulation/webots_runtime.py` + `webots_world/`
@@ -34,7 +35,7 @@ This repository currently contains a **working local prototype**, not the full l
 - two static HTML operator consoles: `entropy_hunt_v2.html` and `entropy_hunt_mockup.html`
 - passing tests and static analysis in the current repo state
 
-It does **not** yet contain the live Vertex/FoxMQ/Webots runtime, the production frontend app shell, or all of the optional files named later in the target file structure. Treat the rest of this document as the ambition and implementation plan for parity, not as a claim that the whole system already exists.
+It does **not** yet contain a live Vertex/FoxMQ deployment validated end-to-end in this environment, and the Webots lane is still optional/not CI-validated. Treat the rest of this document as the ambition and implementation plan for parity, not as a claim that the whole system already exists.
 
 ---
 
@@ -263,7 +264,7 @@ Implement a "survivor found" event. When any drone reaches certainty > 0.95 in a
 ### Step 10 — Demo run
 
 ```bash
-python main.py --drones 5 --grid 10 --duration 180 --target 7,3 --fail drone_2 --fail-at 60
+python3 main.py --drones 5 --grid 10 --duration 180 --target 7,3 --fail drone_2 --fail-at 60
 ```
 
 Expected output: certainty map shows full coverage, survivor found event printed, failure injection and recovery logged, final certainty map saved to `final_map.json`.
@@ -371,7 +372,7 @@ The two HTML files in this directory are **UI prototypes**, not the production i
 
 ### Current cleanup status (2026-04-04)
 
-- The default Python demo is now tuned to the static-console constants (`search_increment=0.12`, `completion_certainty=0.92`) so the 10×10 / 180s run reaches full completed coverage while still showing decay on the live snapshot.
+- The default Python demo now uses the spec-aligned search constants (`search_increment=0.05`, `completion_certainty=0.95`) and the multi-process peer path is the primary judge-facing surface; the single-process fallback remains the fast local proof harness.
 - `final_map.json` now carries replay-friendly metadata: config, events, Voronoi partitions, partition boundaries, and a dependency-free Webots bridge snapshot.
 - Both HTML consoles can now load a real simulation replay payload via **Load replay** and clearly distinguish `synthetic demo` from `replay snapshot` mode. The rich console also supports polling an aggregated live snapshot feed when `scripts/serve_live_runtime.py` is running.
 - The repo now includes the missing spec-alignment modules: `failure/injector.py`, `auction/voronoi.py`, `simulation/webots_bridge.py`, `README.md`, and `requirements.txt`.

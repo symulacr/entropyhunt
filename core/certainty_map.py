@@ -2,9 +2,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from math import log2
-from typing import Iterator
+from typing import Iterator, TypeAlias
 
-Coordinate = tuple[int, int]
+Coordinate: TypeAlias = tuple[int, int]
+CellPayload: TypeAlias = dict[str, float | int | str]
+GridPayload: TypeAlias = list[list[CellPayload]]
 
 
 @dataclass(slots=True)
@@ -95,20 +97,24 @@ class CertaintyMap:
         now_ms: int,
     ) -> CellState:
         cell = self.cell(coordinate)
-        cell.certainty = clamp_certainty(cell.certainty + increment)
-        cell.updated_by = updated_by
-        cell.last_updated_ms = now_ms
-        return cell
+        return self.set_certainty(
+            coordinate,
+            cell.certainty + increment,
+            updated_by=updated_by,
+            now_ms=now_ms,
+        )
 
     def decay_all(self, *, seconds: float, now_ms: int, skip: set[Coordinate] | None = None) -> None:
         skipped = skip or set()
         for cell in self:
             if cell.coordinate in skipped:
                 continue
-            cell.certainty = clamp_certainty(
-                cell.certainty + (cell.decay_rate * seconds * (0.5 - cell.certainty))
+            self.set_certainty(
+                cell.coordinate,
+                cell.certainty + (cell.decay_rate * seconds * (0.5 - cell.certainty)),
+                updated_by=cell.updated_by,
+                now_ms=now_ms,
             )
-            cell.last_updated_ms = now_ms
 
     def entropy_at(self, coordinate: Coordinate) -> float:
         return shannon_entropy(self.cell(coordinate).certainty)
@@ -134,7 +140,41 @@ class CertaintyMap:
         searched = sum(1 for cell in self if cell.certainty >= threshold)
         return searched / (self.size * self.size)
 
-    def to_rows(self) -> list[list[dict[str, float | int | str]]]:
+    def clone(self) -> "CertaintyMap":
+        decay_rate = self.cell((0, 0)).decay_rate if self.size else 0.001
+        copy = CertaintyMap(self.size, initial_certainty=0.5, decay_rate=decay_rate, now_ms=0)
+        for cell in self:
+            copy.set_certainty(
+                cell.coordinate,
+                cell.certainty,
+                updated_by=cell.updated_by,
+                now_ms=cell.last_updated_ms,
+            )
+            copy.cell(cell.coordinate).decay_rate = cell.decay_rate
+        return copy
+
+    def replace_from_rows(self, rows: GridPayload) -> None:
+        for y, row in enumerate(rows):
+            for x, payload in enumerate(row):
+                self.set_certainty(
+                    (x, y),
+                    float(payload["certainty"]),
+                    updated_by=str(payload.get("updated_by", "peer")),
+                    now_ms=int(payload.get("last_updated_ms", 0)),
+                )
+
+    def merge_max_from(self, other: "CertaintyMap") -> None:
+        for cell in other:
+            current = self.cell(cell.coordinate)
+            if cell.certainty > current.certainty:
+                self.set_certainty(
+                    cell.coordinate,
+                    cell.certainty,
+                    updated_by=cell.updated_by,
+                    now_ms=cell.last_updated_ms,
+                )
+
+    def to_rows(self) -> GridPayload:
         return [
             [
                 {
@@ -150,3 +190,20 @@ class CertaintyMap:
             ]
             for row in self._grid
         ]
+
+    def merge_rows_max(
+        self,
+        rows: GridPayload,
+        *,
+        now_ms: int,
+        updated_by: str,
+    ) -> None:
+        for row in rows:
+            for payload in row:
+                coordinate = (int(payload["x"]), int(payload["y"]))
+                self.set_certainty(
+                    coordinate,
+                    max(self.cell(coordinate).certainty, float(payload["certainty"])),
+                    updated_by=updated_by,
+                    now_ms=now_ms,
+                )

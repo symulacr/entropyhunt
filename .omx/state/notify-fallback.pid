@@ -1,8 +1,8 @@
 {
-  "pid": 3000390,
-  "parent_pid": 3000317,
+  "pid": 703532,
+  "parent_pid": 703397,
   "cwd": "/home/kpa/entropyhunt",
-  "started_at": "2026-04-04T05:28:22.408Z",
+  "started_at": "2026-04-06T04:49:44.669Z",
   "max_lifetime_ms": 21600000,
-  "owner_token": "3000390-1775280502408-ierryy19"
+  "owner_token": "703532-1775450984669-74t7s3pj"
 }

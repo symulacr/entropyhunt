@@ -1,0 +1,9 @@
+string drone_id
+int32 x
+int32 y
+int32 tx
+int32 ty
+string status
+bool alive
+bool reachable
+int32 searched_cells

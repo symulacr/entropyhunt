@@ -1,6 +1,7 @@
 from auction.protocol import ClaimRequest
 from core.bft import BftCoordinator
 from core.certainty_map import CertaintyMap
+from core.mesh import InMemoryMeshBus
 from core.zone_selector import ZoneSelector
 
 
@@ -52,3 +53,20 @@ def test_bft_is_deterministic_for_repeated_same_contention() -> None:
         )
         winners.append(result.assignments[0].drone_id)
     assert winners == ["drone_2"] * 10
+
+
+def test_bft_collects_real_votes_over_the_mesh_bus() -> None:
+    mesh = InMemoryMeshBus(peer_id="simulation")
+    bft = BftCoordinator(["drone_1", "drone_2", "drone_3", "drone_4", "drone_5"], mesh=mesh)
+    result = bft.resolve_claims(
+        [
+            ClaimRequest("c1", "drone_1", (1, 1), (0, 0), 1_000),
+            ClaimRequest("c2", "drone_2", (1, 1), (1, 0), 1_000),
+        ],
+        certainty_map=CertaintyMap(4),
+        selector=ZoneSelector(),
+        claimed_zones=set(),
+        now_ms=1_000,
+        initiator_id="drone_1",
+    )
+    assert len(result.votes) >= 3

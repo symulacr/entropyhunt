@@ -386,7 +386,7 @@
       <div class="kv-v a" id="kv-ent">1.00</div>
     </div>
     <div class="kv">
-      <div class="kv-k">bft rounds</div>
+      <div class="kv-k">auctions</div>
       <div class="kv-v" id="kv-auc">0</div>
     </div>
     <div class="kv">
@@ -463,7 +463,7 @@
   const SEARCH_COMPLETE = 0.92;
   const DECAY_RATE = 0.001;
   const TICK_MS = 700;
-  const TARGET = { x: 7, y: 3 };
+  let TARGET = { x: 7, y: 3 };
   const DEMO_CONTENTION_CELL = { x: 5, y: 5 };
   const DEMO_TIMELINE = {
     packetLossAt: 40,
@@ -608,12 +608,27 @@
     renderLog();
   }
 
+  function mapBackendStatus(rawStatus) {
+    return {
+      transiting: "transit",
+      claiming: "transit",
+      claim_won: "searching",
+      claim_lost: "transit",
+      stale: "offline",
+    }[rawStatus] || rawStatus || "idle";
+  }
+
   function mapReplayEventType(type) {
     return {
+      auction: "bft",
       bft: "bft",
       failure: "err",
       stale: "err",
+      heartbeat_timeout: "err",
+      zone_release: "warn",
+      zone_priority_reclaim: "ok",
       survivor: "ok",
+      survivor_found: "ok",
       survivor_ack: "ok",
       zone_complete: "ok",
       claim: "info",
@@ -633,9 +648,12 @@
   function applySnapshotPayload(payload, mode) {
     const rows = payload?.grid;
     const summary = payload?.summary || payload || {};
+    const stats = payload?.stats || summary || {};
+    const targetValue = payload?.config?.target || summary?.target || [7, 3];
     if (!Array.isArray(rows) || rows.length !== GRID_SIZE) {
       throw new Error(`expected ${GRID_SIZE} snapshot rows`);
     }
+    TARGET = { x: Number(targetValue[0] ?? 7), y: Number(targetValue[1] ?? 3) };
 
     rows.forEach((row, y) => {
       if (!Array.isArray(row) || row.length !== GRID_SIZE) {
@@ -648,11 +666,11 @@
       });
     });
 
-    elapsed = Number(summary.duration_elapsed ?? 0);
-    bftRounds = Number(summary.bft_rounds ?? 0);
-    auctions = Number(summary.auctions ?? 0);
-    dropouts = Number(summary.dropouts ?? 0);
-    found = Boolean(summary.survivor_found);
+    elapsed = Number(stats.duration_elapsed ?? summary.duration_elapsed ?? 0);
+    bftRounds = Number(stats.bft_rounds ?? 0);
+    auctions = Number(stats.auctions ?? 0);
+    dropouts = Number(stats.dropouts ?? 0);
+    found = Boolean(stats.survivor_found ?? summary.survivor_found);
     missionComplete = mode === "replay";
     packetDrop = false;
     autoDemo.enabled = false;
@@ -673,7 +691,9 @@
       drone.tx = target ? target[0] : null;
       drone.ty = target ? target[1] : null;
       drone.stale = replayDrone.alive === false;
-      drone.status = replayDrone.status || (drone.stale ? "offline" : "idle");
+      drone.status = mapBackendStatus(
+        replayDrone.status || (drone.stale ? "offline" : "idle"),
+      );
       drone.cells = Number(replayDrone.searched_cells ?? drone.cells ?? 0);
     });
 
@@ -1051,6 +1071,7 @@
     }
 
     drones.forEach((drone) => {
+      const displayStatus = mapBackendStatus(drone.status);
       if (drone.stale) {
         ctx.strokeStyle = `${drone.color}44`;
         ctx.lineWidth = 1;
@@ -1078,7 +1099,7 @@
       ctx.stroke();
 
       if (
-        drone.status === "transit" &&
+        displayStatus === "transit" &&
         drone.tx != null &&
         drone.ty != null &&
         (drone.x !== drone.tx || drone.y !== drone.ty)
@@ -1104,11 +1125,12 @@
   function renderDrones() {
     document.getElementById("drone-list").innerHTML = drones
       .map((drone, index) => {
+        const displayStatus = mapBackendStatus(drone.status);
         const chip = drone.stale
           ? '<span class="chip chip-d">offline</span>'
-          : drone.status === "searching"
+          : displayStatus === "searching"
             ? '<span class="chip chip-s">searching</span>'
-            : drone.status === "transit"
+            : displayStatus === "transit"
               ? '<span class="chip chip-t">transit</span>'
               : '<span class="chip chip-i">idle</span>';
         const currentEntropy = entropy(
@@ -1161,7 +1183,7 @@
   function updateStats() {
     document.getElementById("kv-cov").textContent = `${coverage()}%`;
     document.getElementById("kv-ent").textContent = averageEntropy();
-    document.getElementById("kv-auc").textContent = bftRounds;
+    document.getElementById("kv-auc").textContent = auctions;
     document.getElementById("kv-drop").textContent = dropouts;
     document.getElementById("kv-t").textContent = `${elapsed}s`;
   }

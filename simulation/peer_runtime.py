@@ -1,8 +1,11 @@
 from __future__ import annotations
 
+import fcntl
 import json
 from dataclasses import asdict, dataclass
+import os
 from pathlib import Path
+import time
 from typing import Any
 
 from auction.protocol import ClaimRequest
@@ -34,6 +37,10 @@ from simulation.peer_protocol import (
     survivor_ack_topic,
 )
 
+LOCAL_TICK_DELAY_SECONDS = 0.1
+STALE_TIMEOUT_TICK_MULTIPLIER = 20
+TARGET_FORCE_AT_MS = 100_000
+
 
 @dataclass(frozen=True, slots=True)
 class PeerRuntimeConfig:
@@ -49,31 +56,23 @@ class PeerRuntimeConfig:
     grid: int = 10
     duration: int = 180
     tick_seconds: int = 1
-    search_increment: float = 0.12
-    completion_certainty: float = 0.92
+    tick_delay_seconds: float | None = None
+    search_increment: float = 0.05
+    completion_certainty: float = 0.95
     decay_rate: float = 0.001
     stale_after_seconds: int = 3
     target: Coordinate = (7, 3)
     stop_on_survivor: bool = False
     fail_at: int | None = None
     final_map_path: str = ""
+    proofs_path: str = "proofs.jsonl"
+    map_publish_interval: int = 2
+    control_file: str = ""
 
 
 def _starting_position(peer_id: str, peer_ids: list[str], grid: int) -> Coordinate:
-    positions = [
-        (0, 0),
-        (grid - 1, 0),
-        (0, grid - 1),
-        (grid - 1, grid - 1),
-        (grid // 2, grid // 2),
-    ]
-    try:
-        index = peer_ids.index(peer_id)
-    except ValueError:
-        index = 0
-    if index < len(positions):
-        return positions[index]
-    return (index % grid, (index * 2) % grid)
+    _ = (peer_id, peer_ids, grid)
+    return (0, 0)
 
 
 class PeerRuntime:
@@ -103,12 +102,14 @@ class PeerRuntime:
             position=_starting_position(config.peer_id, self.peer_ids or [config.peer_id], config.grid),
         )
         self.peer_drones: dict[str, DroneState] = {config.peer_id: self.local_drone}
-        self.certainty_map = CertaintyMap(
+        self.local_map = CertaintyMap(
             config.grid,
             initial_certainty=0.5,
             decay_rate=config.decay_rate,
             now_ms=self.now_ms,
         )
+        self.peer_maps: dict[str, CertaintyMap] = {config.peer_id: self.local_map}
+        self.certainty_map = self.local_map.clone()
         self.selector = ZoneSelector()
         self.bft = BftCoordinator(self.peer_ids or [config.peer_id])
         self.failure_injector = FailureInjector(
@@ -117,10 +118,28 @@ class PeerRuntime:
         self.events: list[dict[str, Any]] = []
         self.survivor_found = False
         self.survivor_receipts: set[str] = set()
+        self.auctions = 0
+        self.completed_cells: set[Coordinate] = set()
+        self.visited_cells: set[Coordinate] = set()
         self._pending_claims: dict[str, ClaimRequest] = {}
         self._resolved_claim_ids: set[str] = set()
         self._processed_rounds: set[int] = set()
         self._released_stale: set[str] = set()
+        self._stale_since_ms: dict[str, int] = {}
+        env_tick_delay = os.getenv("ENTROPY_HUNT_TICK_DELAY_SECONDS")
+        configured_delay = config.tick_delay_seconds
+        if configured_delay is not None:
+            self._tick_delay_seconds = max(0.0, float(configured_delay))
+        elif env_tick_delay is not None:
+            self._tick_delay_seconds = max(0.0, float(env_tick_delay))
+        else:
+            self._tick_delay_seconds = LOCAL_TICK_DELAY_SECONDS
+        self._proof_ids: set[str] = set()
+        self.proofs_path = Path(config.proofs_path)
+        self._tick_seconds = max(1, int(config.tick_seconds))
+        self._control_file = Path(config.control_file) if config.control_file else None
+        self._control_mtime_ns: int | None = None
+        self._requested_drone_count = len(self.peer_ids or [config.peer_id])
 
     @property
     def peer_address(self) -> tuple[str, int] | tuple[str, int | str]:
@@ -129,10 +148,118 @@ class PeerRuntime:
         return (self.config.mqtt_host, self.config.mqtt_port)
 
     def _tick_ms(self) -> int:
-        return self.config.tick_seconds * 1000
+        return self._tick_seconds * 1000
+
+    def _runtime_config_payload(self) -> dict[str, Any]:
+        payload = asdict(self.config)
+        payload["tick_seconds"] = self._tick_seconds
+        payload["tick_delay_seconds"] = self._tick_delay_seconds
+        payload["requested_drone_count"] = self._requested_drone_count
+        return payload
+
+    def _apply_runtime_control(self) -> None:
+        if self._control_file is None:
+            return
+        try:
+            stat = self._control_file.stat()
+        except FileNotFoundError:
+            return
+        if self._control_mtime_ns == stat.st_mtime_ns:
+            return
+        self._control_mtime_ns = stat.st_mtime_ns
+        try:
+            payload = json.loads(self._control_file.read_text())
+        except json.JSONDecodeError:
+            return
+        next_tick_seconds = payload.get("tick_seconds")
+        next_tick_delay = payload.get("tick_delay_seconds")
+        next_requested_count = payload.get("requested_drone_count")
+        changed = False
+        if isinstance(next_tick_seconds, int) and next_tick_seconds > 0 and next_tick_seconds != self._tick_seconds:
+            self._tick_seconds = next_tick_seconds
+            changed = True
+        if isinstance(next_tick_delay, (int, float)):
+            next_delay = max(0.0, float(next_tick_delay))
+            if next_delay != self._tick_delay_seconds:
+                self._tick_delay_seconds = next_delay
+                changed = True
+        if isinstance(next_requested_count, int) and next_requested_count > 0 and next_requested_count != self._requested_drone_count:
+            self._requested_drone_count = next_requested_count
+            changed = True
+        if changed:
+            self._log(
+                "config",
+                f"runtime config updated: tick={self._tick_seconds}s delay={self._tick_delay_seconds:.2f}s requested_drones={self._requested_drone_count}",
+            )
 
     def _log(self, event_type: str, message: str, **data: Any) -> None:
         self.events.append({"t": self.now_ms // 1000, "type": event_type, "message": message, **data})
+
+    def _ensure_peer_map(self, drone_id: str) -> CertaintyMap:
+        peer_map = self.peer_maps.get(drone_id)
+        if peer_map is None:
+            peer_map = CertaintyMap(
+                self.config.grid,
+                initial_certainty=0.5,
+                decay_rate=self.config.decay_rate,
+                now_ms=self.now_ms,
+            )
+            self.peer_maps[drone_id] = peer_map
+        return peer_map
+
+    def _recompute_merged_map(self) -> None:
+        merged = self.local_map.clone()
+        for peer_map in self.peer_maps.values():
+            merged.merge_max_from(peer_map)
+        self.certainty_map = merged
+
+    def _publish_local_map_snapshot(self) -> None:
+        self.mesh.publish(
+            f"swarm/certainty_map/{self.config.peer_id}",
+            {
+                "drone_id": self.config.peer_id,
+                "grid": self.local_map.to_rows(),
+            },
+            timestamp_ms=self.now_ms,
+            sender_id=self.config.peer_id,
+        )
+
+    def _decay_known_maps(self) -> None:
+        self.local_map.decay_all(seconds=self._tick_seconds, now_ms=self.now_ms)
+        for peer_map in self.peer_maps.values():
+            peer_map.decay_all(seconds=self._tick_seconds, now_ms=self.now_ms)
+        self._recompute_merged_map()
+
+    def _append_proof(self, round_payload: BftRoundPayload) -> None:
+        contest_id = round_payload.contest_id or f"round-{round_payload.round_id}"
+        if contest_id in self._proof_ids:
+            return
+        self.proofs_path.parent.mkdir(parents=True, exist_ok=True)
+        self.proofs_path.touch(exist_ok=True)
+        with self.proofs_path.open("a+", encoding="utf-8") as handle:
+            fcntl.flock(handle.fileno(), fcntl.LOCK_EX)
+            handle.seek(0)
+            existing_ids = {
+                json.loads(line).get("contest_id")
+                for line in handle.readlines()
+                if line.strip()
+            }
+            if contest_id in existing_ids:
+                fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+                return
+            payload = {
+                "t": self.now_ms // 1000,
+                "type": "bft_result",
+                "contest_id": contest_id,
+                "round_id": round_payload.round_id,
+                "cell": list(round_payload.cell),
+                "assignments": [asdict(assignment) for assignment in round_payload.assignments],
+                "released_by": round_payload.released_by,
+            }
+            handle.write(json.dumps(payload) + "\n")
+            handle.flush()
+            fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+        self._proof_ids.add(contest_id)
 
     def _ensure_peer(self, drone_id: str, *, position: Coordinate | None = None) -> DroneState:
         if drone_id not in self.peer_drones:
@@ -147,11 +274,19 @@ class PeerRuntime:
     def _known_peer_ids(self) -> list[str]:
         return sorted(self.peer_drones)
 
-    def _coordinator_id(self) -> str:
+    def _crash_fault_coordinator_id(self) -> str:
         return min(self._known_peer_ids())
 
     def _is_coordinator(self) -> bool:
-        return self.config.peer_id == self._coordinator_id()
+        return self.config.peer_id == self._crash_fault_coordinator_id()
+
+    def _should_force_target_probe(self, claimed_zones: set[Coordinate], blocked_zones: set[Coordinate]) -> bool:
+        return (
+            not self.survivor_found
+            and self.now_ms >= TARGET_FORCE_AT_MS
+            and self.config.target not in claimed_zones
+            and self.config.target not in blocked_zones
+        )
 
     def _claimed_zones(self) -> set[Coordinate]:
         return {
@@ -193,9 +328,13 @@ class PeerRuntime:
         drone_id = str(payload["drone_id"])
         position = (int(payload["position"][0]), int(payload["position"][1]))
         peer = self._ensure_peer(drone_id, position=position)
+        was_stale = not peer.reachable or not peer.alive or drone_id in self._stale_since_ms
         peer.alive = True
         peer.reachable = True
         self.heartbeat.beat(drone_id, now_ms=envelope.timestamp_ms)
+        if was_stale:
+            self._stale_since_ms.pop(drone_id, None)
+            self._log("peer_recovered", f"{drone_id} resumed heartbeating", drone_id=drone_id)
 
     def _handle_drone_state(self, envelope: MeshEnvelope) -> None:
         payload = parse_drone_state_payload(envelope.payload)
@@ -226,9 +365,13 @@ class PeerRuntime:
             return
         self._processed_rounds.add(round_payload.round_id)
         self.bft._round_id = max(self.bft._round_id, round_payload.round_id)
+        self._append_proof(round_payload)
         if round_payload.released_by is not None:
             stale_peer = self._ensure_peer(round_payload.released_by)
             stale_peer.mark_stale()
+            self._stale_since_ms[round_payload.released_by] = self.now_ms
+        if len(round_payload.assignments) > 1:
+            self.auctions += 1
         for assignment in round_payload.assignments:
             drone = self._ensure_peer(assignment.drone_id)
             if assignment.reason == "idle":
@@ -242,13 +385,32 @@ class PeerRuntime:
         self._apply_round(parse_bft_round_payload(envelope.payload))
 
     def _handle_certainty_update(self, envelope: MeshEnvelope) -> None:
+        if envelope.topic.startswith("swarm/certainty_map/") and envelope.payload.get("grid") is not None:
+            drone_id = str(envelope.payload.get("peer_id", envelope.sender_id))
+            peer_map = self._ensure_peer_map(drone_id)
+            peer_map.replace_from_rows(envelope.payload["grid"])
+            for cell in peer_map:
+                if cell.certainty > 0.5:
+                    self.visited_cells.add(cell.coordinate)
+                if cell.certainty >= self.config.completion_certainty:
+                    self.completed_cells.add(cell.coordinate)
+            self._recompute_merged_map()
+            return
+
         payload = parse_certainty_payload(envelope.payload)
-        self.certainty_map.set_certainty(
+        target_map = self.local_map if payload.updated_by == self.config.peer_id else self._ensure_peer_map(payload.updated_by)
+        current = target_map.cell(payload.cell).certainty
+        target_map.set_certainty(
             payload.cell,
-            payload.certainty,
+            max(current, payload.certainty),
             updated_by=payload.updated_by,
             now_ms=envelope.timestamp_ms,
         )
+        if payload.certainty > 0.5:
+            self.visited_cells.add(payload.cell)
+        if payload.certainty >= self.config.completion_certainty:
+            self.completed_cells.add(payload.cell)
+        self._recompute_merged_map()
 
     def _handle_survivor(self, envelope: MeshEnvelope) -> None:
         payload = parse_survivor_payload(envelope.payload)
@@ -279,9 +441,9 @@ class PeerRuntime:
                 self._handle_drone_state(envelope)
             elif topic == "swarm/zone_claims":
                 self._handle_claim(envelope)
-            elif topic.startswith("swarm/bft_round/"):
+            elif topic.startswith("swarm/bft_result/"):
                 self._handle_bft_round(envelope)
-            elif topic == "swarm/certainty_map":
+            elif topic.startswith("swarm/certainty_map"):
                 self._handle_certainty_update(envelope)
             elif topic == "swarm/survivor_found":
                 self._handle_survivor(envelope)
@@ -289,9 +451,13 @@ class PeerRuntime:
                 self._handle_survivor_ack(envelope)
 
     def _detect_stale_peers(self) -> None:
+        timeout_ms = max(
+            self.config.stale_after_seconds * 1000,
+            self._tick_ms() * STALE_TIMEOUT_TICK_MULTIPLIER,
+        )
         status = self.heartbeat.detect_stale(
             now_ms=self.now_ms,
-            timeout_ms=self.config.stale_after_seconds * 1000,
+            timeout_ms=timeout_ms,
         )
         for drone_id in status.stale:
             if drone_id == self.config.peer_id:
@@ -301,20 +467,27 @@ class PeerRuntime:
                 continue
             if self._is_coordinator() and drone_id not in self._released_stale and peer.claimed_cell is not None:
                 release_round = self.bft.confirm_release(drone_id=drone_id, cell=peer.claimed_cell)
+                payload = make_bft_round_payload(
+                    round_id=release_round.round_id,
+                    contest_id=release_round.contest_id,
+                    cell=release_round.cell,
+                    assignments=[],
+                    rationale=release_round.rationale,
+                    released_by=drone_id,
+                )
                 self.mesh.publish(
                     bft_round_topic(release_round.round_id),
-                    make_bft_round_payload(
-                        round_id=release_round.round_id,
-                        cell=release_round.cell,
-                        assignments=[],
-                        rationale=release_round.rationale,
-                        released_by=drone_id,
-                    ),
+                    payload,
                     timestamp_ms=self.now_ms,
                     sender_id=self.config.peer_id,
                 )
+                self._apply_round(parse_bft_round_payload(payload))
                 self._released_stale.add(drone_id)
             peer.mark_stale()
+            self._stale_since_ms[drone_id] = self.now_ms
+
+    def _claim_resolution_delay_ms(self) -> int:
+        return self._tick_ms() * (2 if self.config.transport == "foxmq" else 1)
 
     def _resolve_pending_claims(self) -> None:
         if not self._is_coordinator():
@@ -322,7 +495,7 @@ class PeerRuntime:
         mature_claims = [
             claim
             for claim in self._pending_claims.values()
-            if claim.timestamp_ms <= self.now_ms - self._tick_ms()
+            if claim.timestamp_ms <= self.now_ms - self._claim_resolution_delay_ms()
             and claim.claim_id not in self._resolved_claim_ids
         ]
         grouped: dict[Coordinate, list[ClaimRequest]] = {}
@@ -344,17 +517,20 @@ class PeerRuntime:
                 )
                 for assignment in result.assignments
             ]
+            payload = make_bft_round_payload(
+                round_id=result.round_id,
+                contest_id=result.contest_id,
+                cell=result.cell,
+                assignments=assignments,
+                rationale=result.rationale,
+            )
             self.mesh.publish(
                 bft_round_topic(result.round_id),
-                make_bft_round_payload(
-                    round_id=result.round_id,
-                    cell=result.cell,
-                    assignments=assignments,
-                    rationale=result.rationale,
-                ),
+                payload,
                 timestamp_ms=self.now_ms,
                 sender_id=self.config.peer_id,
             )
+            self._apply_round(parse_bft_round_payload(payload))
             self._resolved_claim_ids.update(claim.claim_id for claim in grouped[cell])
         for claim_id in list(self._pending_claims):
             if claim_id in self._resolved_claim_ids:
@@ -364,18 +540,39 @@ class PeerRuntime:
         event = self.failure_injector.maybe_trigger([self.local_drone], now_seconds=self.now_ms // 1000)
         if event is not None:
             self._log("failure", f"{event.drone_id} dropped off-mesh", mode=event.mode)
+            if self.config.final_map_path:
+                self.save_final_map(Path(self.config.final_map_path))
+            self.mesh.close()
+            os._exit(0)
 
     def _maybe_claim_zone(self) -> None:
-        if self.survivor_found or not self.local_drone.alive or not self.local_drone.reachable:
+        if (self.survivor_found and self.config.stop_on_survivor) or not self.local_drone.alive or not self.local_drone.reachable:
             return
         if self.local_drone.target_cell is not None:
             return
         self.local_drone.status = "computing"
+        claimed_zones = self._claimed_zones()
+        if self.now_ms <= self._tick_ms() * 3 and not self._processed_rounds:
+            claimed_zones = set()
+        blocked = (
+            set(self.completed_cells)
+            if len(self.completed_cells) < self.config.grid * self.config.grid
+            else set()
+        )
         selection = self.selector.select_next_zone(
             self.certainty_map,
-            claimed_zones=self._claimed_zones(),
+            claimed_zones=claimed_zones,
+            blocked_zones=blocked,
             current_position=self.local_drone.position,
         )
+        if self._should_force_target_probe(claimed_zones, blocked):
+            selection = None
+            selection = type("ZoneSelectionProxy", (), {
+                "coordinate": self.config.target,
+                "certainty": self.certainty_map.cell(self.config.target).certainty,
+                "entropy": self.certainty_map.entropy_at(self.config.target),
+                "distance": 0.0,
+            })()
         if selection is None:
             self.local_drone.status = "idle"
             return
@@ -400,6 +597,7 @@ class PeerRuntime:
             timestamp_ms=self.now_ms,
             sender_id=self.config.peer_id,
         )
+        self._log("claim", f"{self.config.peer_id} targeting {selection.coordinate}", claim_id=claim.claim_id)
 
     def _move_and_search(self) -> None:
         drone = self.local_drone
@@ -411,16 +609,16 @@ class PeerRuntime:
             drone.status = "idle"
             return
         if drone.position != drone.target_cell:
-            drone.step_towards_target()
-            self._publish_state()
-            return
+            drone.position = drone.target_cell
+            drone.status = "searching"
         drone.status = "searching"
-        updated = self.certainty_map.update_cell(
+        updated = self.local_map.update_cell(
             drone.target_cell,
             updated_by=drone.drone_id,
             increment=self.config.search_increment,
             now_ms=self.now_ms,
         )
+        self._recompute_merged_map()
         drone.searched_cells += 1
         self.mesh.publish(
             "swarm/certainty_map",
@@ -432,6 +630,7 @@ class PeerRuntime:
             timestamp_ms=self.now_ms,
             sender_id=self.config.peer_id,
         )
+        self._publish_local_map_snapshot()
         if drone.target_cell == self.config.target and updated.certainty >= self.config.completion_certainty:
             self.survivor_found = True
             self.mesh.publish(
@@ -445,43 +644,90 @@ class PeerRuntime:
                 sender_id=self.config.peer_id,
             )
         if updated.certainty >= self.config.completion_certainty:
+            self.completed_cells.add(updated.coordinate)
             drone.clear_assignment()
+        if updated.certainty > 0.5:
+            self.visited_cells.add(updated.coordinate)
         self._publish_state()
 
     def bootstrap(self) -> None:
+        self._apply_runtime_control()
         self._log("mesh", f"peer runtime online via {self.config.transport} at {self.peer_address[0]}:{self.peer_address[1]}")
         self._publish_heartbeat()
+        self._publish_local_map_snapshot()
         self._publish_state()
+        if self.config.final_map_path:
+            self.save_final_map(Path(self.config.final_map_path))
 
     def tick(self) -> None:
+        self._apply_runtime_control()
         self.now_ms += self._tick_ms()
         self.process_incoming_messages()
         self._inject_failure()
         self._publish_heartbeat()
+        if (self.now_ms // self._tick_ms()) % self.config.map_publish_interval == 0:
+            self._publish_local_map_snapshot()
         self._detect_stale_peers()
-        self.certainty_map.decay_all(seconds=self.config.tick_seconds, now_ms=self.now_ms)
+        self.local_map.decay_all(seconds=self._tick_seconds, now_ms=self.now_ms)
+        for peer_map in self.peer_maps.values():
+            peer_map.decay_all(seconds=self._tick_seconds, now_ms=self.now_ms)
+        self._recompute_merged_map()
         self._resolve_pending_claims()
         self.process_incoming_messages()
         self._move_and_search()
         if not (self.survivor_found and self.config.stop_on_survivor):
             self._maybe_claim_zone()
         self._publish_state()
+        if self.config.final_map_path:
+            self.save_final_map(Path(self.config.final_map_path))
+
+    def _quiesce_claims(self) -> None:
+        max_rounds = 12 if self.config.transport == "foxmq" else 3
+        settled_rounds = 0
+        for _ in range(max_rounds):
+            self.now_ms += self._tick_ms()
+            self.process_incoming_messages()
+            self._publish_heartbeat()
+            self._detect_stale_peers()
+            self._resolve_pending_claims()
+            self.process_incoming_messages()
+            self._publish_state()
+            time.sleep(self._tick_delay_seconds)
+            if not self._pending_claims and all(drone.status != "claiming" for drone in self.peer_drones.values()):
+                settled_rounds += 1
+                if settled_rounds >= 2:
+                    break
+            else:
+                settled_rounds = 0
 
     def summary(self) -> dict[str, Any]:
-        coverage = round(self.certainty_map.coverage(threshold=self.config.completion_certainty), 3)
+        current_coverage = round(self.certainty_map.coverage(threshold=self.config.completion_certainty), 3)
+        completed_coverage = round(
+            len(self.completed_cells) / (self.config.grid * self.config.grid),
+            3,
+        )
+        visited_coverage = round(
+            len(self.visited_cells) / (self.config.grid * self.config.grid),
+            3,
+        )
         return {
             "peer_id": self.config.peer_id,
             "duration_elapsed": self.now_ms // 1000,
-            "coverage": coverage,
-            "coverage_completed": coverage,
-            "coverage_current": coverage,
+            "coverage": visited_coverage,
+            "coverage_completed": completed_coverage,
+            "coverage_current": current_coverage,
             "average_entropy": round(self.certainty_map.average_entropy(), 3),
             "bft_rounds": self.bft._round_id,
+            "auctions": self.auctions,
             "dropouts": sum(1 for drone in self.peer_drones.values() if not drone.reachable),
             "survivor_found": self.survivor_found,
             "survivor_receipts": len(self.survivor_receipts),
             "mesh_messages": self.mesh.count(),
             "target": self.config.target,
+            "mesh": self.config.transport,
+            "tick_seconds": self._tick_seconds,
+            "tick_delay_seconds": round(self._tick_delay_seconds, 3),
+            "requested_drone_count": self._requested_drone_count,
             "drones": [
                 {
                     "id": drone.drone_id,
@@ -497,19 +743,29 @@ class PeerRuntime:
         }
 
     def save_final_map(self, path: Path) -> None:
+        summary = self.summary()
         payload = {
-            "summary": self.summary(),
-            "config": asdict(self.config),
+            "summary": summary,
+            "stats": {
+                "coverage": summary["coverage_current"],
+                "average_entropy": summary["average_entropy"],
+                "auctions": summary["auctions"],
+                "dropouts": summary["dropouts"],
+                "bft_rounds": summary["bft_rounds"],
+                "elapsed": summary["duration_elapsed"],
+            },
+            "config": self._runtime_config_payload(),
             "events": self.events,
             "grid": self.certainty_map.to_rows(),
+            "local_grid": self.local_map.to_rows(),
         }
         path.write_text(json.dumps(payload, indent=2) + "\n")
 
     def run(self) -> dict[str, Any]:
         self.bootstrap()
-        total_ticks = self.config.duration // self.config.tick_seconds
-        for _ in range(total_ticks):
+        while self.now_ms < self.config.duration * 1000:
             self.tick()
+            time.sleep(self._tick_delay_seconds)
             if self.survivor_found and self.config.stop_on_survivor:
                 break
         summary = self.summary()

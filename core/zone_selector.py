@@ -15,30 +15,46 @@ class ZoneSelection:
 
 
 class ZoneSelector:
+    def _selections(
+        self,
+        certainty_map: CertaintyMap,
+        *,
+        claimed_zones: set[Coordinate],
+        current_position: Coordinate,
+        blocked_zones: set[Coordinate] | None = None,
+    ) -> list[ZoneSelection]:
+        blocked = blocked_zones or set()
+        return [
+            ZoneSelection(
+                coordinate=score.coordinate,
+                certainty=score.certainty,
+                entropy=score.entropy,
+                distance=dist(current_position, score.coordinate),
+            )
+            for score in certainty_map.ranked_cells(claimed_zones | blocked)
+        ]
+
     def select_next_zone(
         self,
         certainty_map: CertaintyMap,
         *,
         claimed_zones: set[Coordinate],
         current_position: Coordinate,
+        blocked_zones: set[Coordinate] | None = None,
     ) -> ZoneSelection | None:
-        ranked = certainty_map.ranked_cells(claimed_zones)
-        if not ranked:
+        """Returns argmax H(cell) over unclaimed cells not in exclude_set. H = Shannon entropy of certainty value."""
+        selections = self._selections(
+            certainty_map,
+            claimed_zones=claimed_zones,
+            current_position=current_position,
+            blocked_zones=blocked_zones,
+        )
+        if not selections:
             return None
-
-        best = sorted(
-            (
-                ZoneSelection(
-                    coordinate=score.coordinate,
-                    certainty=score.certainty,
-                    entropy=score.entropy,
-                    distance=dist(current_position, score.coordinate),
-                )
-                for score in ranked
-            ),
+        return min(
+            selections,
             key=lambda item: (-item.entropy, item.distance, item.coordinate[1], item.coordinate[0]),
         )
-        return best[0]
 
     def top_candidates(
         self,
@@ -47,17 +63,14 @@ class ZoneSelector:
         claimed_zones: set[Coordinate],
         current_position: Coordinate,
         limit: int = 3,
+        blocked_zones: set[Coordinate] | None = None,
     ) -> list[ZoneSelection]:
-        ranked = certainty_map.ranked_cells(claimed_zones)
-        selections = [
-            ZoneSelection(
-                coordinate=score.coordinate,
-                certainty=score.certainty,
-                entropy=score.entropy,
-                distance=dist(current_position, score.coordinate),
-            )
-            for score in ranked
-        ]
+        selections = self._selections(
+            certainty_map,
+            claimed_zones=claimed_zones,
+            current_position=current_position,
+            blocked_zones=blocked_zones,
+        )
         return sorted(
             selections,
             key=lambda item: (-item.entropy, item.distance, item.coordinate[1], item.coordinate[0]),

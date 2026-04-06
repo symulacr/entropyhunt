@@ -44,4 +44,4 @@ def test_claim_and_bft_payload_helpers_round_trip_coordinates() -> None:
     assert payload.round_id == 3
     assert payload.cell == (1, 2)
     assert payload.assignments[0].drone_id == "drone_1"
-    assert bft_round_topic(3) == "swarm/bft_round/3"
+    assert bft_round_topic(3) == "swarm/bft_result/3"

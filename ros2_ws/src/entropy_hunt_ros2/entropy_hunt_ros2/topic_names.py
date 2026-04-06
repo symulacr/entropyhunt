@@ -1,0 +1,7 @@
+HEARTBEAT_TOPIC = "/swarm/heartbeat"
+DRONE_STATE_TOPIC = "/swarm/drone_state"
+CLAIMS_TOPIC = "/swarm/claims"
+BFT_RESULT_TOPIC = "/swarm/bft_result"
+CERTAINTY_UPDATE_TOPIC = "/swarm/certainty_update"
+SURVIVOR_FOUND_TOPIC = "/swarm/survivor_found"
+RUNTIME_CONTROL_TOPIC = "/swarm/runtime_control"
