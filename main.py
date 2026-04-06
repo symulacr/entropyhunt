@@ -101,10 +101,11 @@ def run_stub_mode(args: argparse.Namespace) -> int:
     )
     mesh_factory = VertexMeshBus if args.mesh == "real" else None
     simulation = EntropyHuntSimulation(config, mesh_factory=mesh_factory)
+    default_tick_delay_seconds = TUIDashboard().tick_delay_seconds
     dashboard = TUIDashboard(
         tick_delay_seconds=max(0.0, float(args.tick_delay_seconds))
         if args.tick_delay_seconds is not None
-        else TUIDashboard.tick_delay_seconds
+        else default_tick_delay_seconds
     )
     record_dir = Path("demo_frames")
     if args.record:

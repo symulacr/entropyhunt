@@ -41,6 +41,16 @@ def shannon_entropy(certainty: float) -> float:
     return -(probability * log2(probability) + (1.0 - probability) * log2(1.0 - probability))
 
 
+def _payload_float(payload: CellPayload, key: str, default: float = 0.0) -> float:
+    value = payload.get(key, default)
+    return default if value is None else float(value)
+
+
+def _payload_int(payload: CellPayload, key: str, default: int = 0) -> int:
+    value = payload.get(key, default)
+    return default if value is None else int(value)
+
+
 class CertaintyMap:
     def __init__(
         self,
@@ -158,9 +168,9 @@ class CertaintyMap:
             for x, payload in enumerate(row):
                 self.set_certainty(
                     (x, y),
-                    float(payload["certainty"]),
+                    _payload_float(payload, "certainty"),
                     updated_by=str(payload.get("updated_by", "peer")),
-                    now_ms=int(payload.get("last_updated_ms", 0)),
+                    now_ms=_payload_int(payload, "last_updated_ms"),
                 )
 
     def merge_max_from(self, other: "CertaintyMap") -> None:
@@ -177,22 +187,29 @@ class CertaintyMap:
     def to_rows(self, owners: Mapping[Coordinate, str] | None = None) -> GridPayload:
         return [
             [
-                (
-                    {
-                    "x": cell.x,
-                    "y": cell.y,
-                    "certainty": round(cell.certainty, 4),
-                    "entropy": round(shannon_entropy(cell.certainty), 4),
-                    "last_updated_ms": cell.last_updated_ms,
-                    "updated_by": cell.updated_by,
-                    "decay_rate": cell.decay_rate,
-                    }
-                    | ({"owner": owners[cell.coordinate]} if owners and cell.coordinate in owners else {})
-                )
+                self._cell_payload(cell, owners)
                 for cell in row
             ]
             for row in self._grid
         ]
+
+    def _cell_payload(
+        self,
+        cell: CellState,
+        owners: Mapping[Coordinate, str] | None = None,
+    ) -> CellPayload:
+        payload: CellPayload = {
+            "x": cell.x,
+            "y": cell.y,
+            "certainty": round(cell.certainty, 4),
+            "entropy": round(shannon_entropy(cell.certainty), 4),
+            "last_updated_ms": cell.last_updated_ms,
+            "updated_by": cell.updated_by,
+            "decay_rate": cell.decay_rate,
+        }
+        if owners and cell.coordinate in owners:
+            payload["owner"] = owners[cell.coordinate]
+        return payload
 
     def merge_rows_max(
         self,
@@ -203,10 +220,10 @@ class CertaintyMap:
     ) -> None:
         for row in rows:
             for payload in row:
-                coordinate = (int(payload["x"]), int(payload["y"]))
+                coordinate = (_payload_int(payload, "x"), _payload_int(payload, "y"))
                 self.set_certainty(
                     coordinate,
-                    max(self.cell(coordinate).certainty, float(payload["certainty"])),
+                    max(self.cell(coordinate).certainty, _payload_float(payload, "certainty")),
                     updated_by=updated_by,
                     now_ms=now_ms,
                 )

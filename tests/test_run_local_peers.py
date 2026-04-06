@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from scripts import run_local_peers
 
 
@@ -31,7 +33,9 @@ class _FakeProcess:
         self.returncode = 130
 
 
-def test_launch_processes_returns_130_and_terminates_children_on_interrupt(monkeypatch) -> None:
+def test_launch_processes_returns_130_and_terminates_children_on_interrupt(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     first = _FakeProcess(interrupt_on_wait=True)
     second = _FakeProcess()
     processes = iter([first, second])
@@ -51,7 +55,7 @@ def test_launch_processes_returns_130_and_terminates_children_on_interrupt(monke
     assert second.killed is False
 
 
-def test_launch_processes_returns_highest_child_exit_code(monkeypatch) -> None:
+def test_launch_processes_returns_highest_child_exit_code(monkeypatch: pytest.MonkeyPatch) -> None:
     first = _FakeProcess()
     first.returncode = 0
     second = _FakeProcess()
