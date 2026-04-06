@@ -1,6 +1,6 @@
 # Frontend QA Checklist
 
-Use this checklist before sharing or deploying the packaged Entropy Hunt static shell. The browser outputs are replay/demo surfaces, not production live-ops tooling.
+Use this before sharing or deploying the packaged static shell. The browser outputs are replay/demo inspectors, not production live-ops tooling.
 
 ## Preconditions
 - `python3 main.py --final-map final_map.json --svg-map final_map.svg --final-html final_map.html`
@@ -13,13 +13,13 @@ Use this checklist before sharing or deploying the packaged Entropy Hunt static 
 - [ ] Snapshot preview renders the exported SVG.
 - [ ] Links to `console.html` and `artifacts/final_map.html` open correctly.
 
-## Rich console (`dist/console.html`, experimental browser inspector)
+## Browser inspector (`dist/console.html`)
 - [ ] Default load shows synthetic demo mode.
 - [ ] **Load replay** accepts `dist/artifacts/final_map.json`.
 - [ ] Mode chip flips from `synthetic demo` to `replay snapshot`.
 - [ ] Coverage/BFT/dropout metrics match the replay payload.
 - [ ] **Clear replay** restores synthetic mode without a full page reload.
-- [ ] Live polling is only exercised when the local helpers are running (`bun run live:peers` and `bun run live:serve`).
+- [ ] Live polling is only exercised with the local helpers running (`bun run live:peers` and `bun run live:serve`).
 
 ## Artifact checks
 - [ ] `dist/artifacts/final_map.json` exists and is downloadable.
@@ -30,4 +30,4 @@ Use this checklist before sharing or deploying the packaged Entropy Hunt static 
 - [ ] Vercel/static host serves `dist/index.html` as the root page.
 - [ ] Static links remain relative and work on preview URLs.
 - [ ] No page implies live Vertex/FoxMQ integration without the local helper scripts.
-- [ ] README / deploy notes shipped with the release still describe ROS, Webots, and Vertex/FoxMQ as experimental or bring-up lanes.
+- [ ] README / deploy notes still describe ROS, Webots, and Vertex/FoxMQ as experimental lanes.

@@ -1,6 +1,6 @@
 # Vercel Deployment Guide
 
-This project ships as a static replay/share shell built into `dist/`.
+This project deploys a static replay/share shell from `dist/`.
 
 ## Prerequisites
 - Bun 1.3.10+
@@ -9,7 +9,7 @@ This project ships as a static replay/share shell built into `dist/`.
 - a Vercel account and project
 
 ## First-time setup
-1. Run `bun run build` locally to confirm the packaged static shell builds.
+1. Run `bun run build` locally to confirm the static shell builds.
 2. Run `npx vercel@latest` once and follow the prompts to link the local folder to a Vercel project.
 3. Confirm `vercel.json` still points Vercel at:
    - `buildCommand`: `bun run build`
@@ -27,7 +27,7 @@ bun run deploy:preview
 bun run deploy:prod
 ```
 
-Both commands rebuild the static shell locally before invoking the Vercel CLI.
+Both commands rebuild the shell locally before invoking the Vercel CLI.
 
 ## Recommended release flow
 1. Regenerate backend artifacts:
@@ -48,7 +48,7 @@ Both commands rebuild the static shell locally before invoking the Vercel CLI.
 
 ## Notes
 - The deployed output is still a static/demo surface; it does not create live Vertex/FoxMQ connectivity.
-- `dist/console.html` is an experimental browser inspector; it is the only packaged browser surface and should not be presented as a production operator console.
-- `entropy_hunt_mockup.html` remains source-only for prototype/reference use and is not part of the packaged deploy surface.
+- `dist/console.html` is an experimental browser inspector, not a production operator console.
+- `entropy_hunt_mockup.html` remains source-only and is not part of the packaged deploy surface.
 - Live console polling still depends on local helper scripts such as `bun run live:peers` and `bun run live:serve`.
 - If the build output directory or packaging command changes, update `package.json`, `vercel.json`, and the deployment tests together.
