@@ -372,9 +372,9 @@
     <span class="header-mode" id="mode-chip">demo-only synthetic</span>
     <span class="spacer"></span>
     <div class="header-group">
-      <span class="header-group-label">replay</span>
+      <span class="header-group-label">replay · read-only</span>
       <label class="btn file">
-        load replay
+        load replay json
         <input id="replay-input" type="file" accept="application/json" />
       </label>
       <button class="btn" id="replay-reset" onclick="clearReplay()">
@@ -382,17 +382,17 @@
       </button>
     </div>
     <div class="header-group">
-      <span class="header-group-label">live local helper</span>
+      <span class="header-group-label">live helper · read-only</span>
       <input class="live-input" id="live-url" value="http://127.0.0.1:8765/snapshot.json" />
       <button class="btn" id="live-btn" onclick="connectLive()">
-        connect live
+        connect live snapshot
       </button>
       <button class="btn" id="live-stop" onclick="disconnectLive()">
         stop live
       </button>
     </div>
     <div class="header-group">
-      <span class="header-group-label">demo-only controls</span>
+      <span class="header-group-label">synthetic demo controls</span>
       <button class="btn warn" id="packet-btn" onclick="dropPackets()">
         drop packets 20%
       </button>
@@ -756,7 +756,9 @@
     renderDrones();
     renderLog();
     updateStats();
-    setFooter("demo-only synthetic mode — local controls can mutate state");
+    setFooter(
+      "demo-only synthetic mode — replay/live stay read-only; local controls can mutate state",
+    );
   }
 
   function replayDroneFor(drone, replayDrones, fallbackIndex) {
@@ -902,10 +904,10 @@
     const limitNote = formatSnapshotLimitNote(hiddenDroneCount, hiddenEventCount);
     setFooter(
       mode === "live"
-        ? `live snapshot connected — polling current peer state (demo controls disabled)${limitNote ? ` · ${limitNote}` : ""}`
+        ? `live snapshot connected — polling current peer state (read-only; demo-only controls locked)${limitNote ? ` · ${limitNote}` : ""}`
         : found
-          ? `replay loaded — final simulation snapshot with survivor confirmation (read-only)${limitNote ? ` · ${limitNote}` : ""}`
-          : `replay loaded — final simulation snapshot (read-only)${limitNote ? ` · ${limitNote}` : ""}`,
+          ? `replay loaded — final simulation snapshot with survivor confirmation (read-only; demo-only controls locked)${limitNote ? ` · ${limitNote}` : ""}`
+          : `replay loaded — final simulation snapshot (read-only; demo-only controls locked)${limitNote ? ` · ${limitNote}` : ""}`,
     );
   }
 
@@ -1679,7 +1681,9 @@
   setButtonState(packetButton, false, "drop packets on", "drop packets 20%");
   setButtonState(demoButton, false, "auto demo on", "auto demo off");
   setSourceMode("synthetic");
-  setFooter("demo-only synthetic mode — local controls can mutate state");
+  setFooter(
+    "demo-only synthetic mode — replay/live stay read-only; local controls can mutate state",
+  );
   captureSyntheticBaseline();
   setInterval(tick, TICK_MS);
 </script>

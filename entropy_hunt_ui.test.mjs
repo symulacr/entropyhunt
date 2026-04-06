@@ -303,12 +303,20 @@ test("v2 replay import preserves drone identity, claim state, and read-only mode
   assert.equal(exports.drones[0].y, 3);
   assert.equal(exports.grid[4][4].owner, 1);
   assert.equal(exports.grid[3][2].owner, 0);
+  assert.match(
+    sandbox.document.getElementById("footer-msg").textContent,
+    /read-only; demo-only controls locked/i,
+  );
   assert.equal(sandbox.document.getElementById("packet-btn").disabled, true);
   assert.equal(sandbox.document.getElementById("kill-btn").disabled, true);
 
   exports.clearReplay();
   assert.equal(exports.sourceMode, "synthetic");
   assert.equal(sandbox.document.getElementById("packet-btn").disabled, false);
+  assert.match(
+    sandbox.document.getElementById("footer-msg").textContent,
+    /replay\/live stay read-only; local controls can mutate state/i,
+  );
 });
 
 test("v2 replay import makes browser large-run limits explicit without losing hidden owner identity", () => {
@@ -379,7 +387,7 @@ test("v2 replay rejects oversized grids with an explicit browser-limit error", (
 
 
 test("v2 live payload imports peer snapshot state without ending the session", () => {
-  const { exports } = loadSimulation(
+  const { sandbox, exports } = loadSimulation(
     "entropy_hunt_v2.html",
     `({
       applyLivePayload,
@@ -426,6 +434,10 @@ test("v2 live payload imports peer snapshot state without ending the session", (
   assert.equal(exports.drones[0].tx, 2);
   assert.equal(exports.drones[1].stale, true);
   assert.match(exports.events[0].msg, /round 4 resolved/i);
+  assert.match(
+    sandbox.document.getElementById("footer-msg").textContent,
+    /read-only; demo-only controls locked/i,
+  );
 });
 
 test("mockup reconnect path re-randomizes x and y independently", () => {

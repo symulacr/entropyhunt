@@ -13,6 +13,7 @@ import { renderHeatmapRow } from "./tui_heatmap.ts";
 import type { MonitorState } from "./tui_types.ts";
 import { handleMonitorKeyDown } from "./tui_monitor_input.ts";
 import { buildMonitorFooterMessage } from "./tui_monitor_chrome.ts";
+import { buildCompactSubheaderLine } from "./tui_monitor_presenters.ts";
 import { sampleViewState } from "./tui_monitor_frame_support.ts";
 import { hasLostControllingParent, hasLostSource, hasLostWatchedParent } from "./tui_monitor_runtime.ts";
 
@@ -265,6 +266,18 @@ test("overview footer makes hidden large-run limits explicit", () => {
   expect(message).toContain("grid capped to 10x10");
   expect(message).toContain("+2 drones off-screen");
   expect(message).toContain("+7 older events hidden");
+});
+
+test("compact TUI subheader makes controls discoverable", () => {
+  const text = buildCompactSubheaderLine(sampleViewState())
+    .chunks
+    .map((chunk) => chunk.text)
+    .join("");
+  expect(text).toContain("arrows move");
+  expect(text).toContain("1-5/tab views");
+  expect(text).toContain("h/r/e panels");
+  expect(text).toContain("enter follow");
+  expect(text).toContain("q quit");
 });
 
 
