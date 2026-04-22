@@ -38,6 +38,10 @@ export function mapEventType(type: string): string {
   )[type] || "info";
 }
 
+export interface GridCell {
+  certainty?: number
+}
+
 export function coverage(grid: GridCell[][] | undefined): number {
   if (!grid || !grid.length) return 0;
   let searched = 0;

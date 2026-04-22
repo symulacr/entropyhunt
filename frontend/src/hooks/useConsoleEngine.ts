@@ -4,14 +4,15 @@ import type {
   Cell,
   Drone,
   LogEvent,
+  SnapshotDrone,
   SnapshotPayload,
+  SnapshotSummary,
   SourceMode,
   SyntheticBaseline,
   ToastState,
 } from '@/types/console'
 
 const GRID_SIZE = 10
-const CELL_SIZE = 24
 const SEARCH_INCREMENT = 0.12
 const SEARCH_COMPLETE = 0.92
 const DECAY_RATE = 0.001
@@ -221,7 +222,7 @@ export function useConsoleEngine() {
 
   const setCell = useCallback((x: number, y: number, patch: Partial<Cell>) => {
     setGrid((prev) => {
-      const next = prev.map((row) => row.map((cell) => ({ ...cell })))
+      const next = prev.map((row) => row.map((c) => ({ ...c })))
       next[y][x] = { ...next[y][x], ...patch }
       return next
     })
@@ -269,7 +270,6 @@ export function useConsoleEngine() {
   const grantClaim = useCallback(
     (index: number, candidate: { x: number; y: number }) => {
       const drone = dronesRef.current[index]
-      const cell = getCell(candidate.x, candidate.y)
       setGrid((prev) => {
         const next = prev.map((row) => row.map((c) => ({ ...c })))
         next[candidate.y][candidate.x] = {
@@ -358,63 +358,6 @@ export function useConsoleEngine() {
       pending = nextPending
     }
   }, [addEvent, buildCandidates, grantClaim, releaseClaim, setCell, setDrone])
-
-  const assignTargets = useCallback(() => {
-    const claims = new Map<
-      string,
-      { index: number; drone: Drone; candidate: { x: number; y: number } }[]
-    >()
-
-    dronesRef.current.forEach((drone, index) => {
-      if (
-        drone.stale ||
-        drone.tx == null ||
-        drone.ty == null ||
-        (drone.status !== 'transit' && drone.status !== 'searching')
-      ) {
-        return
-      }
-      const key = cellKey(drone.tx, drone.ty)
-      const group = claims.get(key) || []
-      group.push({ index, drone, candidate: { x: drone.tx, y: drone.ty } })
-      claims.set(key, group)
-    })
-
-    dronesRef.current.forEach((drone, index) => {
-      if (drone.stale || drone.status !== 'idle') return
-      const candidate = buildCandidates(drone, new Set())[0]
-      if (!candidate) return
-      const key = cellKey(candidate.x, candidate.y)
-      const group = claims.get(key) || []
-      group.push({ index, drone, candidate })
-      claims.set(key, group)
-    })
-
-    claims.forEach((group, key) => {
-      if (group.length === 1) {
-        const { index, candidate } = group[0]
-        grantClaim(index, candidate)
-        return
-      }
-
-      setAuctions((prev) => prev + 1)
-      setBftRounds((prev) => prev + 1)
-      group.sort((left, right) =>
-        compareClaimants(left, right, group[0].candidate.x, group[0].candidate.y),
-      )
-      const [winner, ...losers] = group
-      addEvent(
-        'bft',
-        `Auction at [${winner.candidate.x},${winner.candidate.y}] winner: ${winner.drone.id}`,
-      )
-      grantClaim(winner.index, winner.candidate)
-      losers.forEach(({ index }) => {
-        releaseClaim(index)
-        setDrone(index, { tx: null, ty: null, status: 'idle' })
-      })
-      claims.set(key, [winner])
-    })
-  }, [addEvent, buildCandidates, grantClaim, releaseClaim, setDrone])
 
   const handleSearch = useCallback(
     (drone: Drone, index: number) => {
@@ -797,9 +740,9 @@ export function useConsoleEngine() {
   const applySnapshotPayload = useCallback(
     (payload: SnapshotPayload, mode: SourceMode) => {
       const rows = payload?.grid
-      const summary = payload?.summary || payload || {}
-      const stats = payload?.stats || summary || {}
-      const replayDrones = Array.isArray(summary.drones) ? summary.drones : []
+      const summary: SnapshotSummary = (payload?.summary || payload?.stats || {}) as SnapshotSummary
+      const stats: SnapshotSummary = (payload?.stats || summary || {}) as SnapshotSummary
+      const replayDrones: SnapshotSummary['drones'] = Array.isArray(summary.drones) ? summary.drones : []
       const rawEvents = Array.isArray(payload?.events) ? payload.events : []
       const targetValue = payload?.config?.target || summary?.target || [7, 3]
 
@@ -857,7 +800,7 @@ export function useConsoleEngine() {
 
       const newDrones = dronesRef.current.map((drone, index) => {
         const replayDrone =
-          replayDrones.find((entry) => entry && entry.id === drone.id) ||
+          replayDrones.find((entry: SnapshotDrone) => entry && entry.id === drone.id) ||
           replayDrones[index] ||
           ({} as (typeof replayDrones)[number])
         const position = replayDrone.position || START_POSITIONS[index]
