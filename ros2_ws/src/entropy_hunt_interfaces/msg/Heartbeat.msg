@@ -4,3 +4,7 @@ int32 y
 bool alive
 bool reachable
 int64 timestamp_ms
+float32 altitude_m
+float32 heading_deg
+float32 battery_pct
+string flight_mode

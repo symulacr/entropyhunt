@@ -1,13 +1,23 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
 import importlib
 import json
-from pathlib import Path
+import os
 import subprocess
 import sys
 import threading
-from typing import Any, Sequence
+import time
+import urllib.request
+from pathlib import Path
+from typing import TYPE_CHECKING, Any
+
+from simulation.proof import ProofLogger
+
+if TYPE_CHECKING:
+    import types
+    from collections.abc import Sequence
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -27,11 +37,21 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--fail-at", type=int, default=60)
     parser.add_argument("--output-dir", default="peer-runs")
     parser.add_argument("--transport", choices=("local", "foxmq"), default="local")
-    parser.add_argument("--mqtt-host", default="127.0.0.1")
-    parser.add_argument("--mqtt-base-port", type=int, default=1883)
-    parser.add_argument("--serve-host", default="127.0.0.1")
+    parser.add_argument("--mqtt-host", default=os.environ.get("ENTROPYHUNT_MQTT_HOST", "127.0.0.1"))
+    parser.add_argument("--mqtt-base-port", type=int, default=1884)
+    parser.add_argument(
+        "--serve-host",
+        default=os.environ.get("ENTROPYHUNT_SERVE_HOST", "127.0.0.1"),
+    )
     parser.add_argument("--serve-port", type=int, default=8765)
     parser.add_argument("--proofs-path", default="proofs.jsonl")
+    parser.add_argument("--packet-loss", type=float, default=0.0, metavar="RATE",
+                        help="Packet loss rate 0.0-1.0 (default: 0.0)")
+    parser.add_argument("--jitter-ms", type=float, default=0.0)
+    parser.add_argument("--warmup-verify", action=argparse.BooleanOptionalAction, default=None,
+                        help="Verify peer mesh visibility before mission (default: True when count > 1)")
+    parser.add_argument("--warmup-timeout", type=float, default=10.0,
+                        help="Seconds to wait for peer warm-up (default: 10)")
     return parser.parse_args()
 
 
@@ -75,23 +95,41 @@ def _build_command(index: int, count: int, args: argparse.Namespace, output_dir:
         "--final-map",
         str(output_dir / f"drone_{index + 1}.json"),
     ]
+    if args.packet_loss > 0.0:
+        command.extend(["--packet-loss", str(args.packet_loss)])
+    if args.jitter_ms > 0.0:
+        command.extend(["--jitter-ms", str(args.jitter_ms)])
+    command.extend(["--control-port", str(args.base_port + index)])
     if args.transport == "foxmq":
-        command.extend([
-            "--peer-id",
-            f"drone_{index + 1}",
-            "--mqtt-host",
-            args.mqtt_host,
-            "--mqtt-port",
-            str(args.mqtt_base_port + index),
-        ])
+        command.extend(
+            [
+                "--peer-id",
+                f"drone_{index + 1}",
+                "--mqtt-host",
+                args.mqtt_host,
+                "--mqtt-port",
+                str(args.mqtt_base_port + index),
+            ],
+        )
         command.extend(_peer_args(index, count, args.base_port))
     else:
         command.extend(_peer_args(index, count, args.base_port))
     return command
 
 
-def launch_processes(commands: Sequence[list[str]], *, cwd: Path) -> int:
-    processes = [subprocess.Popen(command, cwd=cwd) for command in commands]
+def _terminate_processes(processes: list[subprocess.Popen]) -> None:
+    for process in processes:
+        if process.poll() is None:
+            process.terminate()
+    for process in processes:
+        if process.poll() is None:
+            try:
+                process.wait(timeout=1.0)
+            except (subprocess.TimeoutExpired, KeyboardInterrupt):
+                process.kill()
+
+
+def _wait_for_processes(processes: list[subprocess.Popen]) -> int:
     exit_code = 0
     try:
         for process in processes:
@@ -99,19 +137,63 @@ def launch_processes(commands: Sequence[list[str]], *, cwd: Path) -> int:
     except KeyboardInterrupt:
         exit_code = 130
     finally:
-        for process in processes:
-            if process.poll() is None:
-                process.terminate()
-        for process in processes:
-            if process.poll() is None:
-                try:
-                    process.wait(timeout=1.0)
-                except (subprocess.TimeoutExpired, KeyboardInterrupt):
-                    process.kill()
+        _terminate_processes(processes)
     return exit_code
 
 
-def _load_live_runtime_module() -> Any:
+def launch_processes(commands: Sequence[list[str]], *, cwd: Path) -> int:
+    processes = [subprocess.Popen(command, cwd=cwd) for command in commands]
+    return _wait_for_processes(processes)
+
+
+def _verify_peer_warmup(base_port: int, count: int, timeout: float) -> None:
+    if count <= 1:
+        return
+    deadline = time.monotonic() + timeout
+    last_status: dict[int, dict[str, Any]] = {}
+    while time.monotonic() < deadline:
+        all_ready = True
+        missing: list[str] = []
+        for idx in range(count):
+            port = base_port + idx
+            url = f"http://127.0.0.1:{port}/status"
+            try:
+                with urllib.request.urlopen(url, timeout=0.5) as resp:
+                    data = json.loads(resp.read().decode())
+                    last_status[idx] = data
+                    peers_seen = data.get("peers_seen", [])
+                    if len(peers_seen) < count:
+                        all_ready = False
+                        missing.append(
+                            f"{data.get('peer_id', f'drone_{idx + 1}')} sees {len(peers_seen)}/{count} peers"
+                        )
+            except Exception as exc:
+                all_ready = False
+                missing.append(f"drone_{idx + 1} unreachable ({exc})")
+                last_status.pop(idx, None)
+        if all_ready:
+            print(f"Warm-up verified: all {count} peers visible")
+            return
+        time.sleep(0.25)
+    print("Warm-up failed: peer visibility not established within timeout", file=sys.stderr)
+    for idx in range(count):
+        port = base_port + idx
+        data = last_status.get(idx)
+        if data:
+            peer_id = data.get("peer_id", f"drone_{idx + 1}")
+            peers_seen = data.get("peers_seen", [])
+            expected = [f"drone_{i + 1}" for i in range(count)]
+            not_seen = [p for p in expected if p not in peers_seen]
+            print(
+                f"  {peer_id} sees {len(peers_seen)}/{count} peers, missing: {not_seen}",
+                file=sys.stderr,
+            )
+        else:
+            print(f"  drone_{idx + 1} at port {port}: no response", file=sys.stderr)
+    raise SystemExit(1)
+
+
+def _load_live_runtime_module() -> types.ModuleType:
     try:
         return importlib.import_module("scripts.serve_live_runtime")
     except ModuleNotFoundError:
@@ -119,7 +201,6 @@ def _load_live_runtime_module() -> Any:
 
 
 def _synthesize_proofs_from_outputs(output_dir: Path, proofs_path: Path) -> None:
-    """Collapse peer outputs into one evidence file for the shipping demo."""
     merged: list[dict[str, object]] = []
     seen_keys: set[tuple[object, object, object]] = set()
 
@@ -139,7 +220,10 @@ def _synthesize_proofs_from_outputs(output_dir: Path, proofs_path: Path) -> None
             payload.setdefault("source_mode", "peer")
             payload.setdefault("synthetic", False)
             merged.append(payload)
-            if payload.get("type") == "bft_result" and len(payload.get("assignments", [])) > 1:
+            if (
+                payload.get("type") == "consensus_result"
+                and len(payload.get("assignments", [])) > 1
+            ):
                 auction = {
                     "t": payload.get("t", 0),
                     "type": "auction",
@@ -147,7 +231,7 @@ def _synthesize_proofs_from_outputs(output_dir: Path, proofs_path: Path) -> None
                     "message": f"contest resolved for cell {payload.get('cell')}",
                     "source": "derived",
                     "source_mode": str(payload.get("source_mode", "peer")),
-                    "derived_from": "bft_result",
+                    "derived_from": "consensus_result",
                     "synthetic": True,
                 }
                 auction_key = (auction.get("contest_id"), auction.get("type"), auction.get("t"))
@@ -186,7 +270,7 @@ def _synthesize_proofs_from_outputs(output_dir: Path, proofs_path: Path) -> None
         key=lambda event: (
             int(str(event.get("t", 0))),
             str(event.get("type", "")),
-        )
+        ),
     )
     deduped: list[dict[str, object]] = []
     final_seen: set[tuple[object, object, object]] = set()
@@ -205,16 +289,25 @@ def _synthesize_proofs_from_outputs(output_dir: Path, proofs_path: Path) -> None
 
 def main() -> int:
     args = parse_args()
+    if args.warmup_verify is None:
+        args.warmup_verify = args.count > 1
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     for path in output_dir.glob("*.json"):
         path.unlink()
     control_path = output_dir / "control.json"
-    control_path.write_text(json.dumps({
-        "tick_seconds": args.tick_seconds,
-        "tick_delay_seconds": args.tick_delay_seconds if args.tick_delay_seconds is not None else 0.1,
-        "requested_drone_count": args.count,
-    }, indent=2))
+    control_path.write_text(
+        json.dumps(
+            {
+                "tick_seconds": args.tick_seconds,
+                "tick_delay_seconds": args.tick_delay_seconds
+                if args.tick_delay_seconds is not None
+                else 0.1,
+                "requested_drone_count": args.count,
+            },
+            indent=2,
+        ),
+    )
     proofs_path = Path(args.proofs_path)
     proofs_path.write_text("")
     server: Any | None = None
@@ -233,22 +326,29 @@ def main() -> int:
         server_thread = None
     commands = [_build_command(index, args.count, args, output_dir) for index in range(args.count)]
     try:
-        exit_code = launch_processes(commands, cwd=ROOT)
+        if args.warmup_verify and args.count > 1:
+            processes = [subprocess.Popen(command, cwd=ROOT) for command in commands]
+            try:
+                _verify_peer_warmup(args.base_port, args.count, args.warmup_timeout)
+            except SystemExit:
+                _terminate_processes(processes)
+                return 1
+            exit_code = _wait_for_processes(processes)
+        else:
+            exit_code = launch_processes(commands, cwd=ROOT)
     finally:
         if server is not None and server_thread is not None:
-            try:
+            with contextlib.suppress(KeyboardInterrupt):
                 server.shutdown()
-            except KeyboardInterrupt:
-                pass
-            try:
+            with contextlib.suppress(KeyboardInterrupt):
                 server.server_close()
-            except KeyboardInterrupt:
-                pass
-            try:
+            with contextlib.suppress(KeyboardInterrupt):
                 server_thread.join(timeout=1.0)
-            except KeyboardInterrupt:
-                pass
     _synthesize_proofs_from_outputs(output_dir, proofs_path)
+    poc_path = ROOT / "proof_of_coordination.json"
+    logger = ProofLogger(proofs_path, truncate=False)
+    mesh_transport = "foxmq" if args.transport == "foxmq" else "in-process"
+    logger.finalize(poc_path, mesh_transport=mesh_transport)
     return exit_code
 
 

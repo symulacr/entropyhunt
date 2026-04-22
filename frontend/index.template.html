@@ -1,96 +1,109 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Entropy Hunt — Packaged Replay Shell</title>
-    <link rel="stylesheet" href="./assets/shell.css" />
-  </head>
-  <body>
-    <main class="page">
-      <section class="hero">
-        <div>
-          <p class="eyebrow">Vertex Swarm Challenge · packaged static replay shell</p>
-          <h1>Entropy Hunt</h1>
-          <p class="lede">
-            A buildable frontend shell for the entropy-driven swarm-search demo.
-            It packages one primary replay console, the latest verified
-            simulation snapshot, and supporting artifacts into one static site.
-            Live snapshots still require local helper scripts.
-          </p>
-        </div>
-        <div class="hero-actions">
-          <a class="button primary" href="./artifacts/final_map.html">Open final snapshot</a>
-          <a class="button" href="./console.html">Open replay console</a>
-        </div>
-      </section>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Entropy Hunt — Deterministic swarm search and rescue simulation." />
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#fafafa" />
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#09090b" />
+<title>Entropy Hunt — Search & Rescue Swarm System</title>
+<link rel="stylesheet" href="./assets/shell.css" />
+</head>
+<body>
+<div style="background:#fef08a;color:#854d0e;padding:0.5rem 1rem;text-align:center;font-family:system-ui,sans-serif;font-size:0.875rem;">
+  This file is a build template. Open <code>frontend/dist/index.html</code> for the rendered page.
+</div>
+<a href="#main" class="skip-link">Skip to content</a>
 
-      <section class="grid two-up">
-        <article class="panel">
-          <div class="panel-header">
-            <h2>Latest verified run</h2>
-            <span class="chip">built from final_map.json</span>
-          </div>
-          <div class="cards">{{SUMMARY_CARDS}}</div>
-          <div class="run-meta">{{RUN_META}}</div>
-        </article>
+<main id="main" class="page">
+  <section class="hero">
+    <div>
+      <p class="eyebrow">Vertex Swarm Challenge</p>
+      <h1>Entropy Hunt</h1>
+      <p class="lede">
+        An autonomous search-and-rescue swarm system. Multiple drones divide disaster terrain,
+        negotiate search zones via BFT consensus over a mesh network, survive packet loss
+        and node failures, and emit cryptographically-auditable proofs of coordination
+        until a survivor is found.
+      </p>
+    </div>
+    <div class="hero-actions">
+      <a class="button primary" href="./artifacts/final_map.html">
+        Open Final Snapshot
+        <span class="icon-wrap" aria-hidden="true">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 11L11 1M11 1H3M11 1V9"/></svg>
+        </span>
+      </a>
+      <a class="button" href="./console.html">Open Replay Console</a>
+    </div>
+  </section>
 
-        <article class="panel">
-          <div class="panel-header">
-            <h2>Replay artifacts</h2>
-            <span class="chip">replay by default; live via local helpers</span>
-          </div>
-          <ul class="artifact-list">{{ARTIFACT_LINKS}}</ul>
-          <pre class="code-block"><code>python3 main.py --final-map final_map.json --svg-map final_map.svg --final-html final_map.html
+  <section class="grid two-up">
+    <article class="panel">
+      <div class="panel-header">
+        <h2>Latest Verified Run</h2>
+        <span class="chip">Built from final_map.json</span>
+      </div>
+      <div class="cards">{{SUMMARY_CARDS}}</div>
+      <div class="run-meta">{{RUN_META}}</div>
+    </article>
+
+    <article class="panel">
+      <div class="panel-header">
+        <h2>Replay Artifacts</h2>
+        <span class="chip">Replay by default</span>
+      </div>
+      <ul class="artifact-list">{{ARTIFACT_LINKS}}</ul>
+      <pre class="code-block"><code>python3 main.py --final-map final_map.json --svg-map final_map.svg --final-html final_map.html
 bun run build
 bun run preview
 bun run live:peers
 bun run live:serve</code></pre>
-        </article>
-      </section>
+    </article>
+  </section>
 
-      <section class="grid preview-layout">
-        <article class="panel heatmap-panel">
-          <div class="panel-header">
-            <h2>Snapshot preview</h2>
-            <span class="chip">SVG from backend export</span>
-          </div>
-          <div class="heatmap-frame">{{SVG_PREVIEW}}</div>
-        </article>
+  <section class="grid preview-layout">
+    <article class="panel heatmap-panel">
+      <div class="panel-header">
+        <h2>Snapshot Preview</h2>
+        <span class="chip">SVG Export</span>
+      </div>
+      <div class="heatmap-frame">{{SVG_PREVIEW}}</div>
+    </article>
 
-        <article class="panel">
-          <div class="panel-header">
-            <h2>Recent events</h2>
-            <span class="chip">latest replay timeline</span>
-          </div>
-          <ol class="event-list">{{RECENT_EVENTS}}</ol>
-        </article>
-      </section>
+    <article class="panel">
+      <div class="panel-header">
+        <h2>Recent Events</h2>
+        <span class="chip">Replay Timeline</span>
+      </div>
+      <ol class="event-list">{{RECENT_EVENTS}}</ol>
+    </article>
+  </section>
 
-      <section class="grid two-up">
-        <article class="panel">
-          <div class="panel-header">
-            <h2>Current delivery surfaces</h2>
-          </div>
-          <ul class="stack-list">
-            <li><strong>Packaged shell</strong> — this `dist/` site for deployment and review.</li>
-            <li><strong>Replay console</strong> — the primary browser surface in <code>console.html</code>; live polling works only when the local helper scripts are running.</li>
-            <li><strong>Reference mockup</strong> — source-only file kept outside <code>dist/</code> for experiments, not for packaged deployment.</li>
-            <li><strong>Python runtime</strong> — source of truth for simulation/export artifacts.</li>
-          </ul>
-        </article>
+  <section class="grid two-up">
+    <article class="panel">
+      <div class="panel-header">
+        <h2>Delivery Surfaces</h2>
+      </div>
+      <ul class="stack-list">
+        <li><strong>Packaged shell</strong> — this dist/ site for deployment and review.</li>
+        <li><strong>Replay console</strong> — primary browser surface in console.html; live polling works when local helpers run.</li>
+        <li><strong>Live telemetry</strong> — real-time SSE stream viewer for running simulations.</li>
+        <li><strong>TUI monitor</strong> — terminal dashboard polling aggregated snapshots.</li>
+      </ul>
+    </article>
 
-        <article class="panel">
-          <div class="panel-header">
-            <h2>Known limits</h2>
-          </div>
-          <ul class="stack-list">
-            <li>Live polling currently consumes aggregated JSON snapshots, not a direct FoxMQ stream.</li>
-            <li>FoxMQ and Webots paths are optional and not end-to-end validated in this CI environment.</li>
-            <li>The packaged shell remains a static site; live data requires running the local helper scripts alongside it.</li>
-          </ul>
-        </article>
-      </section>
-    </main>
-  </body>
+    <article class="panel">
+      <div class="panel-header">
+        <h2>Operational Notes</h2>
+      </div>
+      <ul class="stack-list">
+        <li>Live polling consumes aggregated JSON snapshots, not a direct FoxMQ stream.</li>
+        <li>FoxMQ and Webots paths are optional and validated separately.</li>
+        <li>The packaged shell is static; live data requires running local helper scripts.</li>
+      </ul>
+    </article>
+  </section>
+</main>
+</body>
 </html>

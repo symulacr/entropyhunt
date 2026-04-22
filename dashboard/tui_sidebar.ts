@@ -10,7 +10,7 @@ import {
 } from "@opentui/core";
 
 import type { NormalizedDrone, NormalizedEvent } from "./tui_types.ts";
-import { EVENT_TONE_MAP, EVENT_TONE_THEME, FOCUS_THEME, PANEL_THEME, STATUS_CHIP_THEME, STATUS_DISPLAY_MAP } from "./tui_theme.ts";
+import { DRONE_ACCENT_COLORS, EVENT_TONE_MAP, EVENT_TONE_THEME, FOCUS_THEME, PANEL_THEME, STATUS_CHIP_THEME, STATUS_DISPLAY_MAP, isStatusDisplayKey, isDisplayDroneStatus, isEventToneKey } from "./tui_theme.ts";
 
 function padCell(value: string, width: number): string {
   if (value.length >= width) return value.slice(0, width);
@@ -31,9 +31,10 @@ function coordLabel(x: number | null | undefined, y: number | null | undefined):
 function accentFor(droneId: string): string {
   const match = droneId.match(/(\d+)$/);
   const index = match ? Math.max(0, Number(match[1]) - 1) : 0;
-  const colors = ["#378ADD", "#1D9E75", "#BA7517", "#D85A30", "#D4537E"];
-  return colors[index % colors.length] ?? PANEL_THEME.textPrimary;
+  return DRONE_ACCENT_COLORS[index % DRONE_ACCENT_COLORS.length] ?? PANEL_THEME.textPrimary;
 }
+
+const EVENT_MESSAGE_WIDTH = 26;
 
 function droneShortId(droneId: string): string {
   const match = droneId.match(/(\d+)$/);
@@ -52,7 +53,8 @@ function focusWrap(content: StyledText, _selected: boolean, _focusedPanel: boole
 
 export function mapStatus(raw: string | undefined, offline: boolean): string {
   if (offline) return "offline";
-  return STATUS_DISPLAY_MAP[raw as keyof typeof STATUS_DISPLAY_MAP] ?? raw ?? "idle";
+  if (raw && isStatusDisplayKey(raw)) return STATUS_DISPLAY_MAP[raw];
+  return raw ?? "idle";
 }
 
 export function renderDroneRow({
@@ -69,7 +71,7 @@ export function renderDroneRow({
   const name = drone.offline
     ? withFg(PANEL_THEME.textMuted)(withStrikethrough(padCell(shortId, 3)))
     : withFg(PANEL_THEME.textPrimary)(withBold(padCell(shortId, 3)));
-  const statusKey = (drone.status in STATUS_CHIP_THEME ? drone.status : "idle") as keyof typeof STATUS_CHIP_THEME;
+  const statusKey = isDisplayDroneStatus(drone.status) ? drone.status : "idle";
   const chip = STATUS_CHIP_THEME[statusKey];
   const chipText = withBg(chip.bg)(withFg(chip.fg)(` ${chip.label.toUpperCase()} `));
   const current = withFg(PANEL_THEME.textMuted)(padCell(coordLabel(drone.x, drone.y), 5));
@@ -96,12 +98,12 @@ export function renderEventRow({
   selected?: boolean;
   focusedPanel?: boolean;
 }): StyledText {
-  const tone = EVENT_TONE_MAP[event.type as keyof typeof EVENT_TONE_MAP] ?? "info";
+  const tone = isEventToneKey(event.type) ? EVENT_TONE_MAP[event.type] : "info";
   const chip = EVENT_TONE_THEME[tone];
   const badge = withBg(chip.bg)(withFg(chip.fg)(withBold(` ${padCell(chip.label, 4)} `)));
   const time = withFg(PANEL_THEME.textMuted)(withDim(`${String(event.t).padStart(3, "0")}`));
   const bodyColor = tone === "stale" ? chip.accent : tone === "found" ? chip.accent : PANEL_THEME.textSecondary;
-  const body = withFg(bodyColor)(padCell(clip(compressEventMessage(event.msg), 26), 26));
+  const body = withFg(bodyColor)(padCell(clip(compressEventMessage(event.msg), EVENT_MESSAGE_WIDTH), EVENT_MESSAGE_WIDTH));
   const row = t`${time} ${badge} ${body}`;
   return focusWrap(row, selected, focusedPanel);
 }

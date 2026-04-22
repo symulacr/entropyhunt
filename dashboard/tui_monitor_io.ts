@@ -1,4 +1,5 @@
 import type { Snapshot } from "./tui_types.ts";
+import { isSnapshot, isObject } from "./tui_types.ts";
 import { TUI_LAYOUT } from "./tui_theme.ts";
 
 export type MonitorArgs = {
@@ -13,29 +14,68 @@ export type MonitorControlPatch = {
 };
 
 export function parseMonitorArgs(argv: string[]): MonitorArgs {
-  const args: MonitorArgs = {
+  const args: Partial<MonitorArgs> = {
     source: "http://127.0.0.1:8765/snapshot.json",
     intervalMs: Number(TUI_LAYOUT.pollIntervalMs),
   };
 
-  for (let index = 0; index < argv.length; index += 1) {
-    if (argv[index] === "--source" && argv[index + 1]) {
-      args.source = argv[index + 1]!;
-      index += 1;
-    } else if (argv[index] === "--interval-ms" && argv[index + 1]) {
-      const value = Number(argv[index + 1]);
+  for (let i = 0; i < argv.length; i++) {
+    if (argv[i] === "--source" && argv[i + 1]) {
+      args.source = argv[++i];
+      continue;
+    }
+    if (argv[i] === "--interval-ms" && argv[i + 1]) {
+      const value = Number(argv[++i]);
       if (Number.isFinite(value) && value > 0) args.intervalMs = value;
-      index += 1;
+      continue;
     }
   }
 
-  return args;
+  return args as MonitorArgs;
+}
+
+function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function fetchWithTimeout(url: string, options: RequestInit = {}): Promise<Response> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000);
+  try {
+    const response = await fetch(url, { ...options, signal: controller.signal });
+    return response;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function fetchWithRetry(url: string, options: RequestInit = {}): Promise<Response> {
+  const delays = [500, 1000];
+  for (let attempt = 0; attempt <= delays.length; attempt++) {
+    try {
+      const response = await fetchWithTimeout(url, options);
+      if (!response.ok && response.status >= 500 && attempt < delays.length) {
+        await delay(delays[attempt]);
+        continue;
+      }
+      return response;
+    } catch (error) {
+      if (error instanceof TypeError && attempt < delays.length) {
+        await delay(delays[attempt]);
+        continue;
+      }
+      throw error;
+    }
+  }
+  throw new Error("Unexpected end of retry loop");
 }
 
 export async function fetchMonitorSnapshot(url: string): Promise<Snapshot> {
-  const response = await fetch(url, { cache: "no-store" });
+  const response = await fetchWithRetry(url, { cache: "no-store" });
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
-  return (await response.json()) as Snapshot;
+  const data = await response.json();
+  if (!isSnapshot(data)) throw new Error("Invalid snapshot response");
+  return data;
 }
 
 function controlUrlForSnapshot(sourceUrl: string): string {
@@ -53,5 +93,7 @@ export async function postMonitorControl(sourceUrl: string, patch: MonitorContro
     body: JSON.stringify(patch),
   });
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
-  return (await response.json()) as Record<string, unknown>;
+  const payload = await response.json();
+  if (!isObject(payload)) throw new Error("Invalid control response");
+  return payload;
 }

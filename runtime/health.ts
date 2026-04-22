@@ -9,18 +9,20 @@ async function readRuntimeJson(response: Response): Promise<unknown> {
   return await response.json();
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
 function hasExpectedPeerCount(payload: unknown, expectedPeerCount: number): boolean {
-  if (!payload || typeof payload !== "object") {
+  if (!isRecord(payload)) {
     return false;
   }
-  const summary = (payload as { summary?: unknown }).summary;
-  if (!summary || typeof summary !== "object") {
+  const summary = payload.summary;
+  if (!isRecord(summary)) {
     return false;
   }
-  const peerCount = Number((summary as { peer_count?: unknown }).peer_count ?? 0);
-  const drones = Array.isArray((summary as { drones?: unknown[] }).drones)
-    ? (summary as { drones: unknown[] }).drones
-    : [];
+  const peerCount = Number(summary.peer_count ?? 0);
+  const drones = Array.isArray(summary.drones) ? summary.drones : [];
   return peerCount >= expectedPeerCount && drones.length >= expectedPeerCount;
 }
 
@@ -34,7 +36,6 @@ export async function waitForSnapshots(snapshotDir: string, minCount: number, ti
         return;
       }
     } catch {
-      // directory may not exist yet
     }
     await new Promise((resolve) => setTimeout(resolve, pollMs));
   }
@@ -69,13 +70,62 @@ export async function waitForHttpReady(
   throw new Error(`Timed out waiting for snapshot server ${url}: ${lastError}`);
 }
 
+async function fetchPeerStatus(host: string, port: number): Promise<{ peer_id: string; peers_seen: string[] } | null> {
+  try {
+    const response = await fetch(`http://${host}:${port}/status`, { cache: "no-store" });
+    if (response.ok) {
+      return await response.json() as { peer_id: string; peers_seen: string[] };
+    }
+  } catch {}
+  return null;
+}
+
+export async function waitForPeerMeshReady(
+  host: string,
+  basePort: number,
+  expectedPeerCount: number,
+  timeoutMs: number,
+  pollMs: number,
+): Promise<void> {
+  const deadline = Date.now() + timeoutMs;
+  let lastError = "";
+  while (Date.now() < deadline) {
+    const statuses = await Promise.all(
+      Array.from({ length: expectedPeerCount }, async (_, i) => {
+        const port = basePort + i;
+        return fetchPeerStatus(host, port);
+      }),
+    );
+    const allReady = statuses.every((status) => {
+      if (!status) return false;
+      return status.peers_seen.length >= expectedPeerCount;
+    });
+    if (allReady) {
+      return;
+    }
+    const missing = statuses
+      .map((s, i) => ({ peer_id: s?.peer_id ?? `drone_${i + 1}`, seen: s?.peers_seen?.length ?? 0 }))
+      .filter((p) => p.seen < expectedPeerCount);
+    lastError = missing.map((m) => `${m.peer_id} sees ${m.seen}/${expectedPeerCount} peers`).join(", ");
+    await new Promise((resolve) => setTimeout(resolve, pollMs));
+  }
+  throw new Error(`Timed out waiting for peer mesh visibility: ${lastError}`);
+}
+
 export async function waitForRuntimeReady(
   snapshotDir: string,
   snapshotUrl: string,
   timeoutMs: number,
   pollMs: number,
   expectedPeerCount?: number,
+  peerHost?: string,
+  peerBasePort?: number,
 ): Promise<void> {
+  if (expectedPeerCount && expectedPeerCount > 1 && peerHost && typeof peerBasePort === "number") {
+    const meshDeadline = Date.now() + Math.min(timeoutMs, 10_000);
+    const meshTimeout = Math.max(0, meshDeadline - Date.now());
+    await waitForPeerMeshReady(peerHost, peerBasePort, expectedPeerCount, meshTimeout, pollMs);
+  }
   await waitForSnapshots(snapshotDir, Math.max(1, expectedPeerCount ?? 1), timeoutMs, pollMs);
   await waitForHttpReady(snapshotUrl, timeoutMs, pollMs, expectedPeerCount);
 }

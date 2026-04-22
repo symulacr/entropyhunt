@@ -88,12 +88,10 @@ function killPidTree(pid: number, signal: NodeJS.Signals): void {
       return;
     }
   } catch {
-    // fall through to direct child kill
   }
   try {
     process.kill(pid, signal);
   } catch {
-    // ignore already-exited children
   }
 }
 

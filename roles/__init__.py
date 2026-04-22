@@ -1,1 +1,1 @@
-"""Drone roles used by the stub simulation."""
+from __future__ import annotations

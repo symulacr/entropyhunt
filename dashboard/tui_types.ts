@@ -1,11 +1,3 @@
-/**
- * Shared snapshot, monitor, and theming contracts for the OpenTUI surfaces.
- *
- * These types intentionally cover both the Python runtime payloads and the
- * richer parity targets from `entropy_hunt_v2.html`, where fields can appear in
- * `summary`, `stats`, or top-level keys depending on the transport path.
- */
-
 export type HexColor = `#${string}`;
 
 export type MeshMode = "real" | "stub";
@@ -39,8 +31,7 @@ export type RawDroneStatus =
   | "searching"
   | "stale"
   | "offline"
-  | "complete"
-  | (string & {});
+  | "complete";
 
 export type DisplayDroneStatus = "idle" | "transit" | "searching" | "offline";
 
@@ -65,8 +56,7 @@ export type KnownEventType =
   | "survivor"
   | "survivor_found"
   | "waiting"
-  | "zone_priority_reclaim"
-  | (string & {});
+  | "zone_priority_reclaim";
 
 export interface SnapshotGridCell {
   readonly certainty?: number;
@@ -92,6 +82,8 @@ export interface SnapshotDrone {
   readonly y?: number;
   readonly tx?: number | null;
   readonly ty?: number | null;
+  readonly battery?: number;
+  readonly role?: string;
 }
 
 export interface SnapshotEvent {
@@ -116,6 +108,9 @@ export interface SnapshotStats {
   readonly bft_rounds?: number;
   readonly elapsed?: number;
   readonly duration_elapsed?: number;
+  readonly mesh_peers?: readonly string[];
+  readonly pending_claims?: number;
+  readonly consensus_rounds?: number;
 }
 
 export interface SnapshotSummary extends SnapshotStats {
@@ -153,51 +148,16 @@ export interface RuntimeSnapshot {
   readonly survivor_found?: boolean;
 }
 
-export interface ThemeChipToken {
+export interface ThemeLabeledToken {
   readonly label: string;
   readonly fg: HexColor;
   readonly bg: HexColor;
   readonly border: HexColor;
 }
 
-export interface ThemeStatCardToken {
-  readonly label: string;
-  readonly shortLabel: string;
-  readonly fg: HexColor;
-  readonly bg: HexColor;
-  readonly border: HexColor;
+export interface ThemeAccentToken extends ThemeLabeledToken {
+  readonly shortLabel?: string;
   readonly accent: HexColor;
-}
-
-export interface ThemeLegendToken {
-  readonly label: string;
-  readonly glyph: string;
-  readonly fg: HexColor;
-  readonly bg: HexColor;
-  readonly border: HexColor;
-}
-
-export interface ThemeEventToneToken {
-  readonly label: string;
-  readonly fg: HexColor;
-  readonly bg: HexColor;
-  readonly border: HexColor;
-  readonly accent: HexColor;
-}
-
-export interface ThemeFooterStatusToken {
-  readonly label: string;
-  readonly fg: HexColor;
-  readonly bg: HexColor;
-  readonly border: HexColor;
-  readonly pulse: HexColor;
-}
-
-export interface ThemeSourceLabelToken {
-  readonly label: string;
-  readonly fg: HexColor;
-  readonly bg: HexColor;
-  readonly border: HexColor;
 }
 
 export interface ThemeSelectionToken {
@@ -235,18 +195,18 @@ export interface ThemePalette {
 export interface ThemeHeaderTokens {
   readonly title: string;
   readonly subtitle: string;
-  readonly tags: Readonly<Record<HeaderTagKind, ThemeChipToken>>;
-  readonly modeChips: Readonly<Record<SourceMode, ThemeChipToken>>;
-  readonly meshChips: Readonly<Record<MeshMode, ThemeChipToken>>;
+  readonly tags: Readonly<Record<HeaderTagKind, ThemeLabeledToken>>;
+  readonly modeChips: Readonly<Record<SourceMode, ThemeLabeledToken>>;
+  readonly meshChips: Readonly<Record<MeshMode, ThemeLabeledToken>>;
 }
 
 export interface ThemeStatTokens {
-  readonly cards: Readonly<Record<StatCardKey, ThemeStatCardToken>>;
+  readonly cards: Readonly<Record<StatCardKey, ThemeAccentToken>>;
   readonly tones: Readonly<Record<StatTone, HexColor>>;
 }
 
 export interface ThemeHeatmapTokens {
-  readonly legend: Readonly<Record<LegendItemKey, ThemeLegendToken>>;
+  readonly legend: Readonly<Record<LegendItemKey, ThemeLabeledToken & { readonly glyph: string }>>;
   readonly thresholds: Readonly<{ high: number; medium: number }>;
   readonly bandColors: Readonly<Record<HeatmapBand, HexColor>>;
   readonly droneForeground: HexColor;
@@ -258,18 +218,18 @@ export interface ThemeHeatmapTokens {
 }
 
 export interface ThemeRosterTokens {
-  readonly statusChips: Readonly<Record<DisplayDroneStatus, ThemeChipToken>>;
-  readonly sourceLabels: Readonly<Record<SourceMode, ThemeSourceLabelToken>>;
+  readonly statusChips: Readonly<Record<DisplayDroneStatus, ThemeLabeledToken>>;
+  readonly sourceLabels: Readonly<Record<SourceMode, ThemeLabeledToken>>;
   readonly focus: Readonly<Record<SelectionTone, ThemeSelectionToken>>;
 }
 
 export interface ThemeEventTokens {
-  readonly tones: Readonly<Record<EventTone, ThemeEventToneToken>>;
+  readonly tones: Readonly<Record<EventTone, ThemeAccentToken>>;
   readonly focus: Readonly<Record<SelectionTone, ThemeSelectionToken>>;
 }
 
 export interface ThemeFooterTokens {
-  readonly statuses: Readonly<Record<FooterStatusKind, ThemeFooterStatusToken>>;
+  readonly statuses: Readonly<Record<FooterStatusKind, ThemeLabeledToken & { readonly pulse: HexColor }>>;
 }
 
 export interface ThemeFocusTokens {
@@ -278,7 +238,7 @@ export interface ThemeFocusTokens {
 }
 
 export interface ThemeInteractionTokens {
-  readonly chips: Readonly<Record<InteractionChipKind, ThemeChipToken>>;
+  readonly chips: Readonly<Record<InteractionChipKind, ThemeLabeledToken>>;
 }
 
 export interface TuiThemeSpec {
@@ -351,7 +311,6 @@ export interface WaitingViewState {
   readonly staleData: boolean;
 }
 
-// Compatibility shapes for the current imperative OpenTUI monitor implementation.
 export type CellSnapshot = SnapshotGridCell;
 export type Snapshot = RuntimeSnapshot;
 export type NormalizedDrone = {
@@ -376,8 +335,24 @@ export type MonitorState = {
   meshMode: MeshMode;
   target: GridPoint;
   grid: CellSnapshot[][];
+  gridSize?: number;
   drones: NormalizedDrone[];
   events: NormalizedEvent[];
   survivorFound: boolean;
   staleData: boolean;
 };
+
+export function isObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+export function isSnapshot(obj: unknown): obj is Snapshot {
+  if (!obj || typeof obj !== "object") return false;
+  const record = obj as Record<string, unknown>;
+  if (record.t !== undefined && typeof record.t !== "number") return false;
+  if (record.summary !== undefined && (!record.summary || typeof record.summary !== "object")) return false;
+  if (record.config !== undefined && (!record.config || typeof record.config !== "object")) return false;
+  if (record.events !== undefined && !Array.isArray(record.events)) return false;
+  if (record.survivor_found !== undefined && typeof record.survivor_found !== "boolean") return false;
+  return Array.isArray(record.grid) && Array.isArray(record.drones) && typeof record.stats === "object" && record.stats !== null;
+}

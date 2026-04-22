@@ -126,4 +126,4 @@ printf '\nValidation complete.\n'
 printf 'Launch log: %s\n' "${LAUNCH_LOG}"
 printf 'Snapshot file: %s\n' "${SNAPSHOT_PATH}"
 printf '\nTo attach the TUI:\n'
-printf '  bun run dashboard/tui_monitor_v2.ts --source http://%s:%s/snapshot.json\n' "${SNAPSHOT_HOST}" "${SNAPSHOT_PORT}"
+printf '  bun run dashboard/tui_monitor.ts --source http://%s:%s/snapshot.json\n' "${SNAPSHOT_HOST}" "${SNAPSHOT_PORT}"

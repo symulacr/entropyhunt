@@ -8,3 +8,6 @@ export type RuntimeSession = {
   outputDir: string;
   logs: { swarm: string; monitor: string };
 };
+
+export type { SessionManifest } from "./run";
+

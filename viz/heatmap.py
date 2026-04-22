@@ -1,11 +1,20 @@
+
 from __future__ import annotations
 
+from dataclasses import dataclass
 from html import escape
+from typing import TYPE_CHECKING
 
-from auction.voronoi import PartitionSeed, boundary_cells, ownership_grid
-from core.certainty_map import CertaintyMap, Coordinate, shannon_entropy
-from roles.searcher import DroneState
+from auction.voronoi import PartitionSeed, ownership_grid
+from auction.voronoi import boundary_cells as compute_boundary_cells
+from core.certainty import CertaintyMap, Coordinate, shannon_entropy
 
+_ENTROPY_HIGH = 0.95
+_ENTROPY_MEDIUM = 0.6
+_ENTROPY_LOW = 0.25
+
+if TYPE_CHECKING:
+    from roles.drone import DroneState
 
 def render_ascii_heatmap(certainty_map: CertaintyMap, drones: list[DroneState]) -> str:
     drone_positions = {drone.position: drone.drone_id[-1] for drone in drones if drone.alive}
@@ -18,28 +27,37 @@ def render_ascii_heatmap(certainty_map: CertaintyMap, drones: list[DroneState]) 
                 rendered.append(drone_positions[coordinate])
                 continue
             entropy = shannon_entropy(certainty_map.cell(coordinate).certainty)
-            if entropy >= 0.95:
+            if entropy >= _ENTROPY_HIGH:
                 rendered.append("H")
-            elif entropy >= 0.6:
+            elif entropy >= _ENTROPY_MEDIUM:
                 rendered.append("M")
-            elif entropy >= 0.25:
+            elif entropy >= _ENTROPY_LOW:
                 rendered.append("L")
             else:
                 rendered.append(".")
         rows.append(" ".join(rendered))
     return "\n".join(rows)
 
+@dataclass
+class SVGRenderOptions:
+
+    cell_px: int = 28
+    target: Coordinate | None = None
+    boundary_cells: tuple[Coordinate, ...] | None = None
+    boundary_cells_override: tuple[Coordinate, ...] | None = None
+    show_voronoi: bool = True
 
 def render_svg_heatmap(
     certainty_map: CertaintyMap,
     drones: list[DroneState],
-    *,
-    cell_px: int = 28,
-    target: Coordinate | None = None,
-    boundary_cells: tuple[Coordinate, ...] | None = None,
-    boundary_cells_override: tuple[Coordinate, ...] | None = None,
-    show_voronoi: bool = True,
+    options: SVGRenderOptions | None = None,
 ) -> str:
+    opts = options or SVGRenderOptions()
+    cell_px = opts.cell_px
+    target = opts.target
+    boundary_cells = opts.boundary_cells
+    boundary_cells_override = opts.boundary_cells_override
+    show_voronoi = opts.show_voronoi
     width = certainty_map.size * cell_px
     height = certainty_map.size * cell_px
     alive_drones = [drone for drone in drones if drone.alive]
@@ -48,15 +66,17 @@ def render_svg_heatmap(
     elif boundary_cells is None:
         seeds = [PartitionSeed(drone.drone_id, drone.position) for drone in alive_drones]
         boundaries = set(
-            boundary_cells_fn(ownership_grid(seeds, size=certainty_map.size))
+            compute_boundary_cells(ownership_grid(seeds, size=certainty_map.size))
             if show_voronoi and len(seeds) > 1
-            else tuple()
+            else (),
         )
     else:
         boundaries = set(boundary_cells)
 
     parts = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" width="{width}" height="{height}">',
+        f'<svg xmlns="http://www.w3.org/2000/svg" '
+        f'viewBox="0 0 {width} {height}" '
+        f'width="{width}" height="{height}">',
         '<rect width="100%" height="100%" fill="#ffffff" />',
     ]
 
@@ -72,7 +92,10 @@ def render_svg_heatmap(
                 stroke = "#16a34a"
                 stroke_width = 2.0
             parts.append(
-                f'<rect x="{x * cell_px}" y="{y * cell_px}" width="{cell_px}" height="{cell_px}" fill="{fill}" stroke="{stroke}" stroke-width="{stroke_width}" />'
+                f'<rect x="{x * cell_px}" y="{y * cell_px}" '
+                f'width="{cell_px}" height="{cell_px}" '
+                f'fill="{fill}" stroke="{stroke}" '
+                f'stroke-width="{stroke_width}" />',
             )
 
     for drone in alive_drones:
@@ -80,15 +103,19 @@ def render_svg_heatmap(
         cy = drone.position[1] * cell_px + cell_px / 2
         label = escape(drone.drone_id)
         parts.append(
-            f'<circle cx="{cx}" cy="{cy}" r="{cell_px * 0.22:.1f}" fill="#2563eb" stroke="#0f172a" stroke-width="1.5" />'
+            f'<circle cx="{cx}" cy="{cy}" '
+            f'r="{cell_px * 0.22:.1f}" fill="#2563eb" '
+            f'stroke="#0f172a" stroke-width="1.5" />',
         )
         parts.append(
-            f'<text x="{cx}" y="{cy + 4}" text-anchor="middle" font-size="10" font-family="monospace" fill="#ffffff">{label[-1]}</text>'
+            f'<text x="{cx}" y="{cy + 4}" '
+            f'text-anchor="middle" font-size="10" '
+            f'font-family="monospace" '
+            f'fill="#ffffff">{label[-1]}</text>',
         )
 
     parts.append("</svg>")
     return "".join(parts)
-
 
 def render_html_snapshot(
     *,
@@ -98,7 +125,10 @@ def render_html_snapshot(
     events: list[dict[str, object]],
 ) -> str:
     event_items = "".join(
-        f"<li><strong>{escape(str(event.get('type', 'info'))).upper()}</strong> t={escape(str(event.get('t', 0)))}s — {escape(str(event.get('message', '')))}</li>"
+        f"<li><strong>"
+        f"{escape(str(event.get('type', 'info'))).upper()}"
+        f"</strong> t={escape(str(event.get('t', 0)))}s "
+        f"— {escape(str(event.get('message', '')))}</li>"
         for event in events[-12:]
     )
     summary_items = "".join(
@@ -112,13 +142,15 @@ def render_html_snapshot(
     <meta charset=\"utf-8\" />
     <title>{escape(title)}</title>
     <style>
-      body {{ font-family: Inter, system-ui, sans-serif; margin: 24px; color: #111827; }}
-      .layout {{ display: grid; grid-template-columns: minmax(320px, 1fr) 340px; gap: 24px; align-items: start; }}
-      .panel {{ border: 1px solid #d1d5db; border-radius: 12px; padding: 16px; background: #fff; }}
+      body {{ font-family: Inter, system-ui, sans-serif; margin: 24px; color:
+      .layout {{ display: grid;
+         grid-template-columns: minmax(320px, 1fr) 340px;
+         gap: 24px; align-items: start; }}
+      .panel {{ border: 1px solid
       h1, h2 {{ margin: 0 0 12px; }}
       ul {{ margin: 0; padding-left: 18px; }}
       li {{ margin: 6px 0; }}
-      .meta {{ color: #6b7280; margin-bottom: 16px; }}
+      .meta {{ color:
       svg {{ width: 100%; height: auto; }}
     </style>
   </head>
@@ -131,12 +163,8 @@ def render_html_snapshot(
         <h2>Summary</h2>
         <ul>{summary_items}</ul>
         <h2 style=\"margin-top:20px\">Recent events</h2>
-        <ul>{event_items or '<li>No events recorded.</li>'}</ul>
+        <ul>{event_items or "<li>No events recorded.</li>"}</ul>
       </div>
     </div>
   </body>
-</html>
-"""
-
-
-boundary_cells_fn = boundary_cells
+</html>"""

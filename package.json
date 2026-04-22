@@ -6,7 +6,7 @@
   "scripts": {
     "build": "python3 scripts/build_frontend.py",
     "build:launcher": "mkdir -p build && bun build --compile --outfile=build/entropyhunt runtime/run.ts",
-    "build:monitor": "mkdir -p build && bun build --compile --outfile=build/entropyhunt-monitor dashboard/tui_monitor_v2.ts",
+    "build:monitor": "mkdir -p build && bun build --compile --outfile=build/entropyhunt-monitor dashboard/tui_monitor.ts",
     "preview": "python3 -m http.server 4173 --directory dist",
     "start": "python3 -m http.server 4173 --directory dist",
     "test:ui": "node --test tests/entropy_hunt_ui.test.mjs",
@@ -20,6 +20,8 @@
     "hunt:demo": "bun run hunt -- --preset demo",
     "hunt:monitor": "./runtime/hunt-monitor.sh --source http://127.0.0.1:8765/snapshot.json",
     "hunt:peers": "python3 scripts/run_local_peers.py --count 5 --duration 180 --target 7,3 --fail drone_2 --fail-at 60 --output-dir peer-runs --proofs-path proofs.jsonl",
+    "hunt:chaos": "python3 scripts/run_local_peers.py --count 5 --duration 180 --target 7,3 --fail drone_2 --fail-at 60 --output-dir peer-runs --proofs-path proofs.jsonl --packet-loss 0.2 --transport foxmq",
+    "hunt:chaos:stub": "python3 main.py --mode stub --packet-loss 0.3 --fail drone_2 --fail-at 15 --duration 60 --grid 8 --drones 5 --stop-on-survivor",
     "hunt:serve": "python3 scripts/serve_live_runtime.py --snapshot-dir peer-runs",
     "hunt:stress:peers": "./runtime/hunt.sh --preset stress-peers",
     "hunt:stress:grid": "./runtime/hunt.sh --preset stress-grid",
@@ -27,19 +29,23 @@
     "ros2:validate": "./scripts/ros2_phase3_validate.sh",
     "ros2:validate:docker": "./scripts/ros2_phase3_validate_docker.sh",
     "live:peers": "bun run hunt",
-    "live:serve": "bun run hunt:serve"
+    "live:serve": "bun run hunt:serve",
+    "demo": "bash scripts/run_demo.sh",
+    "verify:poc": "python3 scripts/verify_poc.py"
   },
   "engines": {
     "bun": ">=1.3.10",
     "node": ">=18"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "^1.3",
+    "playwright": "^1.59.1",
+    "typescript": "^6"
   },
   "peerDependencies": {
-    "typescript": "^5"
+    "typescript": "^6"
   },
   "dependencies": {
-    "@opentui/core": "^0.1.96"
+    "@opentui/core": "^0.1.102"
   }
 }

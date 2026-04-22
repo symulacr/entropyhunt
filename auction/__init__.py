@@ -1,1 +1,1 @@
-"""Auction helpers for entropy-zone ownership."""
+from __future__ import annotations

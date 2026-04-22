@@ -44,12 +44,12 @@ test("waitForRuntimeReady ignores control.json and waits for the full peer swarm
     const ready = waitForRuntimeReady(snapshotDir, url, 1_000, 20, 2);
 
     setTimeout(() => {
-      void writeFile(path.join(snapshotDir, "drone_1.json"), JSON.stringify({ summary: { peer_id: "drone_1" } }));
+      writeFile(path.join(snapshotDir, "drone_1.json"), JSON.stringify({ summary: { peer_id: "drone_1" } })).catch(() => {});
       payload = { summary: { peer_count: 1, drones: [{ id: "drone_1" }] } };
     }, 60);
 
     setTimeout(() => {
-      void writeFile(path.join(snapshotDir, "drone_2.json"), JSON.stringify({ summary: { peer_id: "drone_2" } }));
+      writeFile(path.join(snapshotDir, "drone_2.json"), JSON.stringify({ summary: { peer_id: "drone_2" } })).catch(() => {});
       payload = {
         summary: {
           peer_count: 2,

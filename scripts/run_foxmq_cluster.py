@@ -2,9 +2,14 @@ from __future__ import annotations
 
 import argparse
 import importlib
-from pathlib import Path
+import os
+import shutil
 import subprocess
-from typing import Sequence
+from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
 
 
 def build_address_book_command_wrapper(
@@ -20,7 +25,7 @@ def build_address_book_command_wrapper(
         module = importlib.import_module("scripts.setup_foxmq")
     except ModuleNotFoundError:
         module = importlib.import_module("setup_foxmq")
-    builder = getattr(module, "build_address_book_command")
+    builder = module.build_address_book_command
     return builder(
         foxmq_bin=foxmq_bin,
         host=host,
@@ -60,9 +65,9 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run a local FoxMQ cluster")
     parser.add_argument("--foxmq-bin", default="foxmq")
     parser.add_argument("--count", type=int, default=4)
-    parser.add_argument("--mqtt-host", default="127.0.0.1")
+    parser.add_argument("--mqtt-host", default=os.environ.get("ENTROPYHUNT_MQTT_HOST", "127.0.0.1"))
     parser.add_argument("--mqtt-base-port", type=int, default=1883)
-    parser.add_argument("--cluster-host", default="127.0.0.1")
+    parser.add_argument("--cluster-host", default=os.environ.get("ENTROPYHUNT_HOST", "127.0.0.1"))
     parser.add_argument("--cluster-base-port", type=int, default=19793)
     parser.add_argument("--config-dir", default="foxmq.d")
     parser.add_argument("--allow-anonymous-login", action="store_true")
@@ -85,6 +90,11 @@ def _launch_processes(commands: Sequence[list[str]], *, cwd: Path) -> int:
 
 def main() -> int:
     args = parse_args()
+    resolved_bin = shutil.which(args.foxmq_bin)
+    if resolved_bin is None:
+        _msg = f"foxmq binary not found: {args.foxmq_bin!r}"
+        raise FileNotFoundError(_msg)
+    args.foxmq_bin = resolved_bin
     config_dir = Path(args.config_dir)
     cwd = Path.cwd()
     if not args.skip_address_book:

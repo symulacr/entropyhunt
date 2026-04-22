@@ -10,24 +10,10 @@ import type {
   SelectionTone,
   SourceMode,
   StatCardKey,
-  ThemeChipToken,
-  ThemeEventToneToken,
-  ThemeFooterStatusToken,
-  ThemeLegendToken,
-  ThemeSourceLabelToken,
-  ThemeStatCardToken,
+  ThemeAccentToken,
+  ThemeLabeledToken,
   TuiThemeSpec,
 } from "./tui_types.ts";
-
-/**
- * Shared OpenTUI theme constants derived from entropy_hunt_v2.html.
- *
- * The HTML reference uses a light operator surface nested inside a dark shell:
- * crisp header chips, compact stat cards, a monochrome entropy legend, semantic
- * roster chips, and a footer/status strip with live-state pulse cues. This file
- * centralizes those decisions so the OpenTUI monitor stays aligned with the
- * shipped browser surface instead of hand-tuning colors inline.
- */
 
 export const HTML_V2_CSS_VARS = {
   backgroundPrimary: "#0f172a",
@@ -52,6 +38,20 @@ export const HTML_V2_CSS_VARS = {
   textDanger: "#f87171",
   shellBackground: "#020617",
   shellPanel: "#08111f",
+  heatmapHigh: "#111111",
+  heatmapMedium: "#888888",
+  heatmapLegendLow: "#eeeeee",
+  pulseSuccess: "#22c55e",
+  backgroundFocus: "#1e293b",
+  textActive: "#38bdf8",
+  borderActive: "#bae6fd",
+  textLight: "#e2e8f0",
+  backgroundHighlight: "#1d4ed8",
+  backgroundMutedBlue: "#0f1b33",
+  backgroundSuccessDim: "#0b2a1b",
+  backgroundWarningDim: "#2b1f0d",
+  backgroundDangerDim: "#3b0d14",
+  backgroundNeutral: "#111827",
 } as const;
 
 export const DRONE_ACCENT_COLORS = [
@@ -62,71 +62,6 @@ export const DRONE_ACCENT_COLORS = [
   "#D4537E",
 ] as const;
 
-const makeChip = (label: string, fg: HexColor, bg: HexColor, border: HexColor): ThemeChipToken => ({
-  label,
-  fg,
-  bg,
-  border,
-});
-
-const makeStatCard = (
-  label: string,
-  shortLabel: string,
-  fg: HexColor,
-  bg: HexColor,
-  border: HexColor,
-  accent: HexColor,
-): ThemeStatCardToken => ({
-  label,
-  shortLabel,
-  fg,
-  bg,
-  border,
-  accent,
-});
-
-const makeLegendToken = (label: string, glyph: string, fg: HexColor, bg: HexColor, border: HexColor): ThemeLegendToken => ({
-  label,
-  glyph,
-  fg,
-  bg,
-  border,
-});
-
-const makeEventTone = (
-  label: string,
-  fg: HexColor,
-  bg: HexColor,
-  border: HexColor,
-  accent: HexColor,
-): ThemeEventToneToken => ({
-  label,
-  fg,
-  bg,
-  border,
-  accent,
-});
-
-const makeFooterStatus = (
-  label: string,
-  fg: HexColor,
-  bg: HexColor,
-  border: HexColor,
-  pulse: HexColor,
-): ThemeFooterStatusToken => ({
-  label,
-  fg,
-  bg,
-  border,
-  pulse,
-});
-
-const makeSourceLabel = (label: string, fg: HexColor, bg: HexColor, border: HexColor): ThemeSourceLabelToken => ({
-  label,
-  fg,
-  bg,
-  border,
-});
 
 export const TUI_LAYOUT = {
   title: "entropy hunt",
@@ -147,30 +82,30 @@ export const TUI_THEME: TuiThemeSpec = {
     title: TUI_LAYOUT.title,
     subtitle: TUI_LAYOUT.tag,
     tags: {
-      track: makeChip("TRACK 2", HTML_V2_CSS_VARS.textPrimary, HTML_V2_CSS_VARS.backgroundPrimary, HTML_V2_CSS_VARS.borderStrong),
-      mode: makeChip("TERMINAL OPS", HTML_V2_CSS_VARS.textSecondary, HTML_V2_CSS_VARS.backgroundSecondary, HTML_V2_CSS_VARS.borderTertiary),
-      mesh: makeChip("MESH", HTML_V2_CSS_VARS.textInfo, HTML_V2_CSS_VARS.backgroundInfo, HTML_V2_CSS_VARS.textInfo),
-      source: makeChip("SOURCE", HTML_V2_CSS_VARS.textSecondary, HTML_V2_CSS_VARS.backgroundSecondary, HTML_V2_CSS_VARS.borderTertiary),
-      status: makeChip("LIVE", HTML_V2_CSS_VARS.textSuccess, HTML_V2_CSS_VARS.backgroundSuccess, HTML_V2_CSS_VARS.backgroundSuccess),
+      track: { label: "TRACK 2", fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.backgroundPrimary, border: HTML_V2_CSS_VARS.borderStrong },
+      mode: { label: "TERMINAL OPS", fg: HTML_V2_CSS_VARS.textSecondary, bg: HTML_V2_CSS_VARS.backgroundSecondary, border: HTML_V2_CSS_VARS.borderTertiary },
+      mesh: { label: "MESH", fg: HTML_V2_CSS_VARS.textInfo, bg: HTML_V2_CSS_VARS.backgroundInfo, border: HTML_V2_CSS_VARS.textInfo },
+      source: { label: "SOURCE", fg: HTML_V2_CSS_VARS.textSecondary, bg: HTML_V2_CSS_VARS.backgroundSecondary, border: HTML_V2_CSS_VARS.borderTertiary },
+      status: { label: "LIVE", fg: HTML_V2_CSS_VARS.textSuccess, bg: HTML_V2_CSS_VARS.backgroundSuccess, border: HTML_V2_CSS_VARS.backgroundSuccess },
     },
     modeChips: {
-      synthetic: makeChip("synthetic demo", HTML_V2_CSS_VARS.textSecondary, HTML_V2_CSS_VARS.backgroundPrimary, HTML_V2_CSS_VARS.borderTertiary),
-      live: makeChip("live snapshot", HTML_V2_CSS_VARS.textInfo, HTML_V2_CSS_VARS.backgroundInfo, HTML_V2_CSS_VARS.textInfo),
-      replay: makeChip("replay snapshot", HTML_V2_CSS_VARS.textWarning, HTML_V2_CSS_VARS.backgroundWarning, HTML_V2_CSS_VARS.borderWarning),
+      synthetic: { label: "synthetic demo", fg: HTML_V2_CSS_VARS.textSecondary, bg: HTML_V2_CSS_VARS.backgroundPrimary, border: HTML_V2_CSS_VARS.borderTertiary },
+      live: { label: "live snapshot", fg: HTML_V2_CSS_VARS.textInfo, bg: HTML_V2_CSS_VARS.backgroundInfo, border: HTML_V2_CSS_VARS.textInfo },
+      replay: { label: "replay snapshot", fg: HTML_V2_CSS_VARS.textWarning, bg: HTML_V2_CSS_VARS.backgroundWarning, border: HTML_V2_CSS_VARS.borderWarning },
     },
     meshChips: {
-      real: makeChip("mesh=real", HTML_V2_CSS_VARS.textInfo, HTML_V2_CSS_VARS.backgroundInfo, HTML_V2_CSS_VARS.textInfo),
-      stub: makeChip("mesh=stub", HTML_V2_CSS_VARS.textMuted, HTML_V2_CSS_VARS.backgroundSecondary, HTML_V2_CSS_VARS.borderTertiary),
+      real: { label: "mesh=real", fg: HTML_V2_CSS_VARS.textInfo, bg: HTML_V2_CSS_VARS.backgroundInfo, border: HTML_V2_CSS_VARS.textInfo },
+      stub: { label: "mesh=stub", fg: HTML_V2_CSS_VARS.textMuted, bg: HTML_V2_CSS_VARS.backgroundSecondary, border: HTML_V2_CSS_VARS.borderTertiary },
     },
   },
   stats: {
     cards: {
-      coverage: makeStatCard("coverage", "cov", HTML_V2_CSS_VARS.textPrimary, HTML_V2_CSS_VARS.backgroundPrimary, HTML_V2_CSS_VARS.borderTertiary, HTML_V2_CSS_VARS.textSuccess),
-      entropy: makeStatCard("avg entropy", "H", HTML_V2_CSS_VARS.textPrimary, HTML_V2_CSS_VARS.backgroundPrimary, HTML_V2_CSS_VARS.borderTertiary, HTML_V2_CSS_VARS.textWarning),
-      auctions: makeStatCard("auctions", "auc", HTML_V2_CSS_VARS.textPrimary, HTML_V2_CSS_VARS.backgroundPrimary, HTML_V2_CSS_VARS.borderTertiary, HTML_V2_CSS_VARS.textWarning),
-      dropouts: makeStatCard("dropouts", "drop", HTML_V2_CSS_VARS.textPrimary, HTML_V2_CSS_VARS.backgroundPrimary, HTML_V2_CSS_VARS.borderTertiary, HTML_V2_CSS_VARS.textDanger),
-      bft: makeStatCard("bft rounds", "bft", HTML_V2_CSS_VARS.textPrimary, HTML_V2_CSS_VARS.backgroundPrimary, HTML_V2_CSS_VARS.borderTertiary, HTML_V2_CSS_VARS.textInfo),
-      elapsed: makeStatCard("elapsed", "t", HTML_V2_CSS_VARS.textPrimary, HTML_V2_CSS_VARS.backgroundPrimary, HTML_V2_CSS_VARS.borderTertiary, HTML_V2_CSS_VARS.textSecondary),
+      coverage: { label: "coverage", shortLabel: "cov", fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.backgroundPrimary, border: HTML_V2_CSS_VARS.borderTertiary, accent: HTML_V2_CSS_VARS.textSuccess },
+      entropy: { label: "avg entropy", shortLabel: "H", fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.backgroundPrimary, border: HTML_V2_CSS_VARS.borderTertiary, accent: HTML_V2_CSS_VARS.textWarning },
+      auctions: { label: "auctions", shortLabel: "auc", fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.backgroundPrimary, border: HTML_V2_CSS_VARS.borderTertiary, accent: HTML_V2_CSS_VARS.textWarning },
+      dropouts: { label: "dropouts", shortLabel: "drop", fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.backgroundPrimary, border: HTML_V2_CSS_VARS.borderTertiary, accent: HTML_V2_CSS_VARS.textDanger },
+      bft: { label: "bft rounds", shortLabel: "bft", fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.backgroundPrimary, border: HTML_V2_CSS_VARS.borderTertiary, accent: HTML_V2_CSS_VARS.textInfo },
+      elapsed: { label: "elapsed", shortLabel: "t", fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.backgroundPrimary, border: HTML_V2_CSS_VARS.borderTertiary, accent: HTML_V2_CSS_VARS.textSecondary },
     },
     tones: {
       good: HTML_V2_CSS_VARS.textSuccess,
@@ -181,109 +116,111 @@ export const TUI_THEME: TuiThemeSpec = {
   },
   heatmap: {
     legend: {
-      high: makeLegendToken("high H", "  ", HTML_V2_CSS_VARS.textInverse, "#111111", "#111111"),
-      medium: makeLegendToken("medium H", "  ", HTML_V2_CSS_VARS.textPrimary, "#888888", "#888888"),
-      low: makeLegendToken("low H", "  ", HTML_V2_CSS_VARS.textPrimary, "#eeeeee", "#eeeeee"),
-      target: makeLegendToken("target", "◎", HTML_V2_CSS_VARS.textWarning, HTML_V2_CSS_VARS.backgroundPrimary, HTML_V2_CSS_VARS.borderWarning),
-      drone: makeLegendToken("drone", "D1", HTML_V2_CSS_VARS.textPrimary, HTML_V2_CSS_VARS.backgroundPrimary, HTML_V2_CSS_VARS.borderStrong),
-      survivor: makeLegendToken("survivor", "✦", HTML_V2_CSS_VARS.textSuccess, HTML_V2_CSS_VARS.backgroundSuccess, HTML_V2_CSS_VARS.backgroundSuccess),
+      high: { label: "high H", glyph: "  ", fg: HTML_V2_CSS_VARS.textInverse, bg: HTML_V2_CSS_VARS.heatmapHigh, border: HTML_V2_CSS_VARS.heatmapHigh },
+      medium: { label: "medium H", glyph: "  ", fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.heatmapMedium, border: HTML_V2_CSS_VARS.heatmapMedium },
+      low: { label: "low H", glyph: "  ", fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.heatmapLegendLow, border: HTML_V2_CSS_VARS.heatmapLegendLow },
+      target: { label: "target", glyph: "◎", fg: HTML_V2_CSS_VARS.textWarning, bg: HTML_V2_CSS_VARS.backgroundPrimary, border: HTML_V2_CSS_VARS.borderWarning },
+      drone: { label: "drone", glyph: "D1", fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.backgroundPrimary, border: HTML_V2_CSS_VARS.borderStrong },
+      survivor: { label: "survivor", glyph: "✦", fg: HTML_V2_CSS_VARS.textSuccess, bg: HTML_V2_CSS_VARS.backgroundSuccess, border: HTML_V2_CSS_VARS.backgroundSuccess },
     },
     thresholds: {
       high: 0.8,
       medium: 0.5,
     },
     bandColors: {
-      high: "#111111",
-      medium: "#888888",
-      low: "#94a3b8",
+      high: HTML_V2_CSS_VARS.heatmapHigh,
+      medium: HTML_V2_CSS_VARS.heatmapMedium,
+      low: HTML_V2_CSS_VARS.textMuted,
     },
     droneForeground: HTML_V2_CSS_VARS.textInverse,
     emptyForeground: HTML_V2_CSS_VARS.textPrimary,
     targetBorder: HTML_V2_CSS_VARS.borderWarning,
-    survivorFlashBackground: "#22c55e",
+    survivorFlashBackground: HTML_V2_CSS_VARS.pulseSuccess,
     focus: {
-      idle: { fg: HTML_V2_CSS_VARS.textPrimary, bg: "#0f172a", border: HTML_V2_CSS_VARS.borderTertiary, accent: HTML_V2_CSS_VARS.textMuted },
-      hover: { fg: HTML_V2_CSS_VARS.textPrimary, bg: "#172554", border: "#60a5fa", accent: "#60a5fa" },
-      focused: { fg: HTML_V2_CSS_VARS.textPrimary, bg: "#1e293b", border: "#fbbf24", accent: "#fbbf24" },
-      active: { fg: HTML_V2_CSS_VARS.textInverse, bg: "#38bdf8", border: "#bae6fd", accent: "#f8fafc" },
+      idle: { fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.backgroundPrimary, border: HTML_V2_CSS_VARS.borderTertiary, accent: HTML_V2_CSS_VARS.textMuted },
+      hover: { fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.backgroundInfo, border: HTML_V2_CSS_VARS.textInfo, accent: HTML_V2_CSS_VARS.textInfo },
+      focused: { fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.backgroundFocus, border: HTML_V2_CSS_VARS.textWarning, accent: HTML_V2_CSS_VARS.textWarning },
+      active: { fg: HTML_V2_CSS_VARS.textInverse, bg: HTML_V2_CSS_VARS.textActive, border: HTML_V2_CSS_VARS.borderActive, accent: HTML_V2_CSS_VARS.textPrimary },
     },
     cursorGlyph: "◆",
   },
   roster: {
     statusChips: {
-      searching: makeChip("scan", HTML_V2_CSS_VARS.textSuccess, HTML_V2_CSS_VARS.backgroundSuccess, HTML_V2_CSS_VARS.backgroundSuccess),
-      transit: makeChip("move", HTML_V2_CSS_VARS.textInfo, HTML_V2_CSS_VARS.backgroundInfo, HTML_V2_CSS_VARS.backgroundInfo),
-      offline: makeChip("off", HTML_V2_CSS_VARS.textDanger, HTML_V2_CSS_VARS.backgroundDanger, HTML_V2_CSS_VARS.borderDanger),
-      idle: makeChip("idle", HTML_V2_CSS_VARS.textMuted, HTML_V2_CSS_VARS.backgroundPrimary, HTML_V2_CSS_VARS.borderTertiary),
+      searching: { label: "scan", fg: HTML_V2_CSS_VARS.textSuccess, bg: HTML_V2_CSS_VARS.backgroundSuccess, border: HTML_V2_CSS_VARS.backgroundSuccess },
+      transit: { label: "move", fg: HTML_V2_CSS_VARS.textInfo, bg: HTML_V2_CSS_VARS.backgroundInfo, border: HTML_V2_CSS_VARS.backgroundInfo },
+      offline: { label: "off", fg: HTML_V2_CSS_VARS.textDanger, bg: HTML_V2_CSS_VARS.backgroundDanger, border: HTML_V2_CSS_VARS.borderDanger },
+      idle: { label: "idle", fg: HTML_V2_CSS_VARS.textMuted, bg: HTML_V2_CSS_VARS.backgroundPrimary, border: HTML_V2_CSS_VARS.borderTertiary },
     },
     sourceLabels: {
-      synthetic: makeSourceLabel("synthetic demo", HTML_V2_CSS_VARS.textSecondary, HTML_V2_CSS_VARS.backgroundSecondary, HTML_V2_CSS_VARS.borderTertiary),
-      live: makeSourceLabel("live source", HTML_V2_CSS_VARS.textInfo, HTML_V2_CSS_VARS.backgroundInfo, HTML_V2_CSS_VARS.textInfo),
-      replay: makeSourceLabel("replay source", HTML_V2_CSS_VARS.textWarning, HTML_V2_CSS_VARS.backgroundWarning, HTML_V2_CSS_VARS.borderWarning),
+      synthetic: { label: "synthetic demo", fg: HTML_V2_CSS_VARS.textSecondary, bg: HTML_V2_CSS_VARS.backgroundSecondary, border: HTML_V2_CSS_VARS.borderTertiary },
+      live: { label: "live source", fg: HTML_V2_CSS_VARS.textInfo, bg: HTML_V2_CSS_VARS.backgroundInfo, border: HTML_V2_CSS_VARS.textInfo },
+      replay: { label: "replay source", fg: HTML_V2_CSS_VARS.textWarning, bg: HTML_V2_CSS_VARS.backgroundWarning, border: HTML_V2_CSS_VARS.borderWarning },
     },
     focus: {
       idle: { fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.backgroundSecondary, border: HTML_V2_CSS_VARS.borderTertiary, accent: HTML_V2_CSS_VARS.textMuted },
-      hover: { fg: HTML_V2_CSS_VARS.textPrimary, bg: "#172554", border: "#60a5fa", accent: "#60a5fa" },
-      focused: { fg: HTML_V2_CSS_VARS.textPrimary, bg: "#1e293b", border: "#fbbf24", accent: "#fbbf24" },
-      active: { fg: HTML_V2_CSS_VARS.textInverse, bg: "#38bdf8", border: "#bae6fd", accent: "#f8fafc" },
+      hover: { fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.backgroundInfo, border: HTML_V2_CSS_VARS.textInfo, accent: HTML_V2_CSS_VARS.textInfo },
+      focused: { fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.backgroundFocus, border: HTML_V2_CSS_VARS.textWarning, accent: HTML_V2_CSS_VARS.textWarning },
+      active: { fg: HTML_V2_CSS_VARS.textInverse, bg: HTML_V2_CSS_VARS.textActive, border: HTML_V2_CSS_VARS.borderActive, accent: HTML_V2_CSS_VARS.textPrimary },
     },
   },
   events: {
     tones: {
-      bft: makeEventTone("SYNC", HTML_V2_CSS_VARS.textWarning, HTML_V2_CSS_VARS.backgroundWarning, HTML_V2_CSS_VARS.borderWarning, HTML_V2_CSS_VARS.textWarning),
-      claim: makeEventTone("TASK", HTML_V2_CSS_VARS.textInfo, HTML_V2_CSS_VARS.backgroundInfo, HTML_V2_CSS_VARS.textInfo, HTML_V2_CSS_VARS.textInfo),
-      found: makeEventTone("FOUND", HTML_V2_CSS_VARS.textSuccess, HTML_V2_CSS_VARS.backgroundSuccess, HTML_V2_CSS_VARS.backgroundSuccess, HTML_V2_CSS_VARS.textSuccess),
-      stale: makeEventTone("RISK", HTML_V2_CSS_VARS.textDanger, HTML_V2_CSS_VARS.backgroundDanger, HTML_V2_CSS_VARS.borderDanger, HTML_V2_CSS_VARS.textDanger),
-      mesh: makeEventTone("LINK", HTML_V2_CSS_VARS.textSecondary, HTML_V2_CSS_VARS.backgroundSecondary, HTML_V2_CSS_VARS.borderTertiary, HTML_V2_CSS_VARS.textSecondary),
-      info: makeEventTone("NOTE", HTML_V2_CSS_VARS.textSecondary, HTML_V2_CSS_VARS.backgroundSecondary, HTML_V2_CSS_VARS.borderTertiary, HTML_V2_CSS_VARS.textMuted),
+      bft: { label: "SYNC", fg: HTML_V2_CSS_VARS.textWarning, bg: HTML_V2_CSS_VARS.backgroundWarning, border: HTML_V2_CSS_VARS.borderWarning, accent: HTML_V2_CSS_VARS.textWarning },
+      claim: { label: "TASK", fg: HTML_V2_CSS_VARS.textInfo, bg: HTML_V2_CSS_VARS.backgroundInfo, border: HTML_V2_CSS_VARS.textInfo, accent: HTML_V2_CSS_VARS.textInfo },
+      found: { label: "FOUND", fg: HTML_V2_CSS_VARS.textSuccess, bg: HTML_V2_CSS_VARS.backgroundSuccess, border: HTML_V2_CSS_VARS.backgroundSuccess, accent: HTML_V2_CSS_VARS.textSuccess },
+      stale: { label: "RISK", fg: HTML_V2_CSS_VARS.textDanger, bg: HTML_V2_CSS_VARS.backgroundDanger, border: HTML_V2_CSS_VARS.borderDanger, accent: HTML_V2_CSS_VARS.textDanger },
+      mesh: { label: "LINK", fg: HTML_V2_CSS_VARS.textSecondary, bg: HTML_V2_CSS_VARS.backgroundSecondary, border: HTML_V2_CSS_VARS.borderTertiary, accent: HTML_V2_CSS_VARS.textSecondary },
+      info: { label: "NOTE", fg: HTML_V2_CSS_VARS.textSecondary, bg: HTML_V2_CSS_VARS.backgroundSecondary, border: HTML_V2_CSS_VARS.borderTertiary, accent: HTML_V2_CSS_VARS.textMuted },
     },
     focus: {
       idle: { fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.backgroundSecondary, border: HTML_V2_CSS_VARS.borderTertiary, accent: HTML_V2_CSS_VARS.textMuted },
-      hover: { fg: HTML_V2_CSS_VARS.textPrimary, bg: "#172554", border: "#60a5fa", accent: "#60a5fa" },
-      focused: { fg: HTML_V2_CSS_VARS.textPrimary, bg: "#1e293b", border: "#fbbf24", accent: "#fbbf24" },
-      active: { fg: HTML_V2_CSS_VARS.textInverse, bg: "#38bdf8", border: "#bae6fd", accent: "#f8fafc" },
+      hover: { fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.backgroundInfo, border: HTML_V2_CSS_VARS.textInfo, accent: HTML_V2_CSS_VARS.textInfo },
+      focused: { fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.backgroundFocus, border: HTML_V2_CSS_VARS.textWarning, accent: HTML_V2_CSS_VARS.textWarning },
+      active: { fg: HTML_V2_CSS_VARS.textInverse, bg: HTML_V2_CSS_VARS.textActive, border: HTML_V2_CSS_VARS.borderActive, accent: HTML_V2_CSS_VARS.textPrimary },
     },
   },
   footer: {
     statuses: {
-      booting: makeFooterStatus("initialising vertex p2p mesh...", HTML_V2_CSS_VARS.textInfo, HTML_V2_CSS_VARS.shellPanel, HTML_V2_CSS_VARS.borderSecondary, HTML_V2_CSS_VARS.textInfo),
-      live: makeFooterStatus("mesh healthy · streaming live updates", HTML_V2_CSS_VARS.textSuccess, HTML_V2_CSS_VARS.shellPanel, HTML_V2_CSS_VARS.borderSecondary, "#22c55e"),
-      stale: makeFooterStatus("stale data · holding last valid snapshot", HTML_V2_CSS_VARS.textWarning, HTML_V2_CSS_VARS.shellPanel, HTML_V2_CSS_VARS.borderWarning, HTML_V2_CSS_VARS.textWarning),
-      stub: makeFooterStatus("in-process mesh bus initialised", HTML_V2_CSS_VARS.textMuted, HTML_V2_CSS_VARS.shellPanel, HTML_V2_CSS_VARS.borderSecondary, HTML_V2_CSS_VARS.textMuted),
-      replay: makeFooterStatus("replay mode · file-backed snapshot", HTML_V2_CSS_VARS.textInfo, HTML_V2_CSS_VARS.shellPanel, HTML_V2_CSS_VARS.borderSecondary, HTML_V2_CSS_VARS.textInfo),
+      booting: { label: "initialising vertex p2p mesh...", fg: HTML_V2_CSS_VARS.textInfo, bg: HTML_V2_CSS_VARS.shellPanel, border: HTML_V2_CSS_VARS.borderSecondary, pulse: HTML_V2_CSS_VARS.textInfo },
+      live: { label: "mesh healthy · streaming live updates", fg: HTML_V2_CSS_VARS.textSuccess, bg: HTML_V2_CSS_VARS.shellPanel, border: HTML_V2_CSS_VARS.borderSecondary, pulse: HTML_V2_CSS_VARS.pulseSuccess },
+      stale: { label: "stale data · holding last valid snapshot", fg: HTML_V2_CSS_VARS.textWarning, bg: HTML_V2_CSS_VARS.shellPanel, border: HTML_V2_CSS_VARS.borderWarning, pulse: HTML_V2_CSS_VARS.textWarning },
+      stub: { label: "in-process mesh bus initialised", fg: HTML_V2_CSS_VARS.textMuted, bg: HTML_V2_CSS_VARS.shellPanel, border: HTML_V2_CSS_VARS.borderSecondary, pulse: HTML_V2_CSS_VARS.textMuted },
+      replay: { label: "replay mode · file-backed snapshot", fg: HTML_V2_CSS_VARS.textInfo, bg: HTML_V2_CSS_VARS.shellPanel, border: HTML_V2_CSS_VARS.borderSecondary, pulse: HTML_V2_CSS_VARS.textInfo },
     },
   },
   focus: {
     panels: {
-      heatmap: { fg: HTML_V2_CSS_VARS.textPrimary, bg: "#0f172a", border: "#60a5fa", accent: "#38bdf8" },
-      roster: { fg: HTML_V2_CSS_VARS.textPrimary, bg: "#0f172a", border: "#4ade80", accent: "#22c55e" },
-      events: { fg: HTML_V2_CSS_VARS.textPrimary, bg: "#0f172a", border: "#fbbf24", accent: "#f59e0b" },
+      heatmap: { fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.backgroundPrimary, border: HTML_V2_CSS_VARS.textInfo, accent: HTML_V2_CSS_VARS.textActive },
+      roster: { fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.backgroundPrimary, border: HTML_V2_CSS_VARS.textSuccess, accent: HTML_V2_CSS_VARS.pulseSuccess },
+      events: { fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.backgroundPrimary, border: HTML_V2_CSS_VARS.textWarning, accent: HTML_V2_CSS_VARS.borderWarning },
       footer: { fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.shellPanel, border: HTML_V2_CSS_VARS.borderSecondary, accent: HTML_V2_CSS_VARS.textInfo },
       header: { fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.shellPanel, border: HTML_V2_CSS_VARS.borderStrong, accent: HTML_V2_CSS_VARS.textInfo },
     },
     cells: {
-      idle: { fg: HTML_V2_CSS_VARS.textPrimary, bg: "#0f172a", border: HTML_V2_CSS_VARS.borderTertiary, accent: HTML_V2_CSS_VARS.textMuted },
-      hover: { fg: HTML_V2_CSS_VARS.textPrimary, bg: "#172554", border: "#60a5fa", accent: "#60a5fa" },
-      focused: { fg: HTML_V2_CSS_VARS.textPrimary, bg: "#1e293b", border: "#fbbf24", accent: "#fbbf24" },
-      active: { fg: HTML_V2_CSS_VARS.textInverse, bg: "#38bdf8", border: "#bae6fd", accent: "#f8fafc" },
+      idle: { fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.backgroundPrimary, border: HTML_V2_CSS_VARS.borderTertiary, accent: HTML_V2_CSS_VARS.textMuted },
+      hover: { fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.backgroundInfo, border: HTML_V2_CSS_VARS.textInfo, accent: HTML_V2_CSS_VARS.textInfo },
+      focused: { fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.backgroundFocus, border: HTML_V2_CSS_VARS.textWarning, accent: HTML_V2_CSS_VARS.textWarning },
+      active: { fg: HTML_V2_CSS_VARS.textInverse, bg: HTML_V2_CSS_VARS.textActive, border: HTML_V2_CSS_VARS.borderActive, accent: HTML_V2_CSS_VARS.textPrimary },
     },
   },
   interaction: {
     chips: {
-      navigate: makeChip("arrows", HTML_V2_CSS_VARS.textInfo, HTML_V2_CSS_VARS.backgroundInfo, HTML_V2_CSS_VARS.textInfo),
-      switch: makeChip("tab", HTML_V2_CSS_VARS.textWarning, HTML_V2_CSS_VARS.backgroundWarning, HTML_V2_CSS_VARS.borderWarning),
-      select: makeChip("enter", HTML_V2_CSS_VARS.textSuccess, HTML_V2_CSS_VARS.backgroundSuccess, HTML_V2_CSS_VARS.textSuccess),
-      click: makeChip("click", HTML_V2_CSS_VARS.textPrimary, HTML_V2_CSS_VARS.backgroundMuted, HTML_V2_CSS_VARS.borderStrong),
-      quit: makeChip("q", HTML_V2_CSS_VARS.textDanger, HTML_V2_CSS_VARS.backgroundDanger, HTML_V2_CSS_VARS.borderDanger),
+      navigate: { label: "arrows", fg: HTML_V2_CSS_VARS.textInfo, bg: HTML_V2_CSS_VARS.backgroundInfo, border: HTML_V2_CSS_VARS.textInfo },
+      switch: { label: "tab", fg: HTML_V2_CSS_VARS.textWarning, bg: HTML_V2_CSS_VARS.backgroundWarning, border: HTML_V2_CSS_VARS.borderWarning },
+      select: { label: "enter", fg: HTML_V2_CSS_VARS.textSuccess, bg: HTML_V2_CSS_VARS.backgroundSuccess, border: HTML_V2_CSS_VARS.textSuccess },
+      click: { label: "click", fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.backgroundMuted, border: HTML_V2_CSS_VARS.borderStrong },
+      quit: { label: "q", fg: HTML_V2_CSS_VARS.textDanger, bg: HTML_V2_CSS_VARS.backgroundDanger, border: HTML_V2_CSS_VARS.borderDanger },
     },
   },
 } as const;
 
-export const SOURCE_MODE_LABELS: Record<SourceMode, string> = Object.fromEntries(
-  Object.entries(TUI_THEME.roster.sourceLabels).map(([mode, token]) => [mode, token.label]),
-) as Record<SourceMode, string>;
+export const SOURCE_MODE_LABELS: Record<SourceMode, string> = {
+  synthetic: TUI_THEME.roster.sourceLabels.synthetic.label,
+  live: TUI_THEME.roster.sourceLabels.live.label,
+  replay: TUI_THEME.roster.sourceLabels.replay.label,
+};
 
-export const MODE_CHIP_THEME: Record<SourceMode, ThemeChipToken> = TUI_THEME.header.modeChips;
+export const MODE_CHIP_THEME: Record<SourceMode, ThemeLabeledToken> = TUI_THEME.header.modeChips;
 
 export const HEATMAP_THEME = {
   legendHighLabel: TUI_THEME.heatmap.legend.high.label,
@@ -311,13 +248,13 @@ export const HEADER_THEME = {
   meshChips: TUI_THEME.header.meshChips,
 } as const;
 
-export const STAT_CARD_THEME: Record<StatCardKey, ThemeStatCardToken> = TUI_THEME.stats.cards;
+export const STAT_CARD_THEME: Record<StatCardKey, ThemeAccentToken> = TUI_THEME.stats.cards;
 
-export const STATUS_CHIP_THEME: Record<DisplayDroneStatus, ThemeChipToken> = TUI_THEME.roster.statusChips;
+export const STATUS_CHIP_THEME: Record<DisplayDroneStatus, ThemeLabeledToken> = TUI_THEME.roster.statusChips;
 
-export const SOURCE_LABEL_THEME: Record<SourceMode, ThemeSourceLabelToken> = TUI_THEME.roster.sourceLabels;
+export const SOURCE_LABEL_THEME: Record<SourceMode, ThemeLabeledToken> = TUI_THEME.roster.sourceLabels;
 
-export const EVENT_TONE_THEME: Record<EventTone, ThemeEventToneToken> = TUI_THEME.events.tones;
+export const EVENT_TONE_THEME: Record<EventTone, ThemeAccentToken> = TUI_THEME.events.tones;
 
 export const STAT_THEME = {
   coverage: {
@@ -335,20 +272,19 @@ export const PANEL_THEME = {
   appBackground: HTML_V2_CSS_VARS.shellBackground,
   panelBackground: HTML_V2_CSS_VARS.shellPanel,
   shellPanelBackground: HTML_V2_CSS_VARS.shellPanel,
-  border: "#475569",
-  mutedBorder: "#475569",
+  border: HTML_V2_CSS_VARS.borderSecondary,
   textPrimary: HTML_V2_CSS_VARS.textInverse,
-  textSecondary: "#e2e8f0",
-  textMuted: "#cbd5e1",
+  textSecondary: HTML_V2_CSS_VARS.textLight,
+  textMuted: HTML_V2_CSS_VARS.textSecondary,
   shellText: HTML_V2_CSS_VARS.textInverse,
 } as const;
 
-export const FOOTER_STATUS_THEME: Record<FooterStatusKind, ThemeFooterStatusToken> = TUI_THEME.footer.statuses;
+export const FOOTER_STATUS_THEME: Record<FooterStatusKind, ThemeLabeledToken & { readonly pulse: HexColor }> = TUI_THEME.footer.statuses;
 
 export const FOOTER_THEME = {
   pulse: FOOTER_STATUS_THEME.live.pulse,
   text: HTML_V2_CSS_VARS.textMuted,
-  liveText: FOOTER_STATUS_THEME.booting.label,
+  liveText: FOOTER_STATUS_THEME.live.label,
   stubText: FOOTER_STATUS_THEME.stub.label,
   statuses: FOOTER_STATUS_THEME,
 } as const;
@@ -368,7 +304,6 @@ export const MESH_MODE_THEME: Record<MeshMode, { readonly label: string; readonl
   },
 };
 
-// Compatibility exports for the current imperative monitor modules.
 export const COLORS = {
   bg: PANEL_THEME.appBackground,
   panelBg: PANEL_THEME.panelBackground,
@@ -391,6 +326,12 @@ export const COLORS = {
   targetAlt: HEATMAP_THEME.survivorFlashBackground,
   headerBg: PANEL_THEME.shellPanelBackground,
   shellText: PANEL_THEME.shellText,
+} as const;
+
+export const STAT_THRESHOLDS = {
+  coverage: { good: 60, warn: 30 },
+  entropy: { high: 0.7, warn: 0.45 },
+  auctions: { active: 1 },
 } as const;
 
 export const LAYOUT = {
@@ -450,13 +391,29 @@ export function coverageColorFor(percent: number): string {
   return STAT_THEME.coverage.bad;
 }
 
+export function isStatusDisplayKey(key: string): key is keyof typeof STATUS_DISPLAY_MAP {
+  return key in STATUS_DISPLAY_MAP;
+}
+
+export function isEventToneKey(key: string): key is keyof typeof EVENT_TONE_MAP {
+  return key in EVENT_TONE_MAP;
+}
+
+export function isSourceMode(value: string): value is SourceMode {
+  return value in MODE_CHIP_THEME;
+}
+
+export function isDisplayDroneStatus(value: string): value is DisplayDroneStatus {
+  return value in STATUS_CHIP_THEME;
+}
+
 export function statusColor(status: string): string {
-  const key = (STATUS_DISPLAY_MAP[status as keyof typeof STATUS_DISPLAY_MAP] ?? "idle") as DisplayDroneStatus;
+  const key = isStatusDisplayKey(status) ? STATUS_DISPLAY_MAP[status] : "idle";
   return STATUS_CHIP_THEME[key].fg;
 }
 
 export function eventColor(type: string): string {
-  const tone = EVENT_TONE_MAP[type as keyof typeof EVENT_TONE_MAP] ?? "info";
+  const tone = isEventToneKey(type) ? EVENT_TONE_MAP[type] : "info";
   return EVENT_TONE_THEME[tone].fg;
 }
 
@@ -465,4 +422,4 @@ export function entropyColor(value: number): string {
 }
 
 export const FOCUS_THEME = TUI_THEME.focus;
-export const INTERACTION_THEME: Record<InteractionChipKind, ThemeChipToken> = TUI_THEME.interaction.chips;
+export const INTERACTION_THEME: Record<InteractionChipKind, ThemeLabeledToken> = TUI_THEME.interaction.chips;

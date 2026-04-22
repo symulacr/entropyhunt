@@ -1,5 +1,4 @@
 from __future__ import annotations
-# mypy: disable-error-code=attr-defined
 
 from typing import Any
 
@@ -7,6 +6,8 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
+
+_NO_FAIL: int = -1
 
 
 def _launch_setup(context: Any, *_args: Any, **_kwargs: Any) -> list[Any]:
@@ -26,9 +27,20 @@ def _launch_setup(context: Any, *_args: Any, **_kwargs: Any) -> list[Any]:
             package="entropy_hunt_ros2",
             executable="operator_node",
             name="entropy_hunt_operator",
-            parameters=[{"drone_count": count, "grid": grid, "target_x": target_x, "target_y": target_y, "tick_seconds": tick_seconds, "snapshot_path": snapshot_path, "snapshot_host": snapshot_host, "snapshot_port": snapshot_port}],
+            parameters=[
+                {
+                    "drone_count": count,
+                    "grid": grid,
+                    "target_x": target_x,
+                    "target_y": target_y,
+                    "tick_seconds": tick_seconds,
+                    "snapshot_path": snapshot_path,
+                    "snapshot_host": snapshot_host,
+                    "snapshot_port": snapshot_port,
+                },
+            ],
             output="screen",
-        )
+        ),
     ]
     for index in range(count):
         peer_id = f"drone_{index + 1}"
@@ -44,11 +56,11 @@ def _launch_setup(context: Any, *_args: Any, **_kwargs: Any) -> list[Any]:
                         "target_x": target_x,
                         "target_y": target_y,
                         "tick_seconds": tick_seconds,
-                        "fail_at": fail_at if peer_id == fail_drone else -1,
-                    }
+                        "fail_at": fail_at if peer_id == fail_drone else _NO_FAIL,
+                    },
                 ],
                 output="screen",
-            )
+            ),
         )
     return actions
 
@@ -67,5 +79,5 @@ def generate_launch_description() -> LaunchDescription:
             DeclareLaunchArgument("snapshot_host", default_value="127.0.0.1"),
             DeclareLaunchArgument("snapshot_port", default_value="8776"),
             OpaqueFunction(function=_launch_setup),
-        ]
+        ],
     )

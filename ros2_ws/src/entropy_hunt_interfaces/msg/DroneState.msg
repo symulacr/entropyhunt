@@ -7,3 +7,7 @@ string status
 bool alive
 bool reachable
 int32 searched_cells
+float32 altitude_m
+float32 heading_deg
+float32 battery_pct
+string flight_mode

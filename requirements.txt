@@ -1,6 +1,0 @@
-# Runtime dependencies
-# --------------------
-# Core simulation remains standard-library-first.
-# Optional integration paths:
-# - paho-mqtt  (required for --transport foxmq / FoxMQMeshBus)
-# - Webots Python controller module (provided by a Webots installation)

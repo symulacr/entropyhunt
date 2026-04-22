@@ -1,35 +1,37 @@
+
 from __future__ import annotations
 
 from dataclasses import dataclass
 from math import dist, isclose
+from typing import TYPE_CHECKING
 
-from core.certainty_map import CertaintyMap, Coordinate
-from core.zone_selector import ZoneSelector
-
+if TYPE_CHECKING:
+    from core.certainty import CertaintyMap, Coordinate
+    from core.selector import ZoneSelector
 
 @dataclass(frozen=True, slots=True)
 class ClaimRequest:
+
     claim_id: str
     drone_id: str
     cell: Coordinate
     position: Coordinate
     timestamp_ms: int
 
-
 @dataclass(frozen=True, slots=True)
 class ZoneAssignment:
+
     drone_id: str
     cell: Coordinate
     reason: str
     subzone: str | None = None
 
-
 @dataclass(frozen=True, slots=True)
 class AuctionDecision:
+
     cell: Coordinate
     assignments: tuple[ZoneAssignment, ...]
     rationale: str
-
 
 def _fallback_assignments(
     losers: list[ClaimRequest],
@@ -47,7 +49,9 @@ def _fallback_assignments(
             current_position=loser.position,
         )
         if selection is None:
-            assignments.append(ZoneAssignment(drone_id=loser.drone_id, cell=loser.cell, reason="idle"))
+            assignments.append(
+                ZoneAssignment(drone_id=loser.drone_id, cell=loser.cell, reason="idle"),
+            )
             continue
         reserved.add(selection.coordinate)
         assignments.append(
@@ -55,10 +59,9 @@ def _fallback_assignments(
                 drone_id=loser.drone_id,
                 cell=selection.coordinate,
                 reason="fallback",
-            )
+            ),
         )
     return assignments
-
 
 def resolve_conflict(
     claims: list[ClaimRequest],
@@ -67,7 +70,9 @@ def resolve_conflict(
     selector: ZoneSelector,
     claimed_zones: set[Coordinate],
 ) -> AuctionDecision:
-    assert claims, "resolve_conflict requires at least one claim"
+    if not claims:
+        _msg = "resolve_conflict requires at least one claim"
+        raise ValueError(_msg)
     cell = claims[0].cell
     if len(claims) == 1:
         claim = claims[0]
@@ -86,7 +91,10 @@ def resolve_conflict(
     winner_distance = dist(winner.position, cell)
     runner_up_distance = dist(runner_up.position, cell)
 
-    if winner.timestamp_ms == runner_up.timestamp_ms and isclose(winner_distance, runner_up_distance):
+    if winner.timestamp_ms == runner_up.timestamp_ms and isclose(
+        winner_distance,
+        runner_up_distance,
+    ):
         split_assignments = [
             ZoneAssignment(drone_id=winner.drone_id, cell=cell, reason="split", subzone="left"),
             ZoneAssignment(drone_id=runner_up.drone_id, cell=cell, reason="split", subzone="right"),
@@ -111,6 +119,9 @@ def resolve_conflict(
     )
     return AuctionDecision(
         cell=cell,
-        assignments=(ZoneAssignment(drone_id=winner.drone_id, cell=cell, reason="winner"), *fallback),
+        assignments=(
+            ZoneAssignment(drone_id=winner.drone_id, cell=cell, reason="winner"),
+            *fallback,
+        ),
         rationale="timestamp precedence + proximity tiebreak",
     )

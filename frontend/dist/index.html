@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Entropy Hunt — Deterministic swarm search and rescue simulation." />
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#fafafa" />
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#09090b" />
+<title>Entropy Hunt — Search & Rescue Swarm System</title>
+<link rel="stylesheet" href="./assets/shell.css" />
+</head>
+<body>
+<div style="background:#fef08a;color:#854d0e;padding:0.5rem 1rem;text-align:center;font-family:system-ui,sans-serif;font-size:0.875rem;">
+  This file is a build template. Open <code>frontend/dist/index.html</code> for the rendered page.
+</div>
+<a href="#main" class="skip-link">Skip to content</a>
+
+<main id="main" class="page">
+  <section class="hero">
+    <div>
+      <p class="eyebrow">Vertex Swarm Challenge</p>
+      <h1>Entropy Hunt</h1>
+      <p class="lede">
+        An autonomous search-and-rescue swarm system. Multiple drones divide disaster terrain,
+        negotiate search zones via BFT consensus over a mesh network, survive packet loss
+        and node failures, and emit cryptographically-auditable proofs of coordination
+        until a survivor is found.
+      </p>
+    </div>
+    <div class="hero-actions">
+      <a class="button primary" href="./artifacts/final_map.html">
+        Open Final Snapshot
+        <span class="icon-wrap" aria-hidden="true">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 11L11 1M11 1H3M11 1V9"/></svg>
+        </span>
+      </a>
+      <a class="button" href="./console.html">Open Replay Console</a>
+    </div>
+  </section>
+
+  <section class="grid two-up">
+    <article class="panel">
+      <div class="panel-header">
+        <h2>Latest Verified Run</h2>
+        <span class="chip">Built from final_map.json</span>
+      </div>
+      <div class="cards"><article class="card"><p class="card-label">coverage completed</p><p class="card-value">0.12</p><p class="card-note">portion of cells fully closed out in the run</p></article><article class="card"><p class="card-label">coverage current</p><p class="card-value">0.12</p><p class="card-note">live end-of-run coverage after decay</p></article><article class="card"><p class="card-label">consensus rounds</p><p class="card-value">0</p><p class="card-note">deterministic claim-resolution rounds executed</p></article><article class="card"><p class="card-label">dropouts</p><p class="card-value">0</p><p class="card-note">scheduled failures observed during the run</p></article><article class="card"><p class="card-label">survivor found</p><p class="card-value">no</p><p class="card-note">target confirmation was published to the swarm</p></article><article class="card"><p class="card-label">mesh messages</p><p class="card-value">132</p><p class="card-note">local bus publications captured in the stub</p></article></div>
+      <div class="run-meta">Run duration <strong>30s</strong>, grid <strong>5×5</strong>, search increment <strong>0.05</strong>, completion certainty <strong>0.95</strong>.</div>
+    </article>
+
+    <article class="panel">
+      <div class="panel-header">
+        <h2>Replay Artifacts</h2>
+        <span class="chip">Replay by default</span>
+      </div>
+      <ul class="artifact-list"><li><a href="./artifacts/final_map.json">Replay payload</a> — load this into the packaged replay console</li><li><a href="./artifacts/final_map.svg">Heatmap SVG</a> — standalone snapshot for docs or slides</li><li><a href="./artifacts/final_map.html">Final dashboard</a> — self-contained HTML snapshot</li><li><a href="./console.html">Replay console</a> — read-only replay viewer; live mode still needs local helper scripts</li></ul>
+      <pre class="code-block"><code>python3 main.py --final-map final_map.json --svg-map final_map.svg --final-html final_map.html
+bun run build
+bun run preview
+bun run live:peers
+bun run live:serve</code></pre>
+    </article>
+  </section>
+
+  <section class="grid preview-layout">
+    <article class="panel heatmap-panel">
+      <div class="panel-header">
+        <h2>Snapshot Preview</h2>
+        <span class="chip">SVG Export</span>
+      </div>
+      <div class="heatmap-frame"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 280" width="280" height="280"><rect width="100%" height="100%" fill="#ffffff" /><rect x="0" y="0" width="28" height="28" fill="rgb(222,222,222)" stroke="#dadde2" stroke-width="0.7" /><rect x="28" y="0" width="28" height="28" fill="rgb(220,220,220)" stroke="#dadde2" stroke-width="0.7" /><rect x="56" y="0" width="28" height="28" fill="rgb(224,224,224)" stroke="#dadde2" stroke-width="0.7" /><rect x="84" y="0" width="28" height="28" fill="rgb(238,238,238)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="112" y="0" width="28" height="28" fill="rgb(234,234,234)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="140" y="0" width="28" height="28" fill="rgb(238,238,238)" stroke="#dadde2" stroke-width="0.7" /><rect x="168" y="0" width="28" height="28" fill="rgb(229,229,229)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="196" y="0" width="28" height="28" fill="rgb(228,228,228)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="224" y="0" width="28" height="28" fill="rgb(218,218,218)" stroke="#dadde2" stroke-width="0.7" /><rect x="252" y="0" width="28" height="28" fill="rgb(217,217,217)" stroke="#dadde2" stroke-width="0.7" /><rect x="0" y="28" width="28" height="28" fill="rgb(169,169,169)" stroke="#dadde2" stroke-width="0.7" /><rect x="28" y="28" width="28" height="28" fill="rgb(168,168,168)" stroke="#dadde2" stroke-width="0.7" /><rect x="56" y="28" width="28" height="28" fill="rgb(253,253,253)" stroke="#dadde2" stroke-width="0.7" /><rect x="84" y="28" width="28" height="28" fill="rgb(244,244,244)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="112" y="28" width="28" height="28" fill="rgb(255,255,255)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="140" y="28" width="28" height="28" fill="rgb(237,237,237)" stroke="#dadde2" stroke-width="0.7" /><rect x="168" y="28" width="28" height="28" fill="rgb(248,248,248)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="196" y="28" width="28" height="28" fill="rgb(252,252,252)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="224" y="28" width="28" height="28" fill="rgb(168,168,168)" stroke="#dadde2" stroke-width="0.7" /><rect x="252" y="28" width="28" height="28" fill="rgb(169,169,169)" stroke="#dadde2" stroke-width="0.7" /><rect x="0" y="56" width="28" height="28" fill="rgb(167,167,167)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="28" y="56" width="28" height="28" fill="rgb(170,170,170)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="56" y="56" width="28" height="28" fill="rgb(169,169,169)" stroke="#dadde2" stroke-width="0.7" /><rect x="84" y="56" width="28" height="28" fill="rgb(167,167,167)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="112" y="56" width="28" height="28" fill="rgb(247,247,247)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="140" y="56" width="28" height="28" fill="rgb(232,232,232)" stroke="#dadde2" stroke-width="0.7" /><rect x="168" y="56" width="28" height="28" fill="rgb(173,173,173)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="196" y="56" width="28" height="28" fill="rgb(171,171,171)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="224" y="56" width="28" height="28" fill="rgb(169,169,169)" stroke="#dadde2" stroke-width="0.7" /><rect x="252" y="56" width="28" height="28" fill="rgb(167,167,167)" stroke="#dadde2" stroke-width="0.7" /><rect x="0" y="84" width="28" height="28" fill="rgb(166,166,166)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="28" y="84" width="28" height="28" fill="rgb(171,171,171)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="56" y="84" width="28" height="28" fill="rgb(170,170,170)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="84" y="84" width="28" height="28" fill="rgb(172,172,172)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="112" y="84" width="28" height="28" fill="rgb(174,174,174)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="140" y="84" width="28" height="28" fill="rgb(228,228,228)" stroke="#dadde2" stroke-width="0.7" /><rect x="168" y="84" width="28" height="28" fill="rgb(179,179,179)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="196" y="84" width="28" height="28" fill="rgb(172,172,172)" stroke="#16a34a" stroke-width="2.0" /><rect x="224" y="84" width="28" height="28" fill="rgb(171,171,171)" stroke="#dadde2" stroke-width="0.7" /><rect x="252" y="84" width="28" height="28" fill="rgb(247,247,247)" stroke="#dadde2" stroke-width="0.7" /><rect x="0" y="112" width="28" height="28" fill="rgb(240,240,240)" stroke="#dadde2" stroke-width="0.7" /><rect x="28" y="112" width="28" height="28" fill="rgb(172,172,172)" stroke="#dadde2" stroke-width="0.7" /><rect x="56" y="112" width="28" height="28" fill="rgb(173,173,173)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="84" y="112" width="28" height="28" fill="rgb(174,174,174)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="112" y="112" width="28" height="28" fill="rgb(175,175,175)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="140" y="112" width="28" height="28" fill="rgb(222,222,222)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="168" y="112" width="28" height="28" fill="rgb(174,174,174)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="196" y="112" width="28" height="28" fill="rgb(176,176,176)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="224" y="112" width="28" height="28" fill="rgb(178,178,178)" stroke="#dadde2" stroke-width="0.7" /><rect x="252" y="112" width="28" height="28" fill="rgb(245,245,245)" stroke="#dadde2" stroke-width="0.7" /><rect x="0" y="140" width="28" height="28" fill="rgb(236,236,236)" stroke="#dadde2" stroke-width="0.7" /><rect x="28" y="140" width="28" height="28" fill="rgb(174,174,174)" stroke="#dadde2" stroke-width="0.7" /><rect x="56" y="140" width="28" height="28" fill="rgb(175,175,175)" stroke="#dadde2" stroke-width="0.7" /><rect x="84" y="140" width="28" height="28" fill="rgb(176,176,176)" stroke="#dadde2" stroke-width="0.7" /><rect x="112" y="140" width="28" height="28" fill="rgb(177,177,177)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="140" y="140" width="28" height="28" fill="rgb(217,217,217)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="168" y="140" width="28" height="28" fill="rgb(183,183,183)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="196" y="140" width="28" height="28" fill="rgb(181,181,181)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="224" y="140" width="28" height="28" fill="rgb(180,180,180)" stroke="#dadde2" stroke-width="0.7" /><rect x="252" y="140" width="28" height="28" fill="rgb(247,247,247)" stroke="#dadde2" stroke-width="0.7" /><rect x="0" y="168" width="28" height="28" fill="rgb(238,238,238)" stroke="#dadde2" stroke-width="0.7" /><rect x="28" y="168" width="28" height="28" fill="rgb(178,178,178)" stroke="#dadde2" stroke-width="0.7" /><rect x="56" y="168" width="28" height="28" fill="rgb(177,177,177)" stroke="#dadde2" stroke-width="0.7" /><rect x="84" y="168" width="28" height="28" fill="rgb(178,178,178)" stroke="#dadde2" stroke-width="0.7" /><rect x="112" y="168" width="28" height="28" fill="rgb(178,178,178)" stroke="#dadde2" stroke-width="0.7" /><rect x="140" y="168" width="28" height="28" fill="rgb(180,180,180)" stroke="#dadde2" stroke-width="0.7" /><rect x="168" y="168" width="28" height="28" fill="rgb(182,182,182)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="196" y="168" width="28" height="28" fill="rgb(184,184,184)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="224" y="168" width="28" height="28" fill="rgb(186,186,186)" stroke="#dadde2" stroke-width="0.7" /><rect x="252" y="168" width="28" height="28" fill="rgb(229,229,229)" stroke="#dadde2" stroke-width="0.7" /><rect x="0" y="196" width="28" height="28" fill="rgb(234,234,234)" stroke="#dadde2" stroke-width="0.7" /><rect x="28" y="196" width="28" height="28" fill="rgb(180,180,180)" stroke="#dadde2" stroke-width="0.7" /><rect x="56" y="196" width="28" height="28" fill="rgb(181,181,181)" stroke="#dadde2" stroke-width="0.7" /><rect x="84" y="196" width="28" height="28" fill="rgb(180,180,180)" stroke="#dadde2" stroke-width="0.7" /><rect x="112" y="196" width="28" height="28" fill="rgb(189,189,189)" stroke="#dadde2" stroke-width="0.7" /><rect x="140" y="196" width="28" height="28" fill="rgb(187,187,187)" stroke="#dadde2" stroke-width="0.7" /><rect x="168" y="196" width="28" height="28" fill="rgb(185,185,185)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="196" y="196" width="28" height="28" fill="rgb(189,189,189)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="224" y="196" width="28" height="28" fill="rgb(187,187,187)" stroke="#dadde2" stroke-width="0.7" /><rect x="252" y="196" width="28" height="28" fill="rgb(228,228,228)" stroke="#dadde2" stroke-width="0.7" /><rect x="0" y="224" width="28" height="28" fill="rgb(226,226,226)" stroke="#dadde2" stroke-width="0.7" /><rect x="28" y="224" width="28" height="28" fill="rgb(182,182,182)" stroke="#dadde2" stroke-width="0.7" /><rect x="56" y="224" width="28" height="28" fill="rgb(183,183,183)" stroke="#dadde2" stroke-width="0.7" /><rect x="84" y="224" width="28" height="28" fill="rgb(185,185,185)" stroke="#dadde2" stroke-width="0.7" /><rect x="112" y="224" width="28" height="28" fill="rgb(187,187,187)" stroke="#dadde2" stroke-width="0.7" /><rect x="140" y="224" width="28" height="28" fill="rgb(189,189,189)" stroke="#dadde2" stroke-width="0.7" /><rect x="168" y="224" width="28" height="28" fill="rgb(191,191,191)" stroke="#dadde2" stroke-width="0.7" /><rect x="196" y="224" width="28" height="28" fill="rgb(191,191,191)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="224" y="224" width="28" height="28" fill="rgb(193,193,193)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="252" y="224" width="28" height="28" fill="rgb(227,227,227)" stroke="#dadde2" stroke-width="0.7" /><rect x="0" y="252" width="28" height="28" fill="rgb(218,218,218)" stroke="#dadde2" stroke-width="0.7" /><rect x="28" y="252" width="28" height="28" fill="rgb(184,184,184)" stroke="#dadde2" stroke-width="0.7" /><rect x="56" y="252" width="28" height="28" fill="rgb(186,186,186)" stroke="#dadde2" stroke-width="0.7" /><rect x="84" y="252" width="28" height="28" fill="rgb(187,187,187)" stroke="#dadde2" stroke-width="0.7" /><rect x="112" y="252" width="28" height="28" fill="rgb(189,189,189)" stroke="#dadde2" stroke-width="0.7" /><rect x="140" y="252" width="28" height="28" fill="rgb(191,191,191)" stroke="#dadde2" stroke-width="0.7" /><rect x="168" y="252" width="28" height="28" fill="rgb(192,192,192)" stroke="#dadde2" stroke-width="0.7" /><rect x="196" y="252" width="28" height="28" fill="rgb(193,193,193)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="224" y="252" width="28" height="28" fill="rgb(194,194,194)" stroke="#8f4fd5" stroke-width="1.6" /><rect x="252" y="252" width="28" height="28" fill="rgb(213,213,213)" stroke="#dadde2" stroke-width="0.7" /><circle cx="126.0" cy="42.0" r="6.2" fill="#2563eb" stroke="#0f172a" stroke-width="1.5" /><text x="126.0" y="46.0" text-anchor="middle" font-size="10" font-family="monospace" fill="#ffffff">1</text><circle cx="266.0" cy="42.0" r="6.2" fill="#2563eb" stroke="#0f172a" stroke-width="1.5" /><text x="266.0" y="46.0" text-anchor="middle" font-size="10" font-family="monospace" fill="#ffffff">3</text><circle cx="98.0" cy="42.0" r="6.2" fill="#2563eb" stroke="#0f172a" stroke-width="1.5" /><text x="98.0" y="46.0" text-anchor="middle" font-size="10" font-family="monospace" fill="#ffffff">4</text><circle cx="42.0" cy="154.0" r="6.2" fill="#2563eb" stroke="#0f172a" stroke-width="1.5" /><text x="42.0" y="158.0" text-anchor="middle" font-size="10" font-family="monospace" fill="#ffffff">5</text></svg></div>
+    </article>
+
+    <article class="panel">
+      <div class="panel-header">
+        <h2>Recent Events</h2>
+        <span class="chip">Replay Timeline</span>
+      </div>
+      <ol class="event-list"><li><span class="event-type ">claim</span><strong>t=20s</strong> — drone_1 assigned (2, 0)</li><li><span class="event-type ">bft</span><strong>t=20s</strong> — round 5 resolved (2, 0) via single-claim quorum</li><li><span class="event-type ">claim</span><strong>t=20s</strong> — drone_2 assigned (1, 1)</li><li><span class="event-type ">bft</span><strong>t=20s</strong> — round 4 resolved (1, 1) via single-claim quorum</li><li><span class="event-type ok">zone_complete</span><strong>t=20s</strong> — drone_2 completed (0, 1)</li><li><span class="event-type ok">zone_complete</span><strong>t=20s</strong> — drone_1 completed (1, 0)</li><li><span class="event-type ">claim</span><strong>t=9s</strong> — drone_1 assigned (1, 0)</li><li><span class="event-type ">bft</span><strong>t=9s</strong> — round 3 resolved (1, 0) via single-claim quorum</li></ol>
+    </article>
+  </section>
+
+  <section class="grid two-up">
+    <article class="panel">
+      <div class="panel-header">
+        <h2>Delivery Surfaces</h2>
+      </div>
+      <ul class="stack-list">
+        <li><strong>Packaged shell</strong> — this dist/ site for deployment and review.</li>
+        <li><strong>Replay console</strong> — primary browser surface in console.html; live polling works when local helpers run.</li>
+        <li><strong>Live telemetry</strong> — real-time SSE stream viewer for running simulations.</li>
+        <li><strong>TUI monitor</strong> — terminal dashboard polling aggregated snapshots.</li>
+      </ul>
+    </article>
+
+    <article class="panel">
+      <div class="panel-header">
+        <h2>Operational Notes</h2>
+      </div>
+      <ul class="stack-list">
+        <li>Live polling consumes aggregated JSON snapshots, not a direct FoxMQ stream.</li>
+        <li>FoxMQ and Webots paths are optional and validated separately.</li>
+        <li>The packaged shell is static; live data requires running local helper scripts.</li>
+      </ul>
+    </article>
+  </section>
+</main>
+</body>
+</html>

@@ -1,7 +1,7 @@
 import { BoxRenderable, TextRenderable } from "@opentui/core";
 import { createTestRenderer } from "@opentui/core/testing";
 
-import { buildAxisRow, buildLegend, renderHeatmapRow } from "./tui_heatmap.ts";
+import { buildAxisRow, buildDroneIndex, buildLegend, renderHeatmapRow } from "./tui_heatmap.ts";
 import {
   type MonitorUiState,
   type ViewState,
@@ -55,9 +55,9 @@ export function sampleViewState(): ViewState {
       [{ certainty: 0.14, owner: -1 }, { certainty: 0.26, owner: -1 }, { certainty: 0.33, owner: -1 }, { certainty: 0.48, owner: -1 }, { certainty: 0.66, owner: -1 }],
     ],
     drones: [
-      { id: "drone_1", x: 1, y: 0, tx: 3, ty: 2, status: "searching", offline: false, entropy: 0.96, searchedCells: 19 },
-      { id: "drone_2", x: 2, y: 3, tx: 4, ty: 4, status: "transit", offline: false, entropy: 0.68, searchedCells: 13 },
-      { id: "drone_3", x: 4, y: 1, tx: null, ty: null, status: "offline", offline: true, entropy: 0.43, searchedCells: 7 },
+      { id: "drone_1", x: 1, y: 0, tx: 3, ty: 2, claimedCell: null, status: "searching", offline: false, entropy: 0.96, searchedCells: 19 },
+      { id: "drone_2", x: 2, y: 3, tx: 4, ty: 4, claimedCell: null, status: "transit", offline: false, entropy: 0.68, searchedCells: 13 },
+      { id: "drone_3", x: 4, y: 1, tx: null, ty: null, claimedCell: null, status: "offline", offline: true, entropy: 0.43, searchedCells: 7 },
     ],
     events: [
       { t: 92, type: "found", msg: "survivor confirmed at [3,2]" },
@@ -222,10 +222,11 @@ export async function renderMonitorTestFrame({
       heatmap.add(new TextRenderable(renderer, { content: buildLegend(compactLayout), fg: PANEL_THEME.textMuted, bg: COLORS.headerBg, wrapMode: "none", truncate: true }));
     }
     heatmap.add(new TextRenderable(renderer, { content: buildAxisRow(state.gridSize, cellWidth), fg: PANEL_THEME.textMuted, bg: COLORS.headerBg, wrapMode: "none", truncate: true }));
+    const drones = buildDroneIndex(state);
     for (let y = 0; y < state.gridSize; y += 1) {
       for (let repeat = 0; repeat < rowRepeat; repeat += 1) {
         heatmap.add(new TextRenderable(renderer, {
-          content: renderHeatmapRow({ y, state, flashTarget: state.survivorFound, focusedCell: { x: ui.cursorX, y: ui.cursorY }, focusedPanel: ui.focusedPanel === "heatmap", cellWidth }),
+          content: renderHeatmapRow({ y, state, flashTarget: state.survivorFound, focusedCell: { x: ui.cursorX, y: ui.cursorY }, focusedPanel: ui.focusedPanel === "heatmap", cellWidth, droneIndex: drones }),
           fg: PANEL_THEME.textPrimary,
           bg: COLORS.headerBg,
           wrapMode: "none",

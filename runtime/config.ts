@@ -59,7 +59,7 @@ const DEFAULTS: RuntimeOptions = {
   serveHost: "127.0.0.1",
   pythonBin: "python3",
   launcherScript: "scripts/run_local_peers.py",
-  monitorScript: "dashboard/tui_monitor_v2.ts",
+  monitorScript: "dashboard/tui_monitor.ts",
   monitorBinary: undefined,
   monitor: true,
   readinessTimeoutMs: 20_000,
@@ -157,11 +157,12 @@ export function parseRuntimeArgs(argv: string[]): RuntimeOptions {
         index += 1;
         break;
       case "--preset": {
-        const value = expectValue(argv, index, flag) as RuntimeOptions["preset"];
-        if (!["demo", "stress-peers", "stress-grid"].includes(value)) {
+        const value = expectValue(argv, index, flag);
+        if (value === "demo" || value === "stress-peers" || value === "stress-grid") {
+          options.preset = value;
+        } else {
           throw new Error(`Unknown preset: ${value}`);
         }
-        options.preset = value;
         if (value === "demo") {
           options.count = 5;
           options.duration = 180;

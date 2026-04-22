@@ -3,12 +3,12 @@ import { bg as withBg, bold as withBold, fg as withFg, t } from "@opentui/core";
 import type { DisplayMode, FocusPanel, ViewState } from "./tui_monitor_model.ts";
 import { entropy as cellEntropy } from "./tui_heatmap.ts";
 import { buildHeaderLine as buildHeaderLineShared } from "./tui_sidebar.ts";
-import { COLORS, HEADER_THEME, INTERACTION_THEME, MESH_MODE_THEME, MODE_CHIP_THEME, PANEL_THEME } from "./tui_theme.ts";
+import { COLORS, HEADER_THEME, HTML_V2_CSS_VARS, INTERACTION_THEME, MESH_MODE_THEME, MODE_CHIP_THEME, PANEL_THEME, isSourceMode } from "./tui_theme.ts";
 
 export function buildHeaderLine(state: ViewState): ReturnType<typeof t> {
-  const modeToken = MODE_CHIP_THEME[state.sourceLabel as keyof typeof MODE_CHIP_THEME] ?? HEADER_THEME.tags.mode;
+  const modeToken = isSourceMode(state.sourceLabel) ? MODE_CHIP_THEME[state.sourceLabel] : HEADER_THEME.tags.mode;
   const meshToken = MESH_MODE_THEME[state.meshMode];
-  const bftToken = { fg: COLORS.warning, bg: "#451a03", label: `bft ${state.bftRounds}` };
+  const bftToken = { fg: COLORS.warning, bg: HTML_V2_CSS_VARS.backgroundWarning, label: `bft ${state.bftRounds}` };
   return buildHeaderLineShared("entropy hunt", "track 2 · search & rescue", [
     t`${withBg(modeToken.bg)(withFg(modeToken.fg)(withBold(` ${modeToken.label.toUpperCase()} `)))}`,
     t`${withBg(meshToken.bg)(withFg(meshToken.fg)(withBold(` ${meshToken.label.toUpperCase()} `)))}`,
@@ -17,13 +17,13 @@ export function buildHeaderLine(state: ViewState): ReturnType<typeof t> {
 }
 
 export function buildCompactHeaderLine(state: ViewState): ReturnType<typeof t> {
-  const modeToken = MODE_CHIP_THEME[state.sourceLabel as keyof typeof MODE_CHIP_THEME] ?? HEADER_THEME.tags.mode;
+  const modeToken = isSourceMode(state.sourceLabel) ? MODE_CHIP_THEME[state.sourceLabel] : HEADER_THEME.tags.mode;
   const meshToken = MESH_MODE_THEME[state.meshMode];
   const compactModeLabel = state.sourceLabel === "live" ? "LIVE" : state.sourceLabel === "replay" ? "RPLY" : "SYN";
   return buildHeaderLineShared("ehunt", "track 2", [
     t`${withBg(modeToken.bg)(withFg(modeToken.fg)(withBold(` ${compactModeLabel} `)))}`,
     t`${withBg(meshToken.bg)(withFg(meshToken.fg)(withBold(` ${state.meshMode.toUpperCase()} `)))}`,
-    t`${withBg("#451a03")(withFg(COLORS.warning)(withBold(` B${state.bftRounds} `)))}`,
+    t`${withBg(HTML_V2_CSS_VARS.backgroundWarning)(withFg(COLORS.warning)(withBold(` B${state.bftRounds} `)))}`,
   ]);
 }
 
@@ -37,7 +37,13 @@ export function buildSubheaderLine(state: ViewState): ReturnType<typeof t> {
 }
 
 export function buildCompactSubheaderLine(state: ViewState): ReturnType<typeof t> {
-  return t`${withFg(PANEL_THEME.textMuted)(`target [${state.target.x},${state.target.y}]`)} ${withBg(INTERACTION_THEME.navigate.bg)(withFg(INTERACTION_THEME.navigate.fg)(" arrows move "))} ${withBg(INTERACTION_THEME.switch.bg)(withFg(INTERACTION_THEME.switch.fg)(" 1-5/tab views "))} ${withBg(INTERACTION_THEME.select.bg)(withFg(INTERACTION_THEME.select.fg)(" h/r/e panels "))} ${withBg(INTERACTION_THEME.select.bg)(withFg(INTERACTION_THEME.select.fg)(" enter follow "))} ${withBg(INTERACTION_THEME.quit.bg)(withFg(INTERACTION_THEME.quit.fg)(" q quit "))}`;
+  const targetHint = withFg(PANEL_THEME.textMuted)(`target [${state.target.x},${state.target.y}]`);
+  const moveChip = withBg(INTERACTION_THEME.navigate.bg)(withFg(INTERACTION_THEME.navigate.fg)(" arrows move "));
+  const viewChip = withBg(INTERACTION_THEME.switch.bg)(withFg(INTERACTION_THEME.switch.fg)(" 1-5/tab views "));
+  const panelChip = withBg(INTERACTION_THEME.select.bg)(withFg(INTERACTION_THEME.select.fg)(" h/r/e panels "));
+  const followChip = withBg(INTERACTION_THEME.select.bg)(withFg(INTERACTION_THEME.select.fg)(" enter follow "));
+  const quitChip = withBg(INTERACTION_THEME.quit.bg)(withFg(INTERACTION_THEME.quit.fg)(" q quit "));
+  return t`${targetHint} ${moveChip} ${viewChip} ${panelChip} ${followChip} ${quitChip}`;
 }
 
 export function buildInspectorLine(state: ViewState, cursorX: number, cursorY: number, compact = false): ReturnType<typeof t> {
@@ -77,29 +83,19 @@ export function buildFocusStatusLine(
   return t`${withFg(PANEL_THEME.textMuted)(`selected ${focusLabel}`)} ${withFg(PANEL_THEME.textMuted)("·")} ${withFg(COLORS.info)(latency)}`;
 }
 
+const DISPLAY_MODE_LABELS: Record<DisplayMode, { compact: string; full: string }> = {
+  overview: { compact: " 1 ovw ", full: " 1 overview " },
+  detail: { compact: " 2 det ", full: " 2 detail " },
+  map: { compact: " 3 map ", full: " 3 map " },
+  config: { compact: " 4 cfg ", full: " 4 config " },
+  graphs: { compact: " 5 gph ", full: " 5 graphs " },
+};
+
 export function buildDisplayModeChip(mode: DisplayMode, active: boolean, compact = false): ReturnType<typeof t> {
   const palette = active
-    ? { fg: "#f8fafc", bg: "#1d4ed8" }
-    : { fg: PANEL_THEME.textSecondary, bg: "#0f1b33" };
-  const label = compact
-    ? mode === "overview"
-      ? " 1 ovw "
-      : mode === "detail"
-        ? " 2 det "
-        : mode === "map"
-          ? " 3 map "
-          : mode === "config"
-            ? " 4 cfg "
-            : " 5 gph "
-    : mode === "overview"
-      ? " 1 overview "
-      : mode === "detail"
-        ? " 2 detail "
-        : mode === "map"
-          ? " 3 map "
-          : mode === "config"
-            ? " 4 config "
-            : " 5 graphs ";
+    ? { fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.backgroundHighlight }
+    : { fg: PANEL_THEME.textSecondary, bg: HTML_V2_CSS_VARS.backgroundMutedBlue };
+  const label = compact ? DISPLAY_MODE_LABELS[mode].compact : DISPLAY_MODE_LABELS[mode].full;
   return t`${withBg(palette.bg)(withFg(palette.fg)(withBold(label)))}`;
 }
 

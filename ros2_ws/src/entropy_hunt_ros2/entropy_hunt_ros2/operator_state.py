@@ -15,6 +15,10 @@ class DroneRecord:
     reachable: bool = True
     searched_cells: int = 0
     last_heartbeat_ms: int = 0
+    altitude_m: float = 0.0
+    heading_deg: float = 0.0
+    battery_pct: float = 100.0
+    flight_mode: str = "UNKNOWN"
 
 
 @dataclass(slots=True)
@@ -50,5 +54,5 @@ class OperatorState:
     survivor_found: bool = False
 
     @classmethod
-    def create(cls, *, drone_count: int, grid_size: int) -> "OperatorState":
+    def create(cls, *, drone_count: int, grid_size: int) -> OperatorState:
         return cls(drone_count=drone_count, grid=GridRecord(size=grid_size))

@@ -1,0 +1,1114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Entropy Hunt live telemetry stream" />
+<title>Entropy Hunt — Live SAR Telemetry</title>
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
+
+  :root {
+    --bg: #09090b;
+    --surface: #0f0f11;
+    --surface-raised: #18181b;
+    --border: #27272a;
+    --border-hover: #3f3f46;
+    --text: #fafafa;
+    --text-secondary: #a1a1aa;
+    --text-muted: #71717a;
+    --accent: #22d3ee;
+    --accent-soft: rgba(34, 211, 238, 0.08);
+    --accent-dim: rgba(34, 211, 238, 0.15);
+    --ok: #34d399;
+    --ok-soft: rgba(52, 211, 153, 0.08);
+    --warn: #fbbf24;
+    --warn-soft: rgba(251, 191, 36, 0.08);
+    --error: #f87171;
+    --error-soft: rgba(248, 113, 113, 0.08);
+    --info: #60a5fa;
+    --info-soft: rgba(96, 165, 250, 0.08);
+    --font-sans: "Geist", "Outfit", ui-sans-serif, system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(ellipse 60% 50% at 10% 20%, rgba(34, 211, 238, 0.04), transparent),
+      radial-gradient(ellipse 50% 40% at 90% 80%, rgba(34, 211, 238, 0.03), transparent);
+    pointer-events: none;
+  }
+
+  .top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 24px;
+    background: rgba(15, 15, 17, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .brand h1 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .brand .tagline {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+  }
+
+  .status-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    color: var(--text-secondary);
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    transition: background 0.3s ease;
+    position: relative;
+  }
+
+  .dot.live {
+    background: var(--ok);
+    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.4);
+    animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .dot.reconnecting {
+    background: var(--warn);
+    animation: pulse-ring 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .dot.error { background: var(--error); }
+
+  @keyframes pulse-ring {
+    0% { box-shadow: 0 0 0 0 currentColor; }
+    70% { box-shadow: 0 0 0 6px transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; }
+  }
+
+  .timestamp {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+  }
+
+  .kpi-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .kpi {
+    padding: 18px 20px;
+    background: var(--surface);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s ease;
+  }
+
+  .kpi:hover { background: var(--surface-raised); }
+
+  .kpi::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-dim), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .kpi:hover::after { opacity: 1; }
+
+  .kpi-label {
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    font-family: var(--font-sans);
+    font-weight: 500;
+  }
+
+  .kpi-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    font-family: var(--font-sans);
+  }
+
+  .kpi-value.accent { color: var(--accent); }
+  .kpi-value.ok { color: var(--ok); }
+  .kpi-value.warn { color: var(--warn); }
+
+  .dashboard {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 1px;
+    background: var(--border);
+    min-height: calc(100dvh - 130px);
+  }
+
+  .panel {
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(15, 15, 17, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    font-weight: 500;
+    font-family: var(--font-sans);
+  }
+
+  .panel-body {
+    flex: 1;
+    overflow: auto;
+    padding: 16px 20px;
+  }
+
+  .grid-canvas-wrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 300px;
+  }
+
+  canvas {
+    display: block;
+    border-radius: 8px;
+    background: var(--surface);
+    box-shadow: 0 0 0 1px var(--border), 0 8px 32px rgba(0,0,0,0.4);
+    max-width: 100%;
+    height: auto;
+  }
+
+  .grid-legend {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.6875rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+  }
+
+  .grid-legend .grad {
+    width: 80px;
+    height: 6px;
+    border-radius: 2px;
+    background: linear-gradient(to right, #111, #888, #eee);
+  }
+
+  .drone-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .drone-card {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    transition: all 0.25s var(--ease-out-expo);
+    cursor: default;
+  }
+
+  .drone-card:hover {
+    background: var(--surface-raised);
+    border-color: var(--border-hover);
+    transform: translateX(2px);
+  }
+
+  .drone-card.offline { opacity: 0.4; }
+
+  .drone-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .drone-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .drone-id {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text);
+    font-family: var(--font-sans);
+  }
+
+  .drone-meta {
+    font-size: 0.6875rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .drone-chip {
+    font-size: 0.625rem;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-family: var(--font-sans);
+    white-space: nowrap;
+  }
+
+  .drone-chip.searching { background: var(--ok-soft); color: var(--ok); }
+  .drone-chip.transit { background: var(--info-soft); color: var(--info); }
+  .drone-chip.idle { background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid var(--border); }
+  .drone-chip.offline { background: var(--error-soft); color: var(--error); }
+
+  .event-log {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .event-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    transition: background 0.15s ease;
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+
+  .event-row:hover { background: rgba(255,255,255,0.03); }
+
+  .event-badge {
+    flex-shrink: 0;
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: var(--font-sans);
+    margin-top: 1px;
+  }
+
+  .event-badge.bft { background: var(--warn-soft); color: var(--warn); }
+  .event-badge.ok { background: var(--ok-soft); color: var(--ok); }
+  .event-badge.err { background: var(--error-soft); color: var(--error); }
+  .event-badge.warn { background: var(--warn-soft); color: var(--warn); }
+  .event-badge.info { background: var(--info-soft); color: var(--info); }
+
+  .event-time {
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    white-space: nowrap;
+  }
+
+  .event-msg {
+    color: var(--text-secondary);
+    word-break: break-word;
+  }
+
+  .skeleton {
+    background: linear-gradient(90deg, var(--surface) 25%, var(--surface-raised) 50%, var(--surface) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-sweep 1.5s infinite;
+    border-radius: 4px;
+  }
+
+  @keyframes skeleton-sweep {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  .skeleton-text { height: 12px; margin: 6px 0; }
+  .skeleton-title { height: 20px; width: 60%; margin-bottom: 12px; }
+  .skeleton-card { height: 56px; margin: 8px 0; border-radius: 8px; }
+
+  .state-msg {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-size: 0.875rem;
+    margin: 12px 0;
+  }
+
+  .state-msg.waiting {
+    background: var(--accent-soft);
+    color: var(--accent);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .state-msg.waiting::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+    animation: shimmer 2s infinite;
+  }
+
+  .state-msg.error {
+    background: var(--error-soft);
+    color: var(--error);
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  .muted { color: var(--text-muted); }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .detail-panel {
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 220px;
+  }
+
+  .detail-panel .panel-body {
+    padding: 12px;
+  }
+
+  .mesh-peer-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    transition: background 0.15s ease;
+  }
+
+  .mesh-peer-row:hover { background: rgba(255,255,255,0.03); }
+
+  .mesh-peer-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .mesh-peer-id { color: var(--text); font-weight: 600; }
+  .mesh-peer-meta { color: var(--text-muted); margin-left: auto; }
+
+  .consensus-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    transition: background 0.15s ease;
+  }
+
+  .consensus-row:hover { background: rgba(255,255,255,0.03); }
+
+  .consensus-id { color: var(--text); font-weight: 600; }
+  .consensus-cell { color: var(--accent); }
+  .consensus-votes { color: var(--text-muted); margin-left: auto; }
+
+  .failure-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    transition: background 0.15s ease;
+  }
+
+  .failure-row:hover { background: rgba(255,255,255,0.03); }
+
+  .failure-type {
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: var(--font-sans);
+  }
+
+  .failure-type.failure { background: var(--error-soft); color: var(--error); }
+  .failure-type.partition { background: var(--warn-soft); color: var(--warn); }
+  .failure-type.stale { background: var(--info-soft); color: var(--info); }
+  .failure-type.recovered { background: var(--ok-soft); color: var(--ok); }
+
+  .failure-drone { color: var(--text); font-weight: 600; }
+  .failure-t { color: var(--text-muted); margin-left: auto; }
+
+  .sys-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .sys-metric {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+
+  .sys-metric-k {
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    font-family: var(--font-sans);
+    font-weight: 500;
+  }
+
+  .sys-metric-v {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text);
+    font-family: var(--font-mono);
+  }
+
+  @media (max-width: 900px) {
+    .dashboard { grid-template-columns: 1fr; }
+    .kpi-bar { grid-template-columns: repeat(3, 1fr); }
+    .top-bar { flex-wrap: wrap; padding: 12px 16px; }
+    .brand h1 { font-size: 1rem; }
+  }
+
+  @media (max-width: 640px) {
+    .kpi-bar { grid-template-columns: repeat(2, 1fr); }
+    .kpi-value { font-size: 1.4rem; }
+    .panel-body { padding: 12px; }
+    .detail-grid { grid-template-columns: 1fr; }
+  }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="brand">
+    <h1>Entropy Hunt</h1>
+    <span class="tagline">Real-time search-and-rescue swarm coordination</span>
+  </div>
+  <div class="status-group">
+    <div class="status-pill">
+      <span class="dot" id="status-dot"></span>
+      <span id="status-text">Connecting</span>
+    </div>
+    <span class="timestamp" id="ts"></span>
+  </div>
+</div>
+
+<div class="kpi-bar" id="kpi-bar">
+  <div class="kpi">
+    <div class="kpi-label">Coverage</div>
+    <div class="kpi-value ok" id="kpi-cov">--</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Avg Entropy</div>
+    <div class="kpi-value accent" id="kpi-ent">--</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Auctions</div>
+    <div class="kpi-value" id="kpi-auc">--</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Dropouts</div>
+    <div class="kpi-value warn" id="kpi-drop">--</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Elapsed</div>
+    <div class="kpi-value" id="kpi-t">--</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Drones Online</div>
+    <div class="kpi-value ok" id="kpi-live">--</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Consensus</div>
+    <div class="kpi-value accent" id="kpi-con">--</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Mesh Msgs</div>
+    <div class="kpi-value" id="kpi-msg">--</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Survivor Rcpts</div>
+    <div class="kpi-value ok" id="kpi-sur">--</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Tick Rate</div>
+    <div class="kpi-value" id="kpi-tick">--</div>
+  </div>
+</div>
+
+<div class="dashboard" id="dashboard">
+  <div class="panel">
+    <div class="panel-head">
+      <span>Grid Visualization</span>
+      <span class="muted" id="grid-meta">Waiting for snapshot</span>
+    </div>
+    <div class="panel-body">
+      <div class="grid-canvas-wrap" id="grid-wrap">
+        <canvas id="gc" width="400" height="400"></canvas>
+        <div class="grid-legend">
+          <span>High H</span>
+          <div class="grad"></div>
+          <span>Low H</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" style="gap:1px; background:var(--border);">
+    <div class="panel" style="max-height:50%;">
+      <div class="panel-head">
+        <span>Drone Status</span>
+        <span class="muted" id="drone-count">--</span>
+      </div>
+      <div class="panel-body" style="padding:12px;">
+        <div class="drone-cards" id="drone-cards">
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
+          <div class="skeleton skeleton-card"></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel" style="max-height:50%;">
+      <div class="panel-head">
+        <span>Event Log</span>
+        <span class="muted" id="event-count">--</span>
+      </div>
+      <div class="panel-body" style="padding:12px;">
+        <div class="event-log" id="event-log">
+          <div class="skeleton skeleton-text" style="width:80%;"></div>
+          <div class="skeleton skeleton-text" style="width:60%;"></div>
+          <div class="skeleton skeleton-text" style="width:90%;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="detail-grid" id="detail-grid">
+  <div class="detail-panel">
+    <div class="panel-head">
+      <span>Mesh Topology</span>
+      <span class="muted" id="mesh-meta">--</span>
+    </div>
+    <div class="panel-body" id="mesh-body">
+      <div class="state-msg waiting">Waiting for mesh data</div>
+    </div>
+  </div>
+  <div class="detail-panel">
+    <div class="panel-head">
+      <span>Consensus Rounds</span>
+      <span class="muted" id="consensus-meta">--</span>
+    </div>
+    <div class="panel-body" id="consensus-body">
+      <div class="state-msg waiting">Waiting for consensus data</div>
+    </div>
+  </div>
+  <div class="detail-panel">
+    <div class="panel-head">
+      <span>Failure Timeline</span>
+      <span class="muted" id="failure-meta">--</span>
+    </div>
+    <div class="panel-body" id="failure-body">
+      <div class="state-msg waiting">Waiting for failure data</div>
+    </div>
+  </div>
+  <div class="detail-panel">
+    <div class="panel-head">
+      <span>System Metrics</span>
+      <span class="muted" id="system-meta">--</span>
+    </div>
+    <div class="panel-body" id="system-body">
+      <div class="state-msg waiting">Waiting for system data</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const statusDot = document.getElementById('status-dot');
+  const statusText = document.getElementById('status-text');
+  const ts = document.getElementById('ts');
+  const canvas = document.getElementById('gc');
+  const ctx = canvas.getContext('2d');
+  let evtSource = null;
+  let reconnectTimer = null;
+  let reconnectAttempts = 0;
+  const maxReconnectDelay = 30000;
+  let lastPayload = null;
+
+  const COLORS = ["#378ADD", "#1D9E75", "#BA7517", "#D85A30", "#D4537E"];
+
+  function setStatus(state, text) {
+    statusDot.className = 'dot' + (state ? ' ' + state : '');
+    statusText.textContent = text;
+  }
+
+  function entropy(certainty) {
+    if (certainty <= 0 || certainty >= 1) return 0;
+    return -(certainty * Math.log2(certainty) + (1 - certainty) * Math.log2(1 - certainty));
+  }
+
+  function mapBackendStatus(raw) {
+    return {
+      transiting: 'transit',
+      claiming: 'transit',
+      claim_won: 'searching',
+      claim_lost: 'transit',
+      stale: 'offline',
+    }[raw] || raw || 'idle';
+  }
+
+  function mapEventType(type) {
+    return {
+      auction: 'bft',
+      bft: 'bft',
+      failure: 'err',
+      stale: 'err',
+      heartbeat_timeout: 'err',
+      zone_release: 'warn',
+      zone_priority_reclaim: 'ok',
+      survivor: 'ok',
+      survivor_found: 'ok',
+      survivor_ack: 'ok',
+      zone_complete: 'ok',
+      claim: 'info',
+      mesh: 'info',
+      map: 'info',
+    }[type] || 'info';
+  }
+
+  function drawGrid(grid, drones, target, survivorFound) {
+    const size = grid.length;
+    if (!size) return;
+    const cellSize = Math.floor(400 / size);
+    canvas.width = size * cellSize;
+    canvas.height = size * cellSize;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let y = 0; y < size; y++) {
+      for (let x = 0; x < size; x++) {
+        const cell = grid[y][x];
+        const intensity = Math.floor(255 - entropy(cell.certainty ?? 0.5) * 210);
+        ctx.fillStyle = 'rgb(' + intensity + ',' + intensity + ',' + intensity + ')';
+        ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+
+        if (cell.owner != null && cell.owner >= 0 && drones[cell.owner]) {
+          ctx.fillStyle = (COLORS[cell.owner % COLORS.length] || '#888') + '22';
+          ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+        }
+
+        if (target && x === target[0] && y === target[1]) {
+          ctx.strokeStyle = survivorFound ? '#34d399' : '#888';
+          ctx.lineWidth = 1;
+          ctx.strokeRect(x * cellSize + 1, y * cellSize + 1, cellSize - 2, cellSize - 2);
+        }
+      }
+    }
+
+    ctx.strokeStyle = 'rgba(128,128,128,0.12)';
+    ctx.lineWidth = 0.4;
+    for (let i = 0; i <= size; i++) {
+      ctx.beginPath();
+      ctx.moveTo(i * cellSize, 0);
+      ctx.lineTo(i * cellSize, size * cellSize);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(0, i * cellSize);
+      ctx.lineTo(size * cellSize, i * cellSize);
+      ctx.stroke();
+    }
+
+    if (drones) {
+      drones.forEach((drone, index) => {
+        if (!drone) return;
+        const color = COLORS[index % COLORS.length] || '#888';
+        const dx = drone.position ? drone.position[0] : (drone.x ?? 0);
+        const dy = drone.position ? drone.position[1] : (drone.y ?? 0);
+        const stale = drone.alive === false || drone.stale;
+
+        if (stale) {
+          ctx.strokeStyle = color + '44';
+          ctx.lineWidth = 1;
+          ctx.strokeRect(dx * cellSize + 3, dy * cellSize + 3, cellSize - 6, cellSize - 6);
+          return;
+        }
+
+        ctx.beginPath();
+        ctx.arc(dx * cellSize + cellSize / 2, dy * cellSize + cellSize / 2, Math.max(4, cellSize * 0.18), 0, Math.PI * 2);
+        ctx.fillStyle = color;
+        ctx.fill();
+        ctx.strokeStyle = '#0f0f11';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        const status = mapBackendStatus(drone.status);
+        const tx = drone.target ? drone.target[0] : drone.tx;
+        const ty = drone.target ? drone.target[1] : drone.ty;
+        if (status === 'transit' && tx != null && ty != null && (dx !== tx || dy !== ty)) {
+          ctx.beginPath();
+          ctx.setLineDash([2, 3]);
+          ctx.moveTo(dx * cellSize + cellSize / 2, dy * cellSize + cellSize / 2);
+          ctx.lineTo(tx * cellSize + cellSize / 2, ty * cellSize + cellSize / 2);
+          ctx.strokeStyle = color + '55';
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+      });
+    }
+  }
+
+  function coverage(grid) {
+    if (!grid) return 0;
+    let searched = 0;
+    const complete = 0.92;
+    for (const row of grid) {
+      for (const cell of row) {
+        if ((cell.certainty ?? 0) >= complete) searched += 1;
+      }
+    }
+    return Math.round((searched / (grid.length * grid[0].length)) * 100);
+  }
+
+  function averageEntropy(grid) {
+    if (!grid) return '0.00';
+    let total = 0;
+    for (const row of grid) {
+      for (const cell of row) {
+        total += entropy(cell.certainty ?? 0.5);
+      }
+    }
+    return (total / (grid.length * grid[0].length)).toFixed(2);
+  }
+
+  function renderDrones(drones) {
+    const container = document.getElementById('drone-cards');
+    if (!drones || !drones.length) {
+      container.innerHTML = '<div class="state-msg waiting">Waiting for drone data</div>';
+      return;
+    }
+    document.getElementById('drone-count').textContent = drones.length + ' total';
+    const liveCount = drones.filter(d => d.alive !== false && d.reachable !== false).length;
+    document.getElementById('kpi-live').textContent = liveCount + '/' + drones.length;
+
+    container.innerHTML = drones.map((drone, index) => {
+      const color = COLORS[index % COLORS.length] || '#888';
+      const status = mapBackendStatus(drone.status);
+      const stale = drone.alive === false || drone.reachable === false;
+      const pos = drone.position ? '[' + drone.position[0] + ',' + drone.position[1] + ']' : '[--,--]';
+      const cells = drone.searched_cells ?? drone.cells ?? 0;
+      const battery = drone.battery != null ? drone.battery + '%' : '--';
+      const role = drone.role || '--';
+      const subzone = drone.subzone || '--';
+      const chipClass = stale ? 'offline' : (status === 'searching' ? 'searching' : status === 'transit' ? 'transit' : 'idle');
+      const chipText = stale ? 'OFFLINE' : status.toUpperCase();
+      return '<div class="drone-card' + (stale ? ' offline' : '') + '">' +
+        '<div class="drone-dot" style="background:' + color + '"></div>' +
+        '<div class="drone-info">' +
+          '<div class="drone-id">' + (drone.id || 'drone_' + (index + 1)) + '</div>' +
+          '<div class="drone-meta">' + pos + ' &middot; cells=' + cells + ' &middot; bat=' + battery + ' &middot; role=' + role + ' &middot; zone=' + subzone + '</div>' +
+        '</div>' +
+        '<span class="drone-chip ' + chipClass + '">' + chipText + '</span>' +
+      '</div>';
+    }).join('');
+  }
+
+  function renderEvents(events, elapsed) {
+    const container = document.getElementById('event-log');
+    if (!events || !events.length) {
+      container.innerHTML = '<div class="muted" style="padding:8px;font-size:0.75rem;">No events recorded</div>';
+      document.getElementById('event-count').textContent = '0 events';
+      return;
+    }
+    document.getElementById('event-count').textContent = events.length + ' events';
+    container.innerHTML = events.slice().reverse().map(ev => {
+      const type = mapEventType(ev.type);
+      const t = ev.t ?? elapsed ?? 0;
+      return '<div class="event-row">' +
+        '<span class="event-badge ' + type + '">' + type + '</span>' +
+        '<span class="event-time">' + t + 's</span>' +
+        '<span class="event-msg">' + (ev.message || ev.msg || ev.type || 'event') + '</span>' +
+      '</div>';
+    }).join('');
+  }
+
+  function renderMesh(mesh) {
+    const container = document.getElementById('mesh-body');
+    const meta = document.getElementById('mesh-meta');
+    if (!mesh || !mesh.peers || !mesh.peers.length) {
+      container.innerHTML = '<div class="state-msg waiting">No mesh peers connected</div>';
+      meta.textContent = mesh ? mesh.transport || 'local' : '--';
+      return;
+    }
+    meta.textContent = (mesh.transport || 'local') + ' &middot; ' + mesh.peers.length + ' peers &middot; ' + (mesh.messages || 0) + ' msgs';
+    container.innerHTML = mesh.peers.map(peer => {
+      const stale = peer.stale;
+      const dotColor = stale ? 'var(--error)' : 'var(--ok)';
+      const lastSeen = peer.last_seen_ms ? Math.round(peer.last_seen_ms / 1000) + 's' : '--';
+      return '<div class="mesh-peer-row">' +
+        '<div class="mesh-peer-dot" style="background:' + dotColor + '"></div>' +
+        '<span class="mesh-peer-id">' + (peer.peer_id || 'unknown') + '</span>' +
+        '<span class="mesh-peer-meta">last ' + lastSeen + (stale ? ' &middot; STALE' : '') + '</span>' +
+      '</div>';
+    }).join('');
+  }
+
+  function renderConsensus(consensus) {
+    const container = document.getElementById('consensus-body');
+    const meta = document.getElementById('consensus-meta');
+    if (!consensus || !consensus.length) {
+      container.innerHTML = '<div class="state-msg waiting">No consensus rounds recorded</div>';
+      meta.textContent = '0 rounds';
+      return;
+    }
+    meta.textContent = consensus.length + ' rounds';
+    container.innerHTML = consensus.slice().reverse().map(round => {
+      const cell = round.cell ? '[' + round.cell[0] + ',' + round.cell[1] + ']' : '--';
+      return '<div class="consensus-row">' +
+        '<span class="consensus-id">#' + (round.round_id || 0) + '</span>' +
+        '<span class="consensus-cell">' + cell + '</span>' +
+        '<span class="consensus-votes">' + (round.vote_count || 0) + ' votes &middot; ' + (round.status || 'unknown') + '</span>' +
+      '</div>';
+    }).join('');
+  }
+
+  function renderFailures(failures) {
+    const container = document.getElementById('failure-body');
+    const meta = document.getElementById('failure-meta');
+    if (!failures || !failures.length) {
+      container.innerHTML = '<div class="state-msg waiting">No failures recorded</div>';
+      meta.textContent = '0 failures';
+      return;
+    }
+    const active = failures.filter(f => !f.recovered).length;
+    meta.textContent = failures.length + ' events &middot; ' + active + ' active';
+    container.innerHTML = failures.slice().reverse().map(f => {
+      const typeClass = f.recovered ? 'recovered' : (f.failure_type || 'failure');
+      return '<div class="failure-row">' +
+        '<span class="failure-type ' + typeClass + '">' + (f.recovered ? 'recovered' : (f.failure_type || 'failure')) + '</span>' +
+        '<span class="failure-drone">' + (f.drone_id || 'unknown') + '</span>' +
+        '<span class="failure-t">t=' + (f.t || 0) + 's</span>' +
+      '</div>';
+    }).join('');
+  }
+
+  function renderSystem(system) {
+    const container = document.getElementById('system-body');
+    const meta = document.getElementById('system-meta');
+    if (!system) {
+      container.innerHTML = '<div class="state-msg waiting">No system data</div>';
+      meta.textContent = '--';
+      return;
+    }
+    meta.textContent = 'peer runtime';
+    container.innerHTML = '<div class="sys-metrics">' +
+      '<div class="sys-metric"><div class="sys-metric-k">Tick Seconds</div><div class="sys-metric-v">' + (system.tick_seconds || '--') + '</div></div>' +
+      '<div class="sys-metric"><div class="sys-metric-k">Tick Delay</div><div class="sys-metric-v">' + (system.tick_delay_seconds != null ? system.tick_delay_seconds + 's' : '--') + '</div></div>' +
+      '<div class="sys-metric"><div class="sys-metric-k">Requested Drones</div><div class="sys-metric-v">' + (system.requested_drone_count || '--') + '</div></div>' +
+      '<div class="sys-metric"><div class="sys-metric-k">Target</div><div class="sys-metric-v">[' + (system.target ? system.target.join(',') : '--') + ']</div></div>' +
+    '</div>';
+  }
+
+  function renderPayload(payload) {
+    lastPayload = payload;
+    ts.textContent = 'Last update: ' + new Date().toISOString();
+
+    const grid = payload?.grid || [];
+    const summary = payload?.summary || payload || {};
+    const stats = payload?.stats || summary || {};
+    const mesh = payload?.mesh || {};
+    const system = payload?.system || {};
+    const drones = Array.isArray(summary.drones) ? summary.drones : [];
+    const rawEvents = Array.isArray(payload?.events) ? payload.events : [];
+    const targetValue = payload?.config?.target || summary?.target || system?.target || [7, 3];
+    const elapsed = Number(stats.duration_elapsed ?? summary.duration_elapsed ?? 0);
+
+    document.getElementById('kpi-cov').textContent = (stats.coverage != null ? Math.round(stats.coverage * 100) : coverage(grid)) + '%';
+    document.getElementById('kpi-ent').textContent = stats.average_entropy != null ? Number(stats.average_entropy).toFixed(2) : averageEntropy(grid);
+    document.getElementById('kpi-auc').textContent = stats.auctions ?? summary.auctions ?? 0;
+    document.getElementById('kpi-drop').textContent = stats.dropouts ?? summary.dropouts ?? 0;
+    document.getElementById('kpi-t').textContent = elapsed + 's';
+    document.getElementById('kpi-con').textContent = stats.consensus_rounds ?? summary.consensus_rounds ?? 0;
+    document.getElementById('kpi-msg').textContent = stats.mesh_messages ?? summary.mesh_messages ?? 0;
+    document.getElementById('kpi-sur').textContent = stats.survivor_receipts ?? summary.survivor_receipts ?? 0;
+    document.getElementById('kpi-tick').textContent = (system.tick_seconds || summary.tick_seconds || 1) + '/s';
+
+    const size = grid.length || 0;
+    document.getElementById('grid-meta').textContent = size ? size + 'x' + size + ' grid' : 'No grid';
+
+    drawGrid(grid, drones, targetValue, Boolean(stats.survivor_found ?? summary.survivor_found));
+    renderDrones(drones);
+    renderEvents(rawEvents, elapsed);
+    renderMesh(mesh);
+    renderConsensus(summary.consensus || []);
+    renderFailures(summary.failures || []);
+    renderSystem(system);
+  }
+
+  function showError(message, hint) {
+    document.getElementById('grid-wrap').innerHTML =
+      '<div class="state-msg error">' + message + '</div>' +
+      (hint ? '<p class="muted" style="margin-top:10px;font-size:0.8rem;">' + hint + '</p>' : '');
+    setStatus('error', 'Disconnected');
+  }
+
+  function connect() {
+    if (evtSource) {
+      evtSource.close();
+      evtSource = null;
+    }
+    setStatus('reconnecting', reconnectAttempts > 0 ? 'Reconnecting (attempt ' + reconnectAttempts + ')' : 'Connecting');
+    evtSource = new EventSource('/stream');
+
+    evtSource.addEventListener('snapshot', (event) => {
+      reconnectAttempts = 0;
+      setStatus('live', 'Live');
+      try {
+        renderPayload(JSON.parse(event.data));
+      } catch {
+        showError('Received malformed JSON from stream.', null);
+      }
+    });
+
+    evtSource.addEventListener('error', () => {
+      if (evtSource.readyState === EventSource.CLOSED) {
+        setStatus('error', 'Connection lost');
+        scheduleReconnect();
+      } else {
+        setStatus('reconnecting', 'Retrying');
+      }
+    });
+
+    evtSource.addEventListener('open', () => {
+      reconnectAttempts = 0;
+      setStatus('live', 'Live');
+    });
+  }
+
+  function scheduleReconnect() {
+    if (reconnectTimer) return;
+    reconnectAttempts += 1;
+    const delay = Math.min(1000 * Math.pow(2, reconnectAttempts - 1), maxReconnectDelay);
+    setStatus('reconnecting', 'Reconnecting in ' + Math.round(delay / 1000) + 's');
+    reconnectTimer = setTimeout(() => {
+      reconnectTimer = null;
+      connect();
+    }, delay);
+  }
+
+  connect();
+</script>
+</body>
+</html>

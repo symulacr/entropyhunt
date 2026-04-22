@@ -1,23 +1,23 @@
 ┌──────────────────────────────────────────────────────────────────────────────┐
 │                                                                              │
 │ ehunt track 2  LIVE   REAL   B31                                             │
-│ target [3,2]  move   views   h/r/e focus   quit                              │
+│ target [3,2]  arrows move   1-5/tab ...h/r/e panels   enter follow   q quit  │
 │scan 73% · unc 0.61 · 7 claims · 1 lost · 1m 32s · rt 14ms                    │
 │  ┌─ drone detail ─────────────────────────────────────────────────────────┐  │
-│  │ [ DRONE DETAIL ]                                                       │  │
-│  │ focus    drone_2 · transit · online                                    │  │
-│  │ route    [2,3] → [4,4]                                                 │  │
-│  │ ┌ scan [13] ───────────────┐     ...tropy [0.68] ──────────┐           │  │
-│  │ │trend ▃▃▃▃▃▄▄▄▄▄▄▅▅▅▅▅▅▆▆…│     ...nd ▆▆▆▆▆▆▆▆▆▆▆▆▆▆▆▆▆▆▆…│           │  │
-│  │ └──────────────────────────┘     ...───────────────────────┘           │  │
-│  │ ┌ position [[2,3]] ────────┐     ...atus [transit] ────────┐           │  │
-│  │ │target [4,4]              │     ...cking live updates     │           │  │
-│  │ └──────────────────────────┘     ...───────────────────────┘           │  │
-│  │ [ SWARM ]                                                              │  │
-│  │ agent    · d1 scan ▄▄▅▅▆▇▇█ 19 · H ████████ 0.96 · searching           │  │
-│  │ agent    ▶ d2 scan ▃▃▄▄▅▅▅▆ 13 · H ▆▆▆▆▆▆▆▆ 0.68 · transit             │  │
-│  │ agent    · d3 scan ▂▂▃▃▃▃▃▄ 7 · H ▅▄▄▄▄▄▄▄ 0.43 · offline              │  │
-│  │ target   [3,2]                   ...est  4 next launch                 │  │
+│  │ mesh peers 0                                                           │  │
+│  │   no peers                                                             │  │
+│  │ battery 0                                                              │  │
+│  │   no data                                                              │  │
+│  │ consensus                                                              │  │
+│  │   0 rounds                                                             │  │
+│  │                                                                        │  │
+│  │                                                                        │  │
+│  │                                                                        │  │
+│  │                                                                        │  │
+│  │                                                                        │  │
+│  │                                                                        │  │
+│  │                                                                        │  │
+│  │                                                                        │  │
 │  │                                                                        │  │
 │  │                                                                        │  │
 │● survivor confirmed — hold the grid · drone drone_2 [2,3] · rt=14ms          │

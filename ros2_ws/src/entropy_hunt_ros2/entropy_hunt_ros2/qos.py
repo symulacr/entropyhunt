@@ -5,7 +5,7 @@ from typing import Any
 
 try:
     from rclpy.qos import DurabilityPolicy, HistoryPolicy, QoSProfile, ReliabilityPolicy
-except ModuleNotFoundError:  # pragma: no cover - exercised only without ROS installed
+except ModuleNotFoundError:
     DurabilityPolicy = HistoryPolicy = ReliabilityPolicy = None
     QoSProfile = None
 

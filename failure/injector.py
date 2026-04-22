@@ -1,12 +1,15 @@
+
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
-from roles.searcher import DroneState
-
+if TYPE_CHECKING:
+    from roles.drone import DroneState
 
 @dataclass(frozen=True, slots=True)
 class FailurePlan:
+
     drone_id: str | None = None
     fail_at_seconds: int | None = None
     mode: str = "scheduled"
@@ -15,18 +18,17 @@ class FailurePlan:
     def enabled(self) -> bool:
         return self.drone_id is not None and self.fail_at_seconds is not None
 
-
 @dataclass(frozen=True, slots=True)
 class FailureEvent:
+
     drone_id: str
     now_seconds: int
     mode: str
 
-
 FailureSchedule = FailurePlan
 
-
 class FailureInjector:
+
     def __init__(self, plan: FailurePlan) -> None:
         self.plan = plan
         self._triggered = False
@@ -50,7 +52,11 @@ class FailureInjector:
             if drone.drone_id == self.plan.drone_id and drone.alive and drone.reachable:
                 drone.reachable = False
                 self._triggered = True
-                return FailureEvent(drone_id=drone.drone_id, now_seconds=now_seconds, mode=self.plan.mode)
+                return FailureEvent(
+                    drone_id=drone.drone_id,
+                    now_seconds=now_seconds,
+                    mode=self.plan.mode,
+                )
         self._triggered = True
         return None
 

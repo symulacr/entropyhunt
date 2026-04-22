@@ -1,34 +1,34 @@
+
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from core.certainty_map import Coordinate
-from roles.searcher import DroneState
-
+if TYPE_CHECKING:
+    from core.certainty import Coordinate
+    from roles.drone import DroneState
 
 @dataclass(frozen=True, slots=True)
 class ExternalDroneState:
+
     drone_id: str
     position: Coordinate
     reachable: bool = True
 
-
 @dataclass(frozen=True, slots=True)
 class MovementCommand:
+
     drone_id: str
     target: Coordinate | None
     status: str
 
-
 @dataclass(frozen=True, slots=True)
 class BridgeSnapshot:
+
     drones: tuple[ExternalDroneState, ...]
     tick_seconds: int
 
-
 class WebotsBridgeAdapter:
-    """Dependency-free adapter surface for a future Webots supervisor bridge."""
 
     def apply_snapshot(self, drones: list[DroneState], snapshot: BridgeSnapshot) -> None:
         by_id = {drone.drone_id: drone for drone in drones}
@@ -51,7 +51,6 @@ class WebotsBridgeAdapter:
             for drone in drones
             if drone.alive
         ]
-
 
 def build_bridge_snapshot(drones: list[DroneState], *, tick_seconds: int) -> dict[str, Any]:
     snapshot = BridgeSnapshot(

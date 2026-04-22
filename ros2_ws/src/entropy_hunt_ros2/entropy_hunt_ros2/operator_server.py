@@ -11,6 +11,7 @@ class _SnapshotHandler(BaseHTTPRequestHandler):
     snapshot_supplier: Any = None
     control_supplier: Any = None
     control_updater: Any = None
+    health_supplier: Any = None
 
     def _write_json(self, payload: Any, status: int = 200) -> None:
         body = json.dumps(payload).encode("utf-8")
@@ -23,7 +24,7 @@ class _SnapshotHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
-    def do_GET(self) -> None:  # noqa: N802
+    def do_GET(self) -> None:
         if self.path == "/snapshot.json":
             payload = self.snapshot_supplier() if self.snapshot_supplier is not None else {}
             self._write_json(payload)
@@ -32,24 +33,33 @@ class _SnapshotHandler(BaseHTTPRequestHandler):
             payload = self.control_supplier() if self.control_supplier is not None else {}
             self._write_json(payload)
             return
+        if self.path == "/health":
+            if self.health_supplier is not None:
+                self._write_json(self.health_supplier())
+            else:
+                self._write_json({"status": "ok", "peers_online": 0})
+            return
         self.send_response(404)
         self.send_header("Access-Control-Allow-Origin", "*")
         self.end_headers()
 
-    def do_OPTIONS(self) -> None:  # noqa: N802
+    def do_OPTIONS(self) -> None:
         self.send_response(204)
         self.send_header("Access-Control-Allow-Origin", "*")
         self.send_header("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
         self.end_headers()
 
-    def do_POST(self) -> None:  # noqa: N802
+    def do_POST(self) -> None:
         if self.path != "/control":
             self.send_response(404)
             self.end_headers()
             return
         if self.control_updater is None:
-            self._write_json({"error": "ROS operator control is read-only in this lane"}, status=405)
+            self._write_json(
+                {"error": "ROS operator control is read-only in this lane"},
+                status=405,
+            )
             return
         length = int(self.headers.get("Content-Length", "0"))
         try:
@@ -74,10 +84,18 @@ class OperatorSnapshotServer:
         snapshot_supplier: Any,
         control_supplier: Any | None = None,
         control_updater: Any | None = None,
+        health_supplier: Any | None = None,
     ) -> None:
         _SnapshotHandler.snapshot_supplier = staticmethod(snapshot_supplier)
-        _SnapshotHandler.control_supplier = staticmethod(control_supplier) if control_supplier is not None else None
-        _SnapshotHandler.control_updater = staticmethod(control_updater) if control_updater is not None else None
+        _SnapshotHandler.control_supplier = (
+            staticmethod(control_supplier) if control_supplier is not None else None
+        )
+        _SnapshotHandler.control_updater = (
+            staticmethod(control_updater) if control_updater is not None else None
+        )
+        _SnapshotHandler.health_supplier = (
+            staticmethod(health_supplier) if health_supplier is not None else None
+        )
         self._server = HTTPServer((host, port), _SnapshotHandler)
         self._thread = threading.Thread(target=self._server.serve_forever, daemon=True)
 

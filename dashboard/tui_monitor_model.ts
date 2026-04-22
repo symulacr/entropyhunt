@@ -1,7 +1,9 @@
 import type { CellSnapshot, Snapshot } from "./tui_types.ts";
+import { isObject } from "./tui_types.ts";
 import { TUI_LAYOUT } from "./tui_theme.ts";
 import { entropy as cellEntropy } from "./tui_heatmap.ts";
 import { mapStatus } from "./tui_sidebar.ts";
+import { clamp } from "./tui_monitor_util.ts";
 
 export type DroneView = {
   id: string;
@@ -9,7 +11,7 @@ export type DroneView = {
   y: number;
   tx: number | null;
   ty: number | null;
-  claimedCell: { x: number; y: number } | null;
+  claimedCell?: { x: number; y: number } | null;
   status: string;
   offline: boolean;
   entropy: number;
@@ -55,6 +57,12 @@ export type ViewState = {
   hiddenDroneCount: number;
   hiddenEventCount: number;
   gridTruncated: boolean;
+  meshPeers?: string[];
+  pendingClaims?: number;
+  consensusRounds?: number;
+  failureEvents?: Array<{ type: string; t: number }>;
+  batteryLevels?: Record<string, number>;
+  droneRoles?: Record<string, string>;
 };
 
 export type LayoutMetrics = {
@@ -78,10 +86,6 @@ export const MAX_GRID_DIMENSION = TUI_LAYOUT.gridSize;
 export const MAX_GRID_RENDER_ROWS = MAX_GRID_DIMENSION * 12;
 export const MAX_EVENT_LINES = TUI_LAYOUT.maxEvents;
 export const MAX_DRONE_LINES = TUI_LAYOUT.maxDronesVisible;
-
-function clamp(value: number, min: number, max: number): number {
-  return Math.max(min, Math.min(max, value));
-}
 
 export function formatDuration(totalSeconds: number): string {
   const seconds = Math.max(0, Math.round(totalSeconds));
@@ -113,9 +117,8 @@ export function computeHeatmapRowRepeat(
 
 function normalizeTarget(value: unknown): { x: number; y: number } {
   if (Array.isArray(value)) return { x: Number(value[0] ?? 7), y: Number(value[1] ?? 3) };
-  if (value && typeof value === "object") {
-    const maybe = value as { x?: unknown; y?: unknown };
-    return { x: Number(maybe.x ?? 7), y: Number(maybe.y ?? 3) };
+  if (isObject(value)) {
+    return { x: Number(value.x ?? 7), y: Number(value.y ?? 3) };
   }
   return { x: 7, y: 3 };
 }
@@ -138,7 +141,7 @@ function sourceLabelFor(url: string, snapshot: Snapshot): string {
 
 function toGrid(snapshot: Snapshot): CellSnapshot[][] {
   const raw = Array.isArray(snapshot.grid) ? snapshot.grid : [];
-  return raw.map((row) => Array.isArray(row) ? [...row] : []);
+  return raw.map((row) => Array.isArray(row) ? row.map((cell) => ({ ...cell })) : []);
 }
 
 export function computeLayoutMetrics(terminalWidth: number, terminalHeight: number): LayoutMetrics {
@@ -156,9 +159,9 @@ export function computeLayoutMetrics(terminalWidth: number, terminalHeight: numb
 }
 
 export function normalizeSnapshot(snapshot: Snapshot, sourceUrl: string, staleData: boolean): ViewState {
-  const summary = (snapshot.summary ?? {}) as Record<string, unknown>;
-  const stats = (snapshot.stats ?? summary) as Record<string, unknown>;
-  const config = (snapshot.config ?? {}) as Record<string, unknown>;
+  const summary = isObject(snapshot.summary) ? snapshot.summary : {};
+  const stats = isObject(snapshot.stats) ? snapshot.stats : summary;
+  const config = isObject(snapshot.config) ? snapshot.config : {};
   const rawGrid = toGrid(snapshot);
   const target = normalizeTarget(config.target ?? summary.target);
   const sourceLabel = sourceLabelFor(sourceUrl, snapshot);
@@ -173,7 +176,8 @@ export function normalizeSnapshot(snapshot: Snapshot, sourceUrl: string, staleDa
   const grid = rawGrid
     .slice(0, MAX_GRID_DIMENSION)
     .map((row) => row.slice(0, MAX_GRID_DIMENSION));
-  const dronesRaw = (summary.drones as Array<Record<string, unknown>> | undefined) ?? (snapshot.drones ?? []);
+  const dronesRaw = (Array.isArray(summary.drones) ? summary.drones : Array.isArray(snapshot.drones) ? snapshot.drones : [])
+    .filter((item): item is Record<string, unknown> => isObject(item));
   const hiddenDroneCount = Math.max(0, dronesRaw.length - MAX_DRONE_LINES);
 
   const drones = dronesRaw.slice(0, MAX_DRONE_LINES).map((drone) => {
@@ -222,6 +226,29 @@ export function normalizeSnapshot(snapshot: Snapshot, sourceUrl: string, staleDa
     }
   });
 
+  const meshPeersRaw = Array.isArray(stats.mesh_peers)
+    ? stats.mesh_peers
+    : Array.isArray(summary.mesh_peers)
+      ? summary.mesh_peers
+      : [];
+  const meshPeers = meshPeersRaw.map((p) => String(p ?? "")).filter(Boolean);
+
+  const pendingClaims = Number(stats.pending_claims ?? summary.pending_claims ?? 0);
+  const consensusRounds = Number(stats.consensus_rounds ?? summary.consensus_rounds ?? stats.bft_rounds ?? summary.bft_rounds ?? 0);
+
+  const failureEvents = rawEvents
+    .filter((event): event is Record<string, unknown> => isObject(event) && String(event.type ?? "") === "failure")
+    .map((event) => ({ type: String(event.type ?? "failure"), t: Number(event.t ?? 0) }));
+
+  const batteryLevels: Record<string, number> = {};
+  const droneRoles: Record<string, string> = {};
+  for (const drone of dronesRaw) {
+    const id = String(drone.id ?? "");
+    if (!id) continue;
+    batteryLevels[id] = Number(drone.battery ?? 100);
+    droneRoles[id] = String(drone.role ?? "scout");
+  }
+
   return {
     elapsed: Number(stats.duration_elapsed ?? summary.duration_elapsed ?? stats.elapsed ?? snapshot.t ?? 0),
     coverage: clamp(Number(stats.coverage ?? summary.coverage ?? 0) * 100, 0, 100),
@@ -255,6 +282,12 @@ export function normalizeSnapshot(snapshot: Snapshot, sourceUrl: string, staleDa
     hiddenDroneCount,
     hiddenEventCount,
     gridTruncated,
+    meshPeers,
+    pendingClaims,
+    consensusRounds,
+    failureEvents,
+    batteryLevels,
+    droneRoles,
   };
 }
 

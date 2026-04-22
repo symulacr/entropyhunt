@@ -2,7 +2,7 @@ import { test, expect } from "bun:test";
 import { BoxRenderable, TextRenderable } from "@opentui/core";
 import { createTestRenderer } from "@opentui/core/testing";
 
-import { advanceUiState, type MonitorUiState } from "./tui_monitor_v2.ts";
+import { advanceUiState, type MonitorUiState } from "./tui_monitor.ts";
 import { bindMonitorMouseInteractions } from "./tui_monitor_interactions.ts";
 
 test("OpenTUI mouse and key events drive monitor interaction helpers", async () => {
@@ -37,7 +37,11 @@ test("OpenTUI mouse and key events drive monitor interaction helpers", async () 
     focusable: true,
   });
   shell.onKeyDown = (key) => {
-    ui = advanceUiState(ui, state as any, key.name);
+    ui = advanceUiState(
+      ui,
+      state as unknown as Pick<import("./tui_monitor_model.ts").ViewState, "gridSize" | "drones" | "events">,
+      key.name,
+    );
   };
 
   const heatmap = new BoxRenderable(renderer, { id: "heatmap", width: 30, height: 8 });

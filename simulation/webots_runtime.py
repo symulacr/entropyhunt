@@ -1,13 +1,12 @@
+
 from __future__ import annotations
 
 import json
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING
 
-from core.certainty_map import Coordinate
-from simulation.peer_protocol import PeerEndpoint
-from simulation.peer_runtime import PeerRuntime, PeerRuntimeConfig
+from simulation.runtime import PeerRuntime, PeerRuntimeConfig
 from simulation.webots_controller import (
     basic_time_step,
     create_supervisor,
@@ -17,9 +16,14 @@ from simulation.webots_controller import (
     step_robot,
 )
 
+if TYPE_CHECKING:
+    from core.certainty import Coordinate
+    from simulation.protocol import PeerEndpoint
+    from simulation.webots_stubs import WebotsNode, WebotsSupervisor
 
 @dataclass(frozen=True, slots=True)
 class WebotsRuntimeConfig:
+
     peer_id: str = "drone_1"
     drone_def: str = "DRONE_1"
     host: str = "127.0.0.1"
@@ -46,16 +50,20 @@ class WebotsRuntimeConfig:
     origin_z: float | None = None
     max_steps: int = 0
 
-
 class WebotsPeerRuntime:
-    def __init__(self, config: WebotsRuntimeConfig, *, supervisor: Any | None = None) -> None:
+
+    def __init__(
+        self, config: WebotsRuntimeConfig, *, supervisor: WebotsSupervisor | None = None,
+    ) -> None:
         self.config = config
         self.supervisor = supervisor or create_supervisor()
         self.time_step = basic_time_step(self.supervisor)
         self.step_count = 0
-        self.drone_node = get_node_by_def(self.supervisor, self.config.drone_def)
-        if self.drone_node is None:
-            raise RuntimeError(f"Webots DEF '{self.config.drone_def}' was not found")
+        _drone_node = get_node_by_def(self.supervisor, self.config.drone_def)
+        if _drone_node is None:
+            _msg = f"Webots DEF '{self.config.drone_def}' was not found"
+            raise RuntimeError(_msg)
+        self.drone_node: WebotsNode = _drone_node
         self.target_node = get_node_by_def(self.supervisor, self.config.target_def)
         self.target_cell = (
             self.world_to_cell(node_position(self.target_node))
@@ -82,7 +90,7 @@ class WebotsPeerRuntime:
                 stale_after_seconds=self.config.stale_after_seconds,
                 target=self.target_cell,
                 final_map_path=self.config.final_map_path,
-            )
+            ),
         )
         self.runtime.local_drone.position = self.world_to_cell(node_position(self.drone_node))
 
@@ -97,8 +105,8 @@ class WebotsPeerRuntime:
         return -((self.config.grid - 1) * self.config.cell_size) / 2.0
 
     def world_to_cell(self, position: tuple[float, float, float]) -> Coordinate:
-        x = int(round((position[0] - self._origin_x()) / self.config.cell_size))
-        y = int(round((position[2] - self._origin_z()) / self.config.cell_size))
+        x = round((position[0] - self._origin_x()) / self.config.cell_size)
+        y = round((position[2] - self._origin_z()) / self.config.cell_size)
         x = max(0, min(self.config.grid - 1, x))
         y = max(0, min(self.config.grid - 1, y))
         return (x, y)
@@ -148,7 +156,10 @@ class WebotsPeerRuntime:
     def snapshot(self) -> dict[str, object]:
         drones = [
             snapshot
-            for def_name in (self.config.drone_def, *(peer.peer_id.upper() for peer in self.config.peers if peer.peer_id))
+            for def_name in (
+                self.config.drone_def,
+                *(peer.peer_id.upper() for peer in self.config.peers if peer.peer_id),
+            )
             if (snapshot := self._node_snapshot(def_name)) is not None
         ]
         target = self._node_snapshot(self.config.target_def)
@@ -193,7 +204,6 @@ class WebotsPeerRuntime:
             self.runtime.save_final_map(Path(self.config.final_map_path))
         self.runtime.mesh.close()
         return 0
-
 
 def run_default_supervisor() -> int:
     runtime = WebotsPeerRuntime(WebotsRuntimeConfig())

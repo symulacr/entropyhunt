@@ -19,4 +19,4 @@ fi
 export ENTROPYHUNT_WATCH_PARENT_PID="${PPID:-}"
 : "${ENTROPYHUNT_EXIT_ON_SOURCE_LOSS_MS:=15000}"
 export ENTROPYHUNT_EXIT_ON_SOURCE_LOSS_MS
-exec bun --silent dashboard/tui_monitor_v2.ts "$@"
+exec bun --silent dashboard/tui_monitor.ts "$@"

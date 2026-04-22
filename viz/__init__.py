@@ -1,1 +1,1 @@
-"""Visualisation helpers for text-mode inspection."""
+from __future__ import annotations

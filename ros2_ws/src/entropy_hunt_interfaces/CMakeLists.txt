@@ -7,7 +7,7 @@ find_package(std_msgs REQUIRED)
 
 set(msg_files
   "msg/Assignment.msg"
-  "msg/BftRoundResult.msg"
+  "msg/ConsensusRoundResult.msg"
   "msg/CertaintyUpdate.msg"
   "msg/Claim.msg"
   "msg/DroneState.msg"

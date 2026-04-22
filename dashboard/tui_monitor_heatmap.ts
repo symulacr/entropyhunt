@@ -1,6 +1,6 @@
 import type { TextRenderable } from "@opentui/core";
 
-import { buildAxisRow, buildLegend, renderHeatmapRow } from "./tui_heatmap.ts";
+import { buildAxisRow, buildDroneIndex, buildLegend, renderHeatmapRow, updateAnimationTimelines, updateDroneTrails, checkSurvivorFlash } from "./tui_heatmap.ts";
 import {
   type DisplayMode,
   type FocusPanel,
@@ -53,6 +53,12 @@ export function syncMonitorHeatmap(args: {
   const renderedRows = Math.min(gridRows.length, state.gridSize * rowRepeat);
   const flashTarget = state.survivorFound && Math.floor((nowMs - survivorStartedAt) / 250) % 2 === 0;
 
+  updateDroneTrails(state);
+  updateAnimationTimelines(nowMs);
+  checkSurvivorFlash(state.survivorFound);
+
+  const drones = buildDroneIndex(state);
+
   axisTop.content = buildAxisRow(state.gridSize, liveCellWidth);
   heatmapLegend.content = buildLegend(compactLayout);
   heatmapHint.content = buildInspectorLine(state, cursorX, cursorY, compactLayout);
@@ -69,6 +75,7 @@ export function syncMonitorHeatmap(args: {
           focusedCell: { x: cursorX, y: cursorY },
           focusedPanel: focusedPanel === "heatmap",
           cellWidth: liveCellWidth,
+          droneIndex: drones,
         })
       : "";
   }

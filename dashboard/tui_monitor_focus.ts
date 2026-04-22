@@ -2,16 +2,13 @@ import type { BoxRenderable } from "@opentui/core";
 
 import type { FocusPanel, MonitorUiState, ViewState } from "./tui_monitor_model.ts";
 import { COLORS } from "./tui_theme.ts";
+import { clamp } from "./tui_monitor_util.ts";
 
 export type MonitorPanelBinding = {
   panel: FocusPanel;
   renderable: BoxRenderable;
   border: string;
 };
-
-function clamp(value: number, min: number, max: number): number {
-  return Math.max(min, Math.min(max, value));
-}
 
 export function clampMonitorFocus(ui: MonitorUiState, state: ViewState): MonitorUiState {
   return {

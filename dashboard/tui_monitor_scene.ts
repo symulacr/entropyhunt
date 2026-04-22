@@ -40,6 +40,9 @@ export type MonitorScene = {
   footerLine: TextRenderable;
   waitingShell: BoxRenderable;
   waitingBody: TextRenderable;
+  detailTitle: TextRenderable;
+  detailLine1: TextRenderable;
+  detailLine2: TextRenderable;
 };
 
 export function createMonitorScene(args: {
@@ -206,6 +209,26 @@ export function createMonitorScene(args: {
   side.add(eventsBox);
   const eventRows = createTextRows({ renderer, parent: eventsBox, count: MAX_EVENT_LINES, prefix: "event-row", fg: PANEL_THEME.textPrimary, bg: COLORS.headerBg });
 
+  const detailBox = new BoxRenderable(renderer, {
+    id: "detail-box",
+    flexDirection: "column",
+    border: true,
+    borderColor: COLORS.border,
+    backgroundColor: COLORS.headerBg,
+    padding: 1,
+    gap: 0,
+    title: " detail ",
+    titleAlignment: "left",
+    height: 3,
+  });
+  contextColumn.add(detailBox);
+  const detailTitle = new TextRenderable(renderer, { id: "detail-title", content: "", fg: PANEL_THEME.textPrimary, bg: COLORS.headerBg, wrapMode: "none", truncate: true, height: 1 });
+  const detailLine1 = new TextRenderable(renderer, { id: "detail-line-1", content: "", fg: PANEL_THEME.textSecondary, bg: COLORS.headerBg, wrapMode: "none", truncate: true, height: 1 });
+  const detailLine2 = new TextRenderable(renderer, { id: "detail-line-2", content: "", fg: PANEL_THEME.textMuted, bg: COLORS.headerBg, wrapMode: "none", truncate: true, height: 1 });
+  detailBox.add(detailTitle);
+  detailBox.add(detailLine1);
+  detailBox.add(detailLine2);
+
   const footerBox = new BoxRenderable(renderer, { id: "footer-box", backgroundColor: COLORS.headerBg, padding: 1, height: footerHeight });
   footerBox.width = "100%";
   shell.add(footerBox);
@@ -261,5 +284,8 @@ export function createMonitorScene(args: {
     footerLine,
     waitingShell,
     waitingBody,
+    detailTitle,
+    detailLine1,
+    detailLine2,
   };
 }

@@ -1,75 +1,188 @@
-# Core local/editor noise
+# Python
+**/__pycache__/
+*.py[cod]
+*.egg-info/
+/.eggs/
+/.pytest_cache/
+/.mypy_cache/
+/.ruff_cache/
+/.coverage
+*.coverage
+*.db
+
+# Node / Bun
+/node_modules/
+/dist/
+/build/
+*.tsbuildinfo
+bun.lockb
+
+# Editor / OS
 .DS_Store
-.vercel/
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
 
-# Python caches and local tooling
-__pycache__/
-*.pyc
-*.pyo
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
-
-# OMX/session state and local coordination artifacts
-.omx/
-
-# Node/Bun build/runtime outputs
-node_modules/
-bun.lock
-dist/
-build/
-runtime/session.json
-runtime/sessions/
-runtime/logs/
-runtime/snapshots/
-runtime/proofs.jsonl
+# Runtime artifacts (generated per-run)
 *.jsonl
+/proof_of_coordination.json
+/final_map.*
+/entropy_hunt_final.*
+/test-final-map.json
+/test-full-duration-map.json
+/peer-runs*/
+/demo_frames/
+*.tar.gz
+/submission*/
+/warmup_handshake_log.txt
+/snapshot.json
 
-# Runtime/demo outputs
-peer-runs/
-peer-runs-stress-5x20/
-peer-runs-stress-8x10/
-peer-runs-stress8/
-proofs.jsonl
-proofs_stress8.jsonl
-proofs_stress_5x20.jsonl
-proofs_stress_8x10.jsonl
-final_map.html
-final_map.json
-final_map.svg
-test-final-map.json
-test-full-duration-map.json
-submission_bundle.tar.gz
+# Frontend build outputs
+/frontend/artifacts/
+/frontend/console_source.html
 
-# ROS generated/build noise
-ros2_ws/build/
-ros2_ws/install/
-ros2_ws/log/
-ros2_ws/**/__pycache__/
-ros2_ws/**/*.pyc
+# Runtime session state
+/runtime/session.json
+/runtime/sessions/
+/runtime/logs/
+/runtime/snapshots/
+/runtime/proofs.jsonl
 
-# Webots/runtime snapshots
-foxmq.d/
-webots_world/controllers/
-webots_world/webots_snapshot.json
-webots_world/webots_final_map.json
+# ROS 2 build outputs
+/ros2_ws/build/
+/ros2_ws/install/
+/ros2_ws/log/
 
-# Large or review-only artifacts that should not be pushed by default
-critic.md
-entropy_hunt.md
-entropy_hunt_mockup.html
-entropy_hunt_v2.html
-entropy_hunt_ui.test.mjs
-submission/
+# FoxMQ / Webots generated
+/foxmq.d/
+/webots_world/build/
+/webots_world/*.json
+/webots_world/*.wbt
+/webots_world/README.md
+
+# Rust build
+/vertex-node/target/
+
+# Audit / reference docs (not source)
+/Vertex-Swarm.txt
+/AUDIT_REPORT.md
+/AUDIT_PLAN.md
+/ARCHITECTURE.md
+/HANDOFF.md
+/infodocs/
+/constraints.txt
+/critic.md
+/entropy_hunt.md
+/entropy_hunt_v2.html
+/entropy_hunt_mockup.html
+/entropy_hunt_ui.test.mjs
+/CODEBASE_MASTERY_DOSSIER.md
+/DEPS_CHANGES.md
+/MANIFEST.md
+/REMEDIATION_REPORT.md
 docs/frontend-qa-checklist.md
 docs/vercel-deploy.md
-webots_world/README.md
 
-# Generated replay/demo artifacts
-entropy_hunt_final.html
-final_map.html
-final_map.json
-final_map.svg
-test-final-map.json
-test-full-duration-map.json
-webots_world/entropy_hunt.wbt
+# Environment / local config
+.env
+.env.*
+*.local
+.python-version
+
+# Other package manager lockfiles (defensive)
+poetry.lock
+Pipfile.lock
+yarn.lock
+package-lock.json
+pnpm-lock.yaml
+
+# Python tool caches
+.tox/
+.nox/
+htmlcov/
+.cache/
+.benchmarks/
+.hypothesis/
+.dmypy.json
+dmypy.json
+cython_debug/
+.pytype/
+
+# Compiled extensions
+*.so
+*.dylib
+*.dll
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Tests (not for submission)
+/tests/
+/tests_ros/
+
+# Deployment configs
+.vercelignore
+vercel.json
+
+# Redundant deps file
+requirements.txt
+
+# Internal docs
+MISSION.md
+docs/ARCHITECTURE.md
+docs/COMPLIANCE.md
+
+# Frontend build caches
+.next/
+.nuxt/
+.output/
+out/
+.eslintcache
+.stylelintcache
+.parcel-cache/
+.turbo/
+
+# General temp / runtime
+tmp/
+temp/
+*.pid
+*.seed
+*.pid.lock
+celerybeat-schedule
+
+# Vercel
+/.vercel/
+/.omx/
+
+# OMC state
+.omc/
+
+# Skill directories (local dev only)
+.agents/
+.claude/
+.factory/
+.kiro/
+skills-lock.json
+
+# Internal docs
+SUBMISSION_VERDICT.md
+docs/CODEBASE_MASTERY_DOSSIER.md
+docs/DEPS_CHANGES.md
+docs/MANIFEST.md
+docs/REMEDIATION_REPORT.md
+docs/SPRINT_REPORT.md
+
+# Audit artifacts
+/CROSS_REFERENCE_AUDIT.md
+
+# Logs
+/logs/
+*.log
+
+# Vertex keys
+/vertex-node/*.key
+/vertex-node/*.pub
+*.key
+*.pem

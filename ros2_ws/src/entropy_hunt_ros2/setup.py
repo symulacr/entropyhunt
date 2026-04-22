@@ -2,9 +2,7 @@ from __future__ import annotations
 
 from setuptools import find_packages, setup
 
-
 package_name = "entropy_hunt_ros2"
-
 
 setup(
     name=package_name,
@@ -19,6 +17,6 @@ setup(
         "console_scripts": [
             "drone_node = entropy_hunt_ros2.drone_node:main",
             "operator_node = entropy_hunt_ros2.operator_node:main",
-        ]
+        ],
     },
 )

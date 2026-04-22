@@ -8,7 +8,8 @@ import {
   normalizeSnapshot,
   type MonitorUiState,
   type ViewState,
-} from "./tui_monitor_v2.ts";
+} from "./tui_monitor.ts";
+import { isSnapshot } from "./tui_types.ts";
 import { renderHeatmapRow } from "./tui_heatmap.ts";
 import type { MonitorState } from "./tui_types.ts";
 import { handleMonitorKeyDown } from "./tui_monitor_input.ts";
@@ -356,4 +357,21 @@ test("monitor exits when its source has been gone too long", () => {
   expect(hasLostSource(1000, 17001, 15000)).toBe(true);
   expect(hasLostSource(1000, 15000, 15000)).toBe(false);
   expect(hasLostSource(0, 20000, 15000)).toBe(false);
+});
+
+test("snapshot type guard rejects malformed object", () => {
+  expect(isSnapshot(null)).toBe(false);
+  expect(isSnapshot(undefined)).toBe(false);
+  expect(isSnapshot("string")).toBe(false);
+  expect(isSnapshot(123)).toBe(false);
+  expect(isSnapshot({ t: "not-a-number" })).toBe(false);
+  expect(isSnapshot({ survivor_found: "not-a-boolean" })).toBe(false);
+  expect(isSnapshot({ grid: "not-an-array" })).toBe(false);
+  expect(isSnapshot({ drones: "not-an-array" })).toBe(false);
+  expect(isSnapshot({ events: "not-an-array" })).toBe(false);
+  expect(isSnapshot({ summary: "not-an-object" })).toBe(false);
+  expect(isSnapshot({ stats: "not-an-object" })).toBe(false);
+  expect(isSnapshot({ config: "not-an-object" })).toBe(false);
+  expect(isSnapshot({ t: 1, survivor_found: true, grid: [], drones: [], events: [], stats: {} })).toBe(true);
+  expect(isSnapshot({})).toBe(false);
 });

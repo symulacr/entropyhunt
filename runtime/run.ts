@@ -6,7 +6,7 @@ import { waitForRuntimeReady } from "./health";
 import { findContiguousPortRange, findFreePort } from "./ports";
 import { spawnManagedProcess, terminateManagedProcess, waitForExit, type SpawnedProcess } from "./processes";
 
-type SessionManifest = {
+export type SessionManifest = {
   sessionName: string;
   sessionDir: string;
   status: "starting" | "ready" | "running" | "stopping" | "completed" | "failed" | "cancelled";
@@ -62,9 +62,13 @@ function normalizedExecPath(): string {
   return process.execPath.replace(/ \(deleted\)$/, "");
 }
 
+function isErrnoException(error: unknown): error is NodeJS.ErrnoException {
+  return error instanceof Error && "code" in error && typeof (error as NodeJS.ErrnoException).code === "string";
+}
+
 function commandAvailable(command: string, args: string[] = ["--help"]): boolean {
   const result = spawnSync(command, args, { stdio: "ignore" });
-  return !(result.error && (result.error as NodeJS.ErrnoException).code === "ENOENT");
+  return !(result.error && isErrnoException(result.error) && result.error.code === "ENOENT");
 }
 
 function requireCommand(command: string, args: string[] = ["--help"], message?: string): void {
@@ -446,6 +450,8 @@ async function main(): Promise<number> {
         readinessTimeoutMs,
         options.readinessPollMs,
         options.mode === "peer" ? options.count : undefined,
+        options.mode === "peer" ? options.serveHost : undefined,
+        options.mode === "peer" ? basePort : undefined,
       ),
       waitForExit(launcher).then((code) => {
         throw new Error(`Launcher exited before readiness check completed (code ${code})`);
@@ -519,6 +525,6 @@ async function main(): Promise<number> {
   }
 }
 
-void main().then((code) => {
-  process.exitCode = code;
-});
+(async () => {
+  process.exitCode = await main();
+})();

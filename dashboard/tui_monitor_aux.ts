@@ -1,7 +1,14 @@
-import { bg as withBg, bold as withBold, dim as withDim, fg as withFg, t, type TextRenderable } from "@opentui/core";
+import { StyledText, bg as withBg, bold as withBold, dim as withDim, fg as withFg, t, type TextChunk, type TextRenderable } from "@opentui/core";
 
 import { speedControlCapability, type DisplayMode, type ViewState } from "./tui_monitor_model.ts";
 import { COLORS, PANEL_THEME } from "./tui_theme.ts";
+import {
+  renderBatteryPanel,
+  renderConsensusPanel,
+  renderFailurePanel,
+  renderMeshTopology,
+} from "./tui_monitor_panels.ts";
+import { renderChartDashboard } from "./tui_monitor_charts.ts";
 
 export type MonitorHistory = {
   coverage: number[];
@@ -32,6 +39,17 @@ const SPARK = "▁▂▃▄▅▆▇█";
 
 function clampInt(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, Math.floor(value)));
+}
+
+function joinStyledTexts(texts: StyledText[]): StyledText {
+  const chunks: TextChunk[] = [];
+  const newlineChunks = t`
+`.chunks;
+  for (let i = 0; i < texts.length; i++) {
+    if (i > 0) chunks.push(...newlineChunks);
+    chunks.push(...texts[i].chunks);
+  }
+  return new StyledText(chunks);
 }
 
 function widgetInnerWidth(availableWidth: number): number {
@@ -241,55 +259,12 @@ export function syncMonitorAuxPanel(args: {
   const focusedHistory = focusedDrone ? history.drones[focusedDrone.id] ?? { entropy: [], searched: [] } : { entropy: [], searched: [] };
   const lines = displayMode === "detail"
     ? [
-        sectionLine("drone detail"),
-        plainLine(
-          "focus",
-          focusedDrone
-            ? `${focusedDrone.id} · ${focusedDrone.status} · ${focusedDrone.offline ? "offline" : "online"}`
-            : "no active drone",
-          availableWidth,
-        ),
-        plainLine(
-          "route",
-          focusedDrone
-            ? `[${focusedDrone.x},${focusedDrone.y}] → ${focusedDrone.tx == null || focusedDrone.ty == null ? "--" : `[${focusedDrone.tx},${focusedDrone.ty}]`}`
-            : "--",
-          availableWidth,
-        ),
-        ...pairTiles(
-          "scan",
-          `${focusedDrone?.searchedCells ?? 0}`,
-          graphTrendText(focusedHistory.searched, maxSearchedCells, Math.max(10, Math.floor(sparkWidth / 2))),
-          "entropy",
-          focusedDrone ? focusedDrone.entropy.toFixed(2) : "0.00",
-          graphTrendText(focusedHistory.entropy, 1, Math.max(10, Math.floor(sparkWidth / 2))),
-          availableWidth,
-          COLORS.info,
-          COLORS.warning,
-        ),
-        ...pairTiles(
-          "position",
-          focusedDrone ? `[${focusedDrone.x},${focusedDrone.y}]` : "--",
-          focusedDrone ? `target ${focusedDrone.tx == null || focusedDrone.ty == null ? "--" : `[${focusedDrone.tx},${focusedDrone.ty}]`}` : "--",
-          "status",
-          focusedDrone?.status ?? "--",
-          focusedDrone?.offline ? "link lost" : "tracking live updates",
-          availableWidth,
-          PANEL_THEME.textPrimary,
-          PANEL_THEME.textPrimary,
-        ),
-        sectionLine("swarm"),
-        ...state.drones.slice(0, 3).map((drone, index) =>
-          plainLine(
-            "agent",
-            droneHistorySummary(drone, selectedDrone === index, history.drones[drone.id] ?? { entropy: [], searched: [] }, maxSearchedCells, availableWidth - 10),
-            availableWidth,
-          )),
-        pairColumns(
-          `target   [${state.target.x},${state.target.y}]`,
-          `request  ${state.requestedDroneCount} next launch`,
-          availableWidth,
-        ),
+        joinStyledTexts([
+          renderMeshTopology(state.meshPeers ?? [], availableWidth),
+          renderBatteryPanel(state.batteryLevels ?? {}, availableWidth),
+          renderConsensusPanel(state.consensusRounds ?? 0, availableWidth),
+          renderFailurePanel(state.failureEvents ?? [], availableWidth),
+        ]),
       ]
     : displayMode === "config"
     ? [
@@ -328,61 +303,7 @@ export function syncMonitorAuxPanel(args: {
         plainLine("control", state.controlUrl || "no control endpoint", availableWidth),
       ]
     : [
-        plainLine("state", state.survivorFound ? "survivor confirmed" : "search in progress", availableWidth),
-        hintLine("y↑ coverage/entropy/latency · x→ oldest to newest (24 samples)"),
-        ...pairTiles(
-          "coverage",
-          `${Math.round(state.coverage)}%`,
-          graphTrendText(history.coverage, 100, Math.max(10, Math.floor(sparkWidth / 2))),
-          "uncertainty",
-          state.avgEntropy.toFixed(2),
-          graphTrendText(history.uncertainty, 1, Math.max(10, Math.floor(sparkWidth / 2))),
-          availableWidth,
-          COLORS.success,
-          COLORS.warning,
-        ),
-        ...pairTiles(
-          "latency",
-          `${Math.round(history.latency.at(-1) ?? 0)}ms`,
-          graphTrendText(history.latency, Math.max(1, ...history.latency, 1), Math.max(10, Math.floor(sparkWidth / 2))),
-          "speed",
-          `${state.tickSeconds.toFixed(2)}s`,
-          `tick ${state.tickSeconds.toFixed(2)}s · drones ${state.droneCount}`,
-          availableWidth,
-          "#a78bfa",
-          PANEL_THEME.textPrimary,
-        ),
-        sectionLine("drone focus"),
-        plainLine(
-          "focus",
-          focusedDrone
-            ? `${focusedDrone.id} [${focusedDrone.x},${focusedDrone.y}] → ${focusedDrone.tx == null || focusedDrone.ty == null ? "--" : `[${focusedDrone.tx},${focusedDrone.ty}]`} · ${focusedDrone.status}`
-            : "no active drone",
-          availableWidth,
-        ),
-        pairColumns(
-          droneHistoryLine("scan", focusedHistory.searched, maxSearchedCells, Math.max(20, Math.floor(availableWidth / 2))),
-          droneHistoryLine("entropy", focusedHistory.entropy, 1, Math.max(20, Math.floor(availableWidth / 2))),
-          availableWidth,
-          PANEL_THEME.textPrimary,
-          PANEL_THEME.textPrimary,
-        ),
-        ...state.drones.slice(0, 3).map((drone, index) =>
-          plainLine(
-            "agent",
-            droneHistorySummary(drone, selectedDrone === index, history.drones[drone.id] ?? { entropy: [], searched: [] }, maxSearchedCells, availableWidth - 10),
-            availableWidth,
-          )),
-        pairColumns(
-          `claims   ${state.auctions} settled · bft ${state.bftRounds}`,
-          `health   ${state.dropouts > 0 ? `${state.dropouts} lost link` : "stable"}`,
-          availableWidth,
-        ),
-        pairColumns(
-          `target   [${state.target.x},${state.target.y}]`,
-          `request  ${state.requestedDroneCount} next launch`,
-          availableWidth,
-        ),
+        renderChartDashboard(history, availableWidth, modeLines.length),
       ];
 
   for (let index = 0; index < modeLines.length; index += 1) {

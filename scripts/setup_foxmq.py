@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import argparse
-from pathlib import Path
+import os
+import shutil
 import subprocess
+from pathlib import Path
 
 
 def build_address_book_command(
@@ -30,7 +32,7 @@ def build_address_book_command(
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Generate a FoxMQ address book for local clusters")
     parser.add_argument("--foxmq-bin", default="foxmq")
-    parser.add_argument("--host", default="127.0.0.1")
+    parser.add_argument("--host", default=os.environ.get("ENTROPYHUNT_HOST", "127.0.0.1"))
     parser.add_argument("--port-start", type=int, default=19793)
     parser.add_argument("--count", type=int, default=4)
     parser.add_argument("--output-dir", default="foxmq.d")
@@ -40,6 +42,11 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
+    resolved_bin = shutil.which(args.foxmq_bin)
+    if resolved_bin is None:
+        _msg = f"foxmq binary not found: {args.foxmq_bin!r}"
+        raise FileNotFoundError(_msg)
+    args.foxmq_bin = resolved_bin
     output_dir = Path(args.output_dir)
     command = build_address_book_command(
         foxmq_bin=args.foxmq_bin,

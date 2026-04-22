@@ -2,7 +2,7 @@ import { BoxRenderable, TextRenderable, bold as withBold, fg as withFg, t } from
 
 import type { ViewState } from "./tui_monitor_model.ts";
 import { formatDuration } from "./tui_monitor_model.ts";
-import { COLORS, PANEL_THEME, coverageColorFor } from "./tui_theme.ts";
+import { COLORS, HTML_V2_CSS_VARS, PANEL_THEME, STAT_THRESHOLDS, coverageColorFor } from "./tui_theme.ts";
 
 export const STAT_SPECS = [
   { key: "coverage", label: "grid scanned", grow: 2 },
@@ -15,9 +15,9 @@ export const STAT_SPECS = [
 export type StatKey = typeof STAT_SPECS[number]["key"];
 
 export function buildStatValues(state: ViewState): string[] {
-  const coverageStatus = state.coverage >= 60 ? "on track" : state.coverage >= 30 ? "watch" : "slow";
-  const entropyStatus = state.avgEntropy >= 0.7 ? "high" : state.avgEntropy >= 0.45 ? "watch" : "low";
-  const claimStatus = state.auctions >= 1 ? "settled" : "idle";
+  const coverageStatus = state.coverage >= STAT_THRESHOLDS.coverage.good ? "on track" : state.coverage >= STAT_THRESHOLDS.coverage.warn ? "watch" : "slow";
+  const entropyStatus = state.avgEntropy >= STAT_THRESHOLDS.entropy.high ? "high" : state.avgEntropy >= STAT_THRESHOLDS.entropy.warn ? "watch" : "low";
+  const claimStatus = state.auctions >= STAT_THRESHOLDS.auctions.active ? "settled" : "idle";
   return [
     `${coverageStatus} · ${Math.round(state.coverage)}%`,
     `${entropyStatus} · ${state.avgEntropy.toFixed(2)}`,
@@ -32,30 +32,21 @@ export function buildCompactStatsContent(state: ViewState, tickLatencyMs: number
 }
 
 export function statVisualsFor(key: StatKey, state: ViewState) {
-  const color = key === "coverage"
-    ? coverageColorFor(Math.round(state.coverage))
-    : key === "dropouts" && state.dropouts > 0
-      ? COLORS.danger
-      : key === "entropy"
-        ? COLORS.warning
-        : PANEL_THEME.textPrimary;
-  const backgroundColor = key === "coverage"
-    ? "#0b2a1b"
-    : key === "entropy"
-      ? "#2b1f0d"
-      : key === "dropouts"
-        ? (state.dropouts > 0 ? "#3b0d14" : "#0b2a1b")
-        : key === "auctions"
-          ? "#0f1b33"
-          : "#111827";
-  const borderColor = key === "dropouts"
-    ? (state.dropouts > 0 ? COLORS.danger : COLORS.success)
-    : key === "coverage"
-      ? coverageColorFor(Math.round(state.coverage))
-      : key === "entropy"
-        ? COLORS.warning
-        : COLORS.border;
-  return { color, backgroundColor, borderColor };
+  const coverageC = coverageColorFor(Math.round(state.coverage));
+  switch (key) {
+    case "coverage":
+      return { color: coverageC, backgroundColor: HTML_V2_CSS_VARS.backgroundSuccessDim, borderColor: coverageC };
+    case "entropy":
+      return { color: COLORS.warning, backgroundColor: HTML_V2_CSS_VARS.backgroundWarningDim, borderColor: COLORS.warning };
+    case "dropouts":
+      return state.dropouts > 0
+        ? { color: COLORS.danger, backgroundColor: HTML_V2_CSS_VARS.backgroundDangerDim, borderColor: COLORS.danger }
+        : { color: PANEL_THEME.textPrimary, backgroundColor: HTML_V2_CSS_VARS.backgroundSuccessDim, borderColor: COLORS.success };
+    case "auctions":
+      return { color: PANEL_THEME.textPrimary, backgroundColor: HTML_V2_CSS_VARS.backgroundMutedBlue, borderColor: COLORS.border };
+    case "elapsed":
+      return { color: PANEL_THEME.textPrimary, backgroundColor: HTML_V2_CSS_VARS.backgroundNeutral, borderColor: COLORS.border };
+  }
 }
 
 export function syncMonitorStats(args: {
