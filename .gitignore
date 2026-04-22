@@ -187,3 +187,8 @@ docs/SPRINT_REPORT.md
 *.key
 *.pem
 .vercel
+
+# BUIDL files (local only — never commit)
+/BUIDL_DETAILS.md
+/BUIDL_PROFILE.md
+/frontend/node_modules/

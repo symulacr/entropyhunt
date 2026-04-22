@@ -1,0 +1,109 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 48px;
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  color: var(--text);
+  background: var(--bg-elevated);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  font-family: var(--font-sans);
+  transition: all 0.3s var(--ease-out-expo);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md), var(--shadow-glow);
+  border-color: var(--accent-light);
+}
+
+.button:hover::after {
+  opacity: 1;
+}
+
+.button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.primary {
+  background: var(--text);
+  color: var(--text-inverse);
+  border-color: var(--text);
+}
+
+.primary:hover {
+  background: var(--text-secondary);
+  border-color: var(--text-secondary);
+  box-shadow: var(--shadow-lg);
+}
+
+.ghost {
+  background: transparent;
+  border-color: transparent;
+}
+
+.ghost:hover {
+  background: var(--surface);
+  border-color: var(--border);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+}
+
+.iconWrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  transition: transform 0.3s var(--ease-spring);
+  position: relative;
+  z-index: 1;
+}
+
+.button:hover .iconWrap {
+  transform: translate(2px, -1px);
+}
+
+@media (prefers-color-scheme: dark) {
+  .button {
+    background: var(--bg-elevated);
+  }
+
+  .primary {
+    background: var(--text);
+    color: var(--text-inverse);
+  }
+
+  .ghost:hover {
+    background: var(--surface);
+  }
+}
+
+@media (max-width: 640px) {
+  .button {
+    width: 100%;
+    justify-content: center;
+  }
+}
