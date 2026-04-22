@@ -457,18 +457,7 @@ if [[ "${USE_TUI}" == true ]]; then
         warn "Live runtime server failed to start"
     fi
 
-    if command -v bun &>/dev/null; then
-        info "Starting TUI dashboard..."
-        bun "${REPO_ROOT}/dashboard/tui_monitor.ts" >/dev/null 2>&1 &
-    TUI_PID=$!
-    BG_PIDS+=("${TUI_PID}")
-        sleep 0.5
-        if kill -0 "${TUI_PID}" 2>/dev/null; then
-            ok "TUI dashboard running (PID ${TUI_PID})"
-        else
-            warn "TUI dashboard failed to start"
-        fi
-    else
+    if ! command -v bun &>/dev/null; then
         warn "Bun not found — skipping TUI dashboard"
     fi
 fi
@@ -477,13 +466,28 @@ section_header "SWARM SIMULATION"
 
 info "Launching swarm..."
 
-python3 "${REPO_ROOT}/main.py" \
-    --mode stub \
-    --drones "${DRONES}" \
-    --grid "${GRID}" \
-    --duration "${DURATION}" \
-    --packet-loss "${PACKET_LOSS}" \
-    --tick-seconds 1
+if [[ "${USE_TUI}" == true ]] && command -v bun &>/dev/null; then
+    python3 "${REPO_ROOT}/main.py" \
+        --mode stub \
+        --drones "${DRONES}" \
+        --grid "${GRID}" \
+        --duration "${DURATION}" \
+        --packet-loss "${PACKET_LOSS}" \
+        --tick-seconds 1 >/dev/null 2>&1 &
+    SIM_PID=$!
+    BG_PIDS+=("${SIM_PID}")
+    sleep 1
+
+    bun "${REPO_ROOT}/dashboard/tui_monitor.ts" --source http://127.0.0.1:8765/snapshot.json
+else
+    python3 "${REPO_ROOT}/main.py" \
+        --mode stub \
+        --drones "${DRONES}" \
+        --grid "${GRID}" \
+        --duration "${DURATION}" \
+        --packet-loss "${PACKET_LOSS}" \
+        --tick-seconds 1
+fi
 
 if [[ "${INTERACTIVE}" == true ]]; then
     progress_bar 4 4 "Mission complete"
