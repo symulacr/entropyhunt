@@ -12,7 +12,7 @@ export function createMonitorViewTabs(renderer: RenderContext) {
   const box = new BoxRenderable(renderer, {
     id: "view-tabs",
     flexDirection: "row",
-    gap: 1,
+    gap: 0,
     backgroundColor: COLORS.headerBg,
     height: 1,
   });
@@ -41,10 +41,10 @@ export function createMonitorStatsRow(renderer: RenderContext) {
   const row = new BoxRenderable(renderer, {
     id: "stats-row",
     flexDirection: "row",
-    gap: 1,
+    gap: 0,
     backgroundColor: COLORS.headerBg,
-    paddingLeft: 1,
-    paddingRight: 1,
+    paddingLeft: 0,
+    paddingRight: 0,
     justifyContent: "space-between",
   });
   const labels: TextRenderable[] = [];
@@ -53,12 +53,12 @@ export function createMonitorStatsRow(renderer: RenderContext) {
   for (const spec of STAT_SPECS) {
     const card = new BoxRenderable(renderer, {
       id: `stat-${spec.key}`,
-      flexGrow: spec.grow,
-      border: true,
+      flexGrow: 1,
+      border: false,
       borderColor: COLORS.border,
       backgroundColor: COLORS.headerBg,
-      paddingLeft: 2,
-      paddingRight: 2,
+      paddingLeft: 0,
+      paddingRight: 0,
       paddingTop: 0,
       paddingBottom: 0,
       alignItems: "center",

@@ -5,7 +5,6 @@ import {
   type DisplayMode,
   type FocusPanel,
   type ViewState,
-  computeLayoutMetrics,
   normalizeSnapshot,
 } from "./tui_monitor_model.ts";
 import { handleMonitorKeyDown } from "./tui_monitor_input.ts";

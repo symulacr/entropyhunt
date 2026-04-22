@@ -2,13 +2,13 @@ import { test, expect } from "bun:test";
 import {
   advanceDisplayMode,
   advanceUiState,
-  computeLayoutMetrics,
   hitTestHeatmapCell,
   logicalHeatmapRowForRenderIndex,
   normalizeSnapshot,
   type MonitorUiState,
   type ViewState,
 } from "./tui_monitor.ts";
+import { computeMonitorLayout } from "./tui_monitor_model.ts";
 import { isSnapshot } from "./tui_types.ts";
 import { renderHeatmapRow } from "./tui_heatmap.ts";
 import type { MonitorState } from "./tui_types.ts";
@@ -283,19 +283,26 @@ test("compact TUI subheader makes controls discoverable", () => {
 
 
 test("layout metrics expand heatmap on wide terminals and stack on compact terminals", () => {
-  const wide = computeLayoutMetrics(200, 46);
-  expect(wide.compactLayout).toBe(false);
-  expect(wide.heatmapWidth).toBeGreaterThanOrEqual(100);
+  const wide = computeMonitorLayout(200, 46, "overview", 10, 5, 10);
+  expect(wide.breakpoint).not.toBe("compact");
+  expect(wide.heatmap.width).toBeGreaterThanOrEqual(100);
 
-  const compact = computeLayoutMetrics(80, 24);
-  expect(compact.compactLayout).toBe(true);
-  expect(compact.heatmapWidth).toBe(76);
-  expect(compact.eventRowCount).toBe(2);
+  const medium = computeMonitorLayout(80, 24, "overview", 10, 5, 10);
+  expect(medium.breakpoint).not.toBe("compact");
+  expect(medium.heatmap.width).toBeGreaterThanOrEqual(50);
+  expect(medium.statsHeight).toBe(1);
+  expect(medium.headerHeight).toBe(3);
+  expect(medium.footerHeight).toBe(1);
+
+  const compact = computeMonitorLayout(50, 18, "overview", 10, 5, 10);
+  expect(compact.breakpoint).toBe("compact");
+  expect(compact.heatmap.width).toBe(50);
+  expect(compact.events.rowCount).toBe(4);
+  expect(compact.roster.height).toBe(4);
+  expect(compact.headerHeight).toBe(2);
   expect(compact.statsHeight).toBe(1);
-  expect(compact.rosterHeight).toBe(5);
-  expect(compact.headerHeight).toBe(3);
   expect(compact.footerHeight).toBe(1);
-  expect(compact.cellWidth).toBe(3);
+  expect(compact.heatmap.cellWidth).toBe(4);
 });
 
 test("focused heatmap cells preserve target and drone semantics", () => {

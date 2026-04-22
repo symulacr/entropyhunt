@@ -1,24 +1,24 @@
 ┌──────────────────────────────────────────────────────────────────────────────┐
-│                                                                              │
-│ ehunt track 2  LIVE   REAL   B31                                             │
-│ target [3,2]  arrows move   1-5/tab ...h/r/e panels   enter follow   q quit  │
-│scan 73% · unc 0.61 · 7 claims · 1 lost · 1m 32s · rt 14ms                    │
-│  ┌─ drone detail ─────────────────────────────────────────────────────────┐  │
-│  │ mesh peers 0                                                           │  │
-│  │   no peers                                                             │  │
-│  │ battery 0                                                              │  │
-│  │   no data                                                              │  │
-│  │ consensus                                                              │  │
-│  │   0 rounds                                                             │  │
-│  │                                                                        │  │
-│  │                                                                        │  │
-│  │                                                                        │  │
-│  │                                                                        │  │
-│  │                                                                        │  │
-│  │                                                                        │  │
-│  │                                                                        │  │
-│  │                                                                        │  │
-│  │                                                                        │  │
-│  │                                                                        │  │
-│● survivor confirmed — hold the grid · drone drone_2 [2,3] · rt=14ms          │
+│entropy hunt track 2 · search & rescue  LIVE SNAPSHOT   MESH=REAL   BFT 31    │
+│source http://127.0.0.1:8765/snapshot.json                                    │
+│ 1 overview   2 detail   3 map   4 config   5 graphs                          │
+│coverage: 73% scanned · uncertainty: ...health: 1 lost link · 1m 32s · rt 14ms│
+│ ┌──────────────────────────────────────────────────────────────────────────┐ │
+│ │mesh peers 0                                                              │ │
+│ │  no peers                                                                │ │
+│ │battery 0                                                                 │ │
+│ │  no data                                                                 │ │
+│ │consensus                                                                 │ │
+│ │  0 rounds                                                                │ │
+│ │                                                                          │ │
+│ │                                                                          │ │
+│ │                                                                          │ │
+│ │                                                                          │ │
+│ │                                                                          │ │
+│ │                                                                          │ │
+│ │                                                                          │ │
+│ │                                                                          │ │
+│ │                                                                          │ │
+│ │                                                                          │ │
+│● survivor confirmed — hold the grid · selected drone drone_2 [2,3] · rt=14ms │
 └──────────────────────────────────────────────────────────────────────────────┘

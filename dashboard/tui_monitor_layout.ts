@@ -1,17 +1,11 @@
 import type { BoxRenderable, TextRenderable } from "@opentui/core";
 
 import type { DisplayMode } from "./tui_monitor_model.ts";
+import type { BentoLayout } from "./tui_layout_engine.ts";
 
 export function applyMonitorLayout(args: {
-  compactLayout: boolean;
+  layout: BentoLayout;
   displayMode: DisplayMode;
-  terminalWidth: number;
-  terminalHeight: number;
-  headerHeight: number;
-  statsHeight: number;
-  footerHeight: number;
-  preferredHeatmapHeight: number;
-  eventRowCount: number;
   body: BoxRenderable;
   headerBox: BoxRenderable;
   statsRow: BoxRenderable;
@@ -29,15 +23,8 @@ export function applyMonitorLayout(args: {
   eventRows: TextRenderable[];
 }) {
   const {
-    compactLayout,
+    layout,
     displayMode,
-    terminalWidth,
-    terminalHeight,
-    headerHeight,
-    statsHeight,
-    footerHeight,
-    preferredHeatmapHeight,
-    eventRowCount,
     body,
     headerBox,
     statsRow,
@@ -55,76 +42,80 @@ export function applyMonitorLayout(args: {
     eventRows,
   } = args;
 
+  const isMap = displayMode === "map";
+  const isAux = displayMode === "config" || displayMode === "graphs" || displayMode === "detail";
+  const compact = layout.breakpoint === "compact";
+
   body.flexDirection = "column";
-  body.gap = 1;
-  const centeredAuxMode = displayMode === "graphs" || displayMode === "config" || displayMode === "detail";
-  body.justifyContent = centeredAuxMode ? "center" : "flex-start";
-  body.alignItems = centeredAuxMode ? "center" : "stretch";
-  headerBox.height = headerHeight;
-  if (displayMode === "map") {
-    headerBox.height = compactLayout ? 2 : 3;
-  }
-  headerBox.padding = compactLayout ? 0 : 1;
-  statsRow.height = statsHeight;
-  if (displayMode === "map") {
-    statsRow.height = 1;
-  }
-  statsRow.paddingLeft = compactLayout ? 0 : 1;
-  statsRow.paddingRight = compactLayout ? 0 : 1;
-  statsRow.gap = compactLayout ? 0 : 1;
-  statsRow.flexDirection = compactLayout ? "column" : "row";
-  const fullPanelMode = displayMode === "config" || displayMode === "graphs" || displayMode === "detail";
-  heatmapPanel.visible = !fullPanelMode;
-  heatmapPanel.width = "100%";
-  heatmapPanel.height = compactLayout
-    ? Math.max(9, preferredHeatmapHeight)
-    : Math.max(12, preferredHeatmapHeight);
-  heatmapPanel.padding = 0;
-  heatmapPanel.title = compactLayout ? " mission grid " : " mission grid · uncertainty ";
-  modePanel.visible = fullPanelMode;
-  const availableAuxHeight = terminalHeight - headerHeight - statsHeight - footerHeight - 3;
-  modePanel.height = displayMode === "graphs"
-    ? (compactLayout ? Math.min(Math.max(16, availableAuxHeight), 20) : Math.min(Math.max(18, availableAuxHeight), 22))
-    : displayMode === "config"
-      ? (compactLayout ? Math.min(Math.max(15, availableAuxHeight), 19) : Math.min(Math.max(16, availableAuxHeight), 19))
-    : displayMode === "detail"
-      ? (compactLayout ? Math.min(Math.max(16, availableAuxHeight), 20) : Math.min(Math.max(18, availableAuxHeight), 22))
-    : compactLayout ? Math.max(9, availableAuxHeight) : Math.max(12, availableAuxHeight);
-  modePanel.width = displayMode === "graphs" || displayMode === "config"
-    ? (compactLayout ? "100%" : Math.min(terminalWidth - 6, 96))
-    : displayMode === "detail"
-      ? (compactLayout ? "100%" : Math.min(terminalWidth - 6, 96))
-    : "100%";
-  modePanel.flexGrow = centeredAuxMode ? 0 : 1;
-  modePanel.padding = compactLayout ? 0 : 1;
-  modePanel.title = displayMode === "config" ? " runtime config " : displayMode === "graphs" ? " speed & stats " : displayMode === "detail" ? " drone detail " : " mode ";
+  body.gap = layout.gap;
+  body.justifyContent = isAux ? "center" : "flex-start";
+  body.alignItems = isAux ? "center" : "stretch";
+  body.paddingLeft = 0;
+  body.paddingRight = 0;
+
+  headerBox.height = layout.headerHeight;
+  headerBox.padding = 0;
+  headerBox.gap = 0;
+
+  statsRow.height = layout.statsHeight;
+  statsRow.paddingLeft = 0;
+  statsRow.paddingRight = 0;
+  statsRow.gap = 0;
+  statsRow.flexDirection = "row";
+
+  heatmapPanel.visible = layout.heatmap.visible;
+  heatmapPanel.width = layout.heatmap.width;
+  heatmapPanel.height = layout.heatmap.height;
+  heatmapPanel.padding = layout.panelPadding;
+  heatmapPanel.gap = 0;
+  heatmapPanel.border = false;
+
+  modePanel.visible = layout.modePanel.visible;
+  modePanel.width = layout.modePanel.width;
+  modePanel.height = layout.modePanel.height;
+  modePanel.flexGrow = isAux ? 0 : 1;
+  modePanel.padding = 0;
+  modePanel.border = false;
+
   gridFrame.padding = 0;
+  gridFrame.gap = 0;
   gridFrame.flexGrow = 0;
-  heatmapLegend.visible = !compactLayout;
-  if (displayMode === "map") {
-    heatmapLegend.visible = false;
-  }
-  side.visible = displayMode === "overview";
-  side.height = compactLayout
-    ? Math.max(8, terminalHeight - headerHeight - statsHeight - footerHeight - (typeof heatmapPanel.height === "number" ? heatmapPanel.height : 12) - 3)
-    : "auto";
-  side.width = "100%";
-  side.gap = 1;
-  side.flexDirection = compactLayout ? "column" : "row";
-  contextColumn.width = compactLayout ? "100%" : Math.max(34, Math.floor(terminalWidth * 0.36));
-  rosterBox.visible = !(compactLayout && displayMode === "detail");
-  rosterBox.height = compactLayout && displayMode === "detail" ? 0 : compactLayout ? 4 : 5;
-  rosterBox.padding = compactLayout ? 0 : 1;
-  rosterBox.title = compactLayout ? " drones " : " active drones ";
-  eventsBox.visible = !(compactLayout && displayMode === "detail");
-  eventsBox.padding = compactLayout ? 0 : 1;
-  eventsBox.title = compactLayout ? " alerts " : " attention & timeline ";
+  gridFrame.border = false;
+
+  heatmapLegend.visible = layout.heatmap.visible && !compact && !isMap;
+
+  side.visible = layout.side.visible;
+  side.height = layout.side.height;
+  side.width = layout.side.width;
+  side.gap = 0;
+  side.flexDirection = layout.side.direction;
+
+  contextColumn.width = layout.side.direction === "column" ? layout.side.width : layout.roster.width;
+  contextColumn.gap = 0;
+
+  rosterBox.visible = layout.roster.visible;
+  rosterBox.height = layout.roster.height;
+  rosterBox.width = layout.roster.width;
+  rosterBox.padding = 0;
+  rosterBox.border = false;
+
+  eventsBox.visible = layout.events.visible;
+  eventsBox.width = layout.events.width;
+  eventsBox.padding = 0;
   eventsBox.flexGrow = 1;
-  footerBox.padding = compactLayout ? 0 : 1;
-  footerBox.height = displayMode === "map" ? 1 : footerHeight;
-  compactStatsText.visible = compactLayout;
-  for (const card of statCards) card.visible = !compactLayout;
+  eventsBox.border = false;
+
+  footerBox.height = layout.footerHeight;
+  footerBox.padding = 0;
+
+  compactStatsText.visible = layout.stats.compact;
+  for (const card of statCards) {
+    card.visible = !layout.stats.compact;
+    card.border = false;
+    card.paddingLeft = 0;
+    card.paddingRight = 0;
+  }
   for (let index = 0; index < eventRows.length; index += 1) {
-    eventRows[index]!.visible = index < eventRowCount;
+    eventRows[index]!.visible = index < layout.events.rowCount;
   }
 }

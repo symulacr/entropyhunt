@@ -52,18 +52,6 @@ function joinStyledTexts(texts: StyledText[]): StyledText {
   return new StyledText(chunks);
 }
 
-function widgetInnerWidth(availableWidth: number): number {
-  return clampInt(availableWidth - 28, 44, 64);
-}
-
-function graphSparkWidth(availableWidth: number): number {
-  return clampInt(availableWidth - 42, 20, 40);
-}
-
-function graphColumnWidth(availableWidth: number): number {
-  return clampInt((availableWidth - 24) / 2, 24, 48);
-}
-
 function truncateText(value: string, maxWidth: number): string {
   if (maxWidth <= 1) return value.slice(0, Math.max(0, maxWidth));
   if (value.length <= maxWidth) return value;
@@ -100,7 +88,7 @@ function trendGlyph(values: number[]): string {
 }
 
 function plainLine(label: string, value: string, availableWidth: number) {
-  const prefix = `${label.padEnd(8)} `;
+  const prefix = `${label.padEnd(10)} `;
   const bodyWidth = Math.max(8, availableWidth - prefix.length);
   return t`${withFg(PANEL_THEME.textMuted)(prefix)}${withFg(PANEL_THEME.textPrimary)(truncateText(value, bodyWidth))}`;
 }
@@ -110,29 +98,21 @@ function hintLine(text: string) {
 }
 
 function sectionLine(title: string) {
-  return t`${withFg(PANEL_THEME.textMuted)(withDim(`[ ${title.toUpperCase()} ]`))}`;
+  return t`${withFg(PANEL_THEME.textMuted)(withDim(`${title.toUpperCase()}`))}`;
 }
 
-function widgetTop(label: string, selected: boolean, innerWidth: number) {
-  const prefix = selected ? "┌▶ " : "┌─ ";
-  const title = `${label.toUpperCase()} `;
-  const ruleWidth = Math.max(0, innerWidth - title.length);
-  return t`${withFg(selected ? COLORS.info : PANEL_THEME.textMuted)(`${prefix}${title}${"─".repeat(ruleWidth)}┐`)}`;
-}
-
-function widgetBody(value: string, selected: boolean, innerWidth: number) {
-  const content = `${selected ? "> " : "  "}${value}`.slice(0, innerWidth).padEnd(innerWidth, " ");
-  return selected
-    ? t`${withFg(COLORS.info)(withBold("│"))}${withFg("#f8fafc")(withBold(content))}${withFg(COLORS.info)(withBold("│"))}`
-    : t`${withFg(PANEL_THEME.textMuted)("│")}${withFg(PANEL_THEME.textPrimary)(content)}${withFg(PANEL_THEME.textMuted)("│")}`;
-}
-
-function widgetBottom(selected: boolean, innerWidth: number) {
-  return t`${withFg(selected ? COLORS.info : PANEL_THEME.textMuted)(`└${"─".repeat(innerWidth)}┘`)}`;
+function configFieldLine(label: string, value: string, selected: boolean, availableWidth: number) {
+  const prefix = `${label.padEnd(10)} `;
+  const bodyWidth = Math.max(8, availableWidth - prefix.length);
+  const body = truncateText(value, bodyWidth);
+  if (selected) {
+    return t`${withFg(COLORS.accent)(withBold(prefix))}${withFg(PANEL_THEME.textPrimary)(withBold(body))}`;
+  }
+  return t`${withFg(PANEL_THEME.textMuted)(prefix)}${withFg(PANEL_THEME.textPrimary)(body)}`;
 }
 
 function graphTitleLine(label: string, suffix: string, color: string) {
-  return t`${withFg(color)(withBold("●"))} ${withFg(PANEL_THEME.textMuted)(label.padEnd(11))} ${withFg(PANEL_THEME.textMuted)("[")} ${withFg("#f8fafc")(withBold(suffix))} ${withFg(PANEL_THEME.textMuted)("]")}`;
+  return t`${withFg(color)(withBold("●"))} ${withFg(PANEL_THEME.textMuted)(label.padEnd(11))} ${withFg(PANEL_THEME.textMuted)("[")} ${withFg(PANEL_THEME.textPrimary)(withBold(suffix))} ${withFg(PANEL_THEME.textMuted)("]")}`;
 }
 
 function graphSparkLine(values: number[], max: number, color: string, width: number) {
@@ -208,38 +188,6 @@ function pairColumns(
   return t`${withFg(leftColor)(truncateText(left, columnWidth).padEnd(columnWidth, " "))}${withFg(PANEL_THEME.textMuted)(gap)}${withFg(rightColor)(truncateText(right, columnWidth).padEnd(columnWidth, " "))}`;
 }
 
-function tileTop(label: string, suffix: string, width: number): string {
-  const title = ` ${label} [${suffix}] `;
-  return `┌${title}${"─".repeat(Math.max(0, width - title.length - 2))}┐`;
-}
-
-function tileBody(text: string, width: number): string {
-  return `│${truncateText(text, Math.max(0, width - 2)).padEnd(Math.max(0, width - 2), " ")}│`;
-}
-
-function tileBottom(width: number): string {
-  return `└${"─".repeat(Math.max(0, width - 2))}┘`;
-}
-
-function pairTiles(
-  leftTitle: string,
-  leftValue: string,
-  leftTrend: string,
-  rightTitle: string,
-  rightValue: string,
-  rightTrend: string,
-  availableWidth: number,
-  leftColor: string,
-  rightColor: string,
-) {
-  const width = graphColumnWidth(availableWidth);
-  return [
-    pairColumns(tileTop(leftTitle, leftValue, width), tileTop(rightTitle, rightValue, width), availableWidth, leftColor, rightColor),
-    pairColumns(tileBody(leftTrend, width), tileBody(rightTrend, width), availableWidth, leftColor, rightColor),
-    pairColumns(tileBottom(width), tileBottom(width), availableWidth, leftColor, rightColor),
-  ];
-}
-
 export function syncMonitorAuxPanel(args: {
   displayMode: DisplayMode;
   state: ViewState;
@@ -252,8 +200,6 @@ export function syncMonitorAuxPanel(args: {
   const { displayMode, state, history, modeLines, availableWidth, selectedDrone, selectedIndex = 0 } = args;
   const speedMode = controlModeLabel(speedControlCapability(state.controlCapabilities));
   const countMode = controlModeLabel(state.controlCapabilities.requested_drone_count);
-  const innerWidth = widgetInnerWidth(availableWidth);
-  const sparkWidth = graphSparkWidth(availableWidth);
   const maxSearchedCells = Math.max(1, ...state.drones.map((drone) => drone.searchedCells));
   const focusedDrone = state.drones[Math.max(0, Math.min(selectedDrone, Math.max(0, state.drones.length - 1)))] ?? null;
   const focusedHistory = focusedDrone ? history.drones[focusedDrone.id] ?? { entropy: [], searched: [] } : { entropy: [], searched: [] };
@@ -268,34 +214,16 @@ export function syncMonitorAuxPanel(args: {
       ]
     : displayMode === "config"
     ? [
-        ...pairTiles(
-          "source",
-          state.sourceLabel,
-          state.sourceUrl,
-          "mesh",
-          state.meshMode,
-          `target [${state.target.x},${state.target.y}]`,
-          availableWidth,
-          COLORS.info,
-          PANEL_THEME.textPrimary,
-        ),
-        ...pairTiles(
-          "grid",
-          `${state.gridSize}x${state.gridSize}`,
-          `drones ${state.droneCount} live`,
-          "scope",
-          `${speedMode}/${countMode}`,
-          `speed ${speedMode} · count ${countMode}`,
-          availableWidth,
-          COLORS.success,
-          COLORS.warning,
-        ),
-        widgetTop("speed", selectedIndex === 0, innerWidth),
-        widgetBody(speedWidgetValue(state), selectedIndex === 0, innerWidth),
-        widgetBottom(selectedIndex === 0, innerWidth),
-        widgetTop("next run", selectedIndex === 1, innerWidth),
-        widgetBody(`drones ${state.requestedDroneCount} on next launch`, selectedIndex === 1, innerWidth),
-        widgetBottom(selectedIndex === 1, innerWidth),
+        sectionLine("runtime"),
+        plainLine("source", `${state.sourceLabel} · ${state.sourceUrl}`, availableWidth),
+        plainLine("mesh", `${state.meshMode} · target [${state.target.x},${state.target.y}]`, availableWidth),
+        plainLine("grid", `${state.gridSize}x${state.gridSize} · ${state.droneCount} drones`, availableWidth),
+        plainLine("scope", `speed ${speedMode} · count ${countMode}`, availableWidth),
+        "",
+        sectionLine("settings"),
+        configFieldLine("speed", speedWidgetValue(state), selectedIndex === 0, availableWidth),
+        configFieldLine("next run", `drones ${state.requestedDroneCount} on next launch`, selectedIndex === 1, availableWidth),
+        "",
         plainLine("apply", state.controlUrl ? `speed ${speedMode} + count ${countMode}` : "read-only (no backend control)", availableWidth),
         hintLine("↑ / ↓ choose field · ← / → adjust"),
         hintLine("[ / ] speed · - / + next-run count"),

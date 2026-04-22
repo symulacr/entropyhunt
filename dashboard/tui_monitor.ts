@@ -1,23 +1,20 @@
 import {
   type DisplayMode,
   type FocusPanel,
-  type LayoutMetrics,
   type MonitorUiState,
   type ViewState,
   advanceDisplayMode,
   advanceUiState,
-  computeLayoutMetrics,
   hitTestHeatmapCell,
   logicalHeatmapRowForRenderIndex,
   normalizeSnapshot,
 } from "./tui_monitor_model.ts";
-import { parseMonitorArgs } from "./tui_monitor_io.ts";
 import { runMonitorController } from "./tui_monitor_controller.ts";
+import { parseMonitorArgs } from "./tui_monitor_io.ts";
 
 export {
   advanceDisplayMode,
   advanceUiState,
-  computeLayoutMetrics,
   hitTestHeatmapCell,
   logicalHeatmapRowForRenderIndex,
   normalizeSnapshot,
@@ -25,7 +22,6 @@ export {
 export type {
   DisplayMode,
   FocusPanel,
-  LayoutMetrics,
   MonitorUiState,
   ViewState,
 };

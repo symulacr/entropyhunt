@@ -129,19 +129,19 @@ function buildLabelWithSparkline(
 export function renderCoverageSparkline(history: MonitorHistory, width: number): StyledText {
   const data = history.coverage;
   if (!data.length) {
-    return t`${withFg(PANEL_THEME.textMuted)("coverage   — no data")}`;
+    return t`${withFg(PANEL_THEME.textMuted)("coverage — no data")}`;
   }
   const current = data.at(-1) ?? 0;
   const min = Math.min(...data);
   const max = Math.max(...data);
   const direction = trendDirection(data);
   const color = trendColorForMetric("coverage", direction);
-  const label = `coverage   ${Math.round(current)}%     min ${Math.round(min).toString().padEnd(4)} max ${Math.round(max)}`;
+  const label = `cov ${Math.round(current)}% min ${Math.round(min)} max ${Math.round(max)}`;
   const labelLen = label.length;
-  const sparkWidth = Math.max(4, width - labelLen - 4);
+  const sparkWidth = Math.max(4, width - labelLen - 3);
   const spark = sparkline(data, sparkWidth, { min: 0, max: 100, color });
   const glyph = direction === "up" ? "↑" : direction === "down" ? "↓" : "→";
-  const labelStyled = t`${withFg(PANEL_THEME.textMuted)(label)} ${withFg(PANEL_THEME.textMuted)(" ")}`;
+  const labelStyled = t`${withFg(PANEL_THEME.textMuted)(label)} `;
   const trendStyled = t`${withFg(color)(glyph)}`;
   return new StyledText([...labelStyled.chunks, ...spark.chunks, withFg(PANEL_THEME.textMuted)(" "), ...trendStyled.chunks]);
 }
@@ -149,19 +149,19 @@ export function renderCoverageSparkline(history: MonitorHistory, width: number):
 export function renderEntropySparkline(history: MonitorHistory, width: number): StyledText {
   const data = history.uncertainty;
   if (!data.length) {
-    return t`${withFg(PANEL_THEME.textMuted)("entropy    — no data")}`;
+    return t`${withFg(PANEL_THEME.textMuted)("entropy — no data")}`;
   }
   const current = data.at(-1) ?? 0;
   const min = Math.min(...data);
   const max = Math.max(...data);
   const direction = trendDirection(data);
   const color = trendColorForMetric("entropy", direction);
-  const label = `entropy    ${formatNumber(current).padEnd(6)} min ${formatNumber(min).padEnd(6)} max ${formatNumber(max)}`;
+  const label = `H ${formatNumber(current)} min ${formatNumber(min)} max ${formatNumber(max)}`;
   const labelLen = label.length;
-  const sparkWidth = Math.max(4, width - labelLen - 4);
+  const sparkWidth = Math.max(4, width - labelLen - 3);
   const spark = sparkline(data, sparkWidth, { min: 0, max: 1, color });
   const glyph = direction === "up" ? "↑" : direction === "down" ? "↓" : "→";
-  const labelStyled = t`${withFg(PANEL_THEME.textMuted)(label)} ${withFg(PANEL_THEME.textMuted)(" ")}`;
+  const labelStyled = t`${withFg(PANEL_THEME.textMuted)(label)} `;
   const trendStyled = t`${withFg(color)(glyph)}`;
   return new StyledText([...labelStyled.chunks, ...spark.chunks, withFg(PANEL_THEME.textMuted)(" "), ...trendStyled.chunks]);
 }
@@ -169,19 +169,19 @@ export function renderEntropySparkline(history: MonitorHistory, width: number): 
 export function renderLatencySparkline(history: MonitorHistory, width: number): StyledText {
   const data = history.latency;
   if (!data.length) {
-    return t`${withFg(PANEL_THEME.textMuted)("latency    — no data")}`;
+    return t`${withFg(PANEL_THEME.textMuted)("latency — no data")}`;
   }
   const current = data.at(-1) ?? 0;
   const min = Math.min(...data);
   const max = Math.max(...data);
   const direction = trendDirection(data);
   const color = trendColorForMetric("latency", direction);
-  const label = `latency    ${Math.round(current)}ms    min ${Math.round(min).toString().padEnd(4)} max ${Math.round(max)}`;
+  const label = `lat ${Math.round(current)}ms min ${Math.round(min)} max ${Math.round(max)}`;
   const labelLen = label.length;
-  const sparkWidth = Math.max(4, width - labelLen - 4);
+  const sparkWidth = Math.max(4, width - labelLen - 3);
   const spark = sparkline(data, sparkWidth, { min: 0, max: Math.max(max, 1), color });
   const glyph = direction === "up" ? "↑" : direction === "down" ? "↓" : "→";
-  const labelStyled = t`${withFg(PANEL_THEME.textMuted)(label)} ${withFg(PANEL_THEME.textMuted)(" ")}`;
+  const labelStyled = t`${withFg(PANEL_THEME.textMuted)(label)} `;
   const trendStyled = t`${withFg(color)(glyph)}`;
   return new StyledText([...labelStyled.chunks, ...spark.chunks, withFg(PANEL_THEME.textMuted)(" "), ...trendStyled.chunks]);
 }
@@ -189,19 +189,19 @@ export function renderLatencySparkline(history: MonitorHistory, width: number): 
 export function renderAuctionsSparkline(history: MonitorHistory, width: number): StyledText {
   const data = history.auctions;
   if (!data.length) {
-    return t`${withFg(PANEL_THEME.textMuted)("auctions   — no data")}`;
+    return t`${withFg(PANEL_THEME.textMuted)("auctions — no data")}`;
   }
   const current = data.at(-1) ?? 0;
   const min = Math.min(...data);
   const max = Math.max(...data);
   const direction = trendDirection(data);
   const color = trendColorForMetric("auctions", direction);
-  const label = `auctions   ${String(current).padEnd(6)} min ${String(min).padEnd(6)} max ${String(max)}`;
+  const label = `auc ${String(current)} min ${String(min)} max ${String(max)}`;
   const labelLen = label.length;
-  const sparkWidth = Math.max(4, width - labelLen - 4);
+  const sparkWidth = Math.max(4, width - labelLen - 3);
   const spark = sparkline(data, sparkWidth, { min: 0, max: Math.max(max, 1), color });
   const glyph = direction === "up" ? "↑" : direction === "down" ? "↓" : "→";
-  const labelStyled = t`${withFg(PANEL_THEME.textMuted)(label)} ${withFg(PANEL_THEME.textMuted)(" ")}`;
+  const labelStyled = t`${withFg(PANEL_THEME.textMuted)(label)} `;
   const trendStyled = t`${withFg(color)(glyph)}`;
   return new StyledText([...labelStyled.chunks, ...spark.chunks, withFg(PANEL_THEME.textMuted)(" "), ...trendStyled.chunks]);
 }
@@ -209,19 +209,19 @@ export function renderAuctionsSparkline(history: MonitorHistory, width: number):
 export function renderDropoutsSparkline(history: MonitorHistory, width: number): StyledText {
   const data = history.dropouts;
   if (!data.length) {
-    return t`${withFg(PANEL_THEME.textMuted)("dropouts   — no data")}`;
+    return t`${withFg(PANEL_THEME.textMuted)("dropouts — no data")}`;
   }
   const current = data.at(-1) ?? 0;
   const min = Math.min(...data);
   const max = Math.max(...data);
   const direction = trendDirection(data);
   const color = trendColorForMetric("dropouts", direction);
-  const label = `dropouts   ${String(current).padEnd(6)} min ${String(min).padEnd(6)} max ${String(max)}`;
+  const label = `drop ${String(current)} min ${String(min)} max ${String(max)}`;
   const labelLen = label.length;
-  const sparkWidth = Math.max(4, width - labelLen - 4);
+  const sparkWidth = Math.max(4, width - labelLen - 3);
   const spark = sparkline(data, sparkWidth, { min: 0, max: Math.max(max, 1), color });
   const glyph = direction === "up" ? "↑" : direction === "down" ? "↓" : "→";
-  const labelStyled = t`${withFg(PANEL_THEME.textMuted)(label)} ${withFg(PANEL_THEME.textMuted)(" ")}`;
+  const labelStyled = t`${withFg(PANEL_THEME.textMuted)(label)} `;
   const trendStyled = t`${withFg(color)(glyph)}`;
   return new StyledText([...labelStyled.chunks, ...spark.chunks, withFg(PANEL_THEME.textMuted)(" "), ...trendStyled.chunks]);
 }

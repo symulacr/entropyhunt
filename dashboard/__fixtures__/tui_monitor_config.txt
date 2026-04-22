@@ -1,32 +1,32 @@
 ┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│                                                                                                                      │
-│ entropy hunt track 2 · search & rescue  LIVE SNAPSHOT   MESH=REAL   BFT 31                                           │
-│ source http://127.0.0.1:8765/snapshot.json                                                                           │
-│  1 overview   2 detail   3 map   4 config   5 graphs                                                                 │
+│entropy hunt track 2 · search & rescue  LIVE SNAPSHOT   MESH=REAL   BFT 31                                            │
+│source http://127.0.0.1:8765/snapshot.json                                                                            │
+│ 1 overview   2 detail   3 map   4 config   5 graphs                                                                  │
 │coverage: 73% scanned · uncertainty: 0.61 · claims: 7 settled · health: 1 lost link · 1m 32s · rt 8ms                 │
 │                                                                                                                      │
 │                                                                                                                      │
 │                                                                                                                      │
+│ ┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐ │
+│ │RUNTIME                                                                                                           │ │
+│ │source     live · http://127.0.0.1:8765/snapshot.json                                                             │ │
+│ │mesh       real · target [3,2]                                                                                    │ │
+│ │grid       5x5 · 3 drones                                                                                         │ │
+│ │scope      speed live · count next run                                                                            │ │
+│ │                                                                                                                  │ │
+│ │SETTINGS                                                                                                          │ │
+│ │speed      tick 1s · delay 0.10s                                                                                  │ │
+│ │next run   drones 4 on next launch                                                                                │ │
+│ │                                                                                                                  │ │
+│ │apply      speed live + count next run                                                                            │ │
+│ │↑ / ↓ choose field · ← / → adjust                                                                                 │ │
+│ │[ / ] speed · - / + next-run count                                                                                │ │
+│ │note       restart needed for drone-count change                                                                  │ │
+│ │control    http://127.0.0.1:8765/control                                                                          │ │
+│ │                                                                                                                  │ │
+│ │                                                                                                                  │ │
+│ └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘ │
 │                                                                                                                      │
-│           ┌─ runtime config ─────────────────────────────────────────────────────────────────────────────┐           │
-│           │ ┌ source [live] ───────────────────────────…   ┌ mesh [real] ─────────────────────────────…  │           │
-│           │ │http://127.0.0.1:8765/snapshot.json       …   │target [3,2]                              …  │           │
-│           │ └──────────────────────────────────────────…   └──────────────────────────────────────────…  │           │
-│           │ ┌ grid [5x5] ──────────────────────────────…   ┌ scope [live/next run] ───────────────────…  │           │
-│           │ │drones 3 live                             …   │speed live · count next run               …  │           │
-│           │ └──────────────────────────────────────────…   └──────────────────────────────────────────…  │           │
-│           │ ┌▶ SPEED ──────────────────────────────────────────────────────────┐                         │           │
-│           │ │> tick 1s · delay 0.10s                                         │                           │           │
-│           │ └────────────────────────────────────────────────────────────────┘                           │           │
-│           │ ┌─ NEXT RUN ───────────────────────────────────────────────────────┐                         │           │
-│           │ │  drones 4 on next launch                                       │                           │           │
-│           │ └────────────────────────────────────────────────────────────────┘                           │           │
-│           │ apply    speed live + count next run                                                         │           │
-│           │ ↑ / ↓ choose field · ← / → adjust                                                            │           │
-│           │ [ / ] speed · - / + next-run count                                                           │           │
-│           │ note     restart needed for drone-count change                                               │           │
-│           │                                                                                              │           │
-│           └──────────────────────────────────────────────────────────────────────────────────────────────┘           │
+│                                                                                                                      │
+│                                                                                                                      │
 │● config live · editing speed · ←/→ adjust                                                                            │
-│                                                                                                                      │
 └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘

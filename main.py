@@ -18,7 +18,6 @@ from core.mesh import (
     MeshBusProtocol,
     VertexMeshBus,
 )
-from dashboard.tui import TUIDashboard
 from simulation.protocol import parse_peer_endpoint
 from simulation.runtime import PeerFailureError, PeerRuntime, PeerRuntimeConfig
 from simulation.stub import EntropyHuntSimulation, SimulationConfig
@@ -148,11 +147,11 @@ def run_stub_mode(args: argparse.Namespace) -> int:
         transport=detected_transport,
     )
     simulation = EntropyHuntSimulation(config, mesh_factory=mesh_factory)
-    default_tick_delay_seconds = TUIDashboard().tick_delay_seconds
-    dashboard = TUIDashboard(
-        tick_delay_seconds=max(0.0, float(args.tick_delay_seconds))
+    tick_delay_seconds = max(
+        0.0,
+        float(args.tick_delay_seconds)
         if args.tick_delay_seconds is not None
-        else default_tick_delay_seconds,
+        else 0.02,
     )
     record_dir = Path("demo_frames")
     if args.record:
@@ -160,20 +159,21 @@ def run_stub_mode(args: argparse.Namespace) -> int:
         record_dir.mkdir(parents=True, exist_ok=True)
 
     def render_state(state: dict[str, Any]) -> None:
-        frame = dashboard.build_frame(state)
         if args.record:
-            (record_dir / f"frame_{int(state.get('elapsed', 0)):04d}.txt").write_text(frame)
+            (record_dir / f"frame_{int(state.get('elapsed', 0)):04d}.txt").write_text(
+                str(state)
+            )
 
     simulation.initialise()
     render_state(simulation.get_state())
-    time.sleep(dashboard.tick_delay_seconds)
+    time.sleep(tick_delay_seconds)
     try:
         for _ in range(config.duration // config.tick_seconds):
             if _shutdown_requested:
                 break
             simulation.tick()
             render_state(simulation.get_state())
-            time.sleep(dashboard.tick_delay_seconds)
+            time.sleep(tick_delay_seconds)
             if simulation.survivor_found and config.stop_on_survivor:
                 break
 

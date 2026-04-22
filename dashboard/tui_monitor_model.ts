@@ -4,6 +4,7 @@ import { TUI_LAYOUT } from "./tui_theme.ts";
 import { entropy as cellEntropy } from "./tui_heatmap.ts";
 import { mapStatus } from "./tui_sidebar.ts";
 import { clamp } from "./tui_monitor_util.ts";
+import { computeBentoLayout, type BentoLayout } from "./tui_layout_engine.ts";
 
 export type DroneView = {
   id: string;
@@ -63,17 +64,6 @@ export type ViewState = {
   failureEvents?: Array<{ type: string; t: number }>;
   batteryLevels?: Record<string, number>;
   droneRoles?: Record<string, string>;
-};
-
-export type LayoutMetrics = {
-  compactLayout: boolean;
-  eventRowCount: number;
-  heatmapWidth: number;
-  rosterHeight: number;
-  headerHeight: number;
-  statsHeight: number;
-  footerHeight: number;
-  cellWidth: number;
 };
 
 export function speedControlCapability(controlCapabilities: Record<string, string>): string {
@@ -144,18 +134,15 @@ function toGrid(snapshot: Snapshot): CellSnapshot[][] {
   return raw.map((row) => Array.isArray(row) ? row.map((cell) => ({ ...cell })) : []);
 }
 
-export function computeLayoutMetrics(terminalWidth: number, terminalHeight: number): LayoutMetrics {
-  const compactLayout = terminalWidth <= 110 || terminalHeight <= 30;
-  return {
-    compactLayout,
-    eventRowCount: compactLayout ? 2 : 10,
-    heatmapWidth: compactLayout ? Math.max(terminalWidth - 4, 32) : Math.max(78, Math.floor(terminalWidth * 0.6)),
-    rosterHeight: compactLayout ? 5 : 11,
-    headerHeight: compactLayout ? 3 : 4,
-    statsHeight: compactLayout ? 1 : 4,
-    footerHeight: compactLayout ? 1 : 2,
-    cellWidth: terminalWidth >= 150 ? 6 : terminalWidth >= 120 ? 4 : terminalWidth >= 76 ? 3 : 2,
-  };
+export function computeMonitorLayout(
+  terminalWidth: number,
+  terminalHeight: number,
+  displayMode: DisplayMode,
+  gridSize: number,
+  droneCount: number,
+  eventCount: number,
+): BentoLayout {
+  return computeBentoLayout({ terminalWidth, terminalHeight, displayMode, gridSize, droneCount, eventCount });
 }
 
 export function normalizeSnapshot(snapshot: Snapshot, sourceUrl: string, staleData: boolean): ViewState {
@@ -233,7 +220,9 @@ export function normalizeSnapshot(snapshot: Snapshot, sourceUrl: string, staleDa
       : [];
   const meshPeers = meshPeersRaw.map((p) => String(p ?? "")).filter(Boolean);
 
-  const pendingClaims = Number(stats.pending_claims ?? summary.pending_claims ?? 0);
+  const pendingClaims = Array.isArray(summary.pending_claims)
+    ? summary.pending_claims.length
+    : Number(summary.pending_claims ?? 0);
   const consensusRounds = Number(stats.consensus_rounds ?? summary.consensus_rounds ?? stats.bft_rounds ?? summary.bft_rounds ?? 0);
 
   const failureEvents = rawEvents

@@ -5,7 +5,7 @@ import {
   type DisplayMode,
   type FocusPanel,
   type ViewState,
-  computeLayoutMetrics,
+  computeMonitorLayout,
 } from "./tui_monitor_model.ts";
 import { handleMonitorKeyDown } from "./tui_monitor_input.ts";
 import { syncWaitingShell } from "./tui_monitor_runtime.ts";
@@ -86,7 +86,24 @@ export async function bootMonitor(args: MonitorArgs): Promise<MonitorContext> {
     autoFocus: true,
   });
 
-  const layout = computeLayoutMetrics(renderer.terminalWidth, renderer.terminalHeight);
+  const bento = computeMonitorLayout(
+    renderer.terminalWidth,
+    renderer.terminalHeight,
+    "overview",
+    10,
+    5,
+    10,
+  );
+  const layout = {
+    compactLayout: bento.breakpoint === "compact",
+    eventRowCount: bento.events.rowCount,
+    heatmapWidth: bento.heatmap.width,
+    rosterHeight: bento.roster.height,
+    headerHeight: bento.headerHeight,
+    statsHeight: bento.statsHeight,
+    footerHeight: bento.footerHeight,
+    cellWidth: bento.heatmap.cellWidth,
+  };
 
   const scene = createMonitorScene({
     renderer,

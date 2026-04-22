@@ -6,8 +6,8 @@ import {
   type MonitorUiState,
   type ViewState,
   computeActiveCellWidth,
-  computeLayoutMetrics,
   computeHeatmapRowRepeat,
+  computeMonitorLayout,
   formatDuration,
 } from "./tui_monitor_model.ts";
 import { syncMonitorAuxPanel, type MonitorHistory } from "./tui_monitor_aux.ts";
@@ -100,8 +100,8 @@ export async function renderMonitorTestFrame({
 }): Promise<string> {
   const state = sampleViewState();
   const history = sampleHistory();
-  const metrics = computeLayoutMetrics(width, height);
-  const { compactLayout } = metrics;
+  const layout = computeMonitorLayout(width, height, ui.displayMode, state.gridSize, state.drones.length, state.events.length);
+  const compactLayout = layout.breakpoint === "compact";
   const isMapDisplay = ui.displayMode === "map";
   const isAuxDisplay = ui.displayMode === "config" || ui.displayMode === "graphs" || ui.displayMode === "detail";
   const testSetup = await createTestRenderer({ width, height, useMouse: true, autoFocus: true, screenMode: "main-screen" });
@@ -112,6 +112,7 @@ export async function renderMonitorTestFrame({
     height: "100%",
     flexDirection: "column",
     backgroundColor: COLORS.bg,
+    border: false,
     padding: 0,
   });
   renderer.root.add(root);
@@ -120,13 +121,14 @@ export async function renderMonitorTestFrame({
     height: "100%",
     flexDirection: "column",
     backgroundColor: COLORS.headerBg,
-    border: true,
+    border: false,
     borderColor: COLORS.border,
     padding: 0,
+    gap: 0,
   });
   root.add(shell);
 
-  const header = new BoxRenderable(renderer, { flexDirection: "column", backgroundColor: COLORS.headerBg, padding: 1, height: isMapDisplay ? (compactLayout ? 2 : 3) : metrics.headerHeight });
+  const header = new BoxRenderable(renderer, { flexDirection: "column", backgroundColor: COLORS.headerBg, padding: 0, gap: 0, height: isMapDisplay ? (compactLayout ? 2 : 3) : layout.headerHeight });
   shell.add(header);
   header.add(new TextRenderable(renderer, { content: compactLayout ? buildCompactHeaderLine(state) : buildHeaderLine(state), fg: PANEL_THEME.textPrimary, bg: COLORS.headerBg, wrapMode: "none", truncate: true, height: 1 }));
   header.add(new TextRenderable(renderer, { content: isMapDisplay ? buildCompactSubheaderLine(state) : compactLayout ? buildCompactSubheaderLine(state) : buildSubheaderLine(state), fg: PANEL_THEME.textMuted, bg: COLORS.headerBg, wrapMode: "none", truncate: true, height: 1 }));
@@ -154,7 +156,7 @@ export async function renderMonitorTestFrame({
       bg: COLORS.headerBg,
       wrapMode: "none",
       truncate: true,
-      height: isMapDisplay ? 1 : metrics.statsHeight,
+      height: isMapDisplay ? 1 : layout.statsHeight,
     },
   );
   shell.add(stats);
@@ -163,44 +165,42 @@ export async function renderMonitorTestFrame({
   const body = new BoxRenderable(renderer, {
     flexDirection: "column",
     flexGrow: 1,
-    gap: 1,
+    gap: layout.gap,
     backgroundColor: COLORS.headerBg,
-    paddingLeft: 1,
-    paddingRight: 1,
+    paddingLeft: 0,
+    paddingRight: 0,
     justifyContent: centeredAuxMode ? "center" : "flex-start",
     alignItems: centeredAuxMode ? "center" : "stretch",
   });
   shell.add(body);
 
   const availableMapRows = isMapDisplay
-    ? Math.max(state.gridSize, height - metrics.headerHeight - metrics.statsHeight - 4)
+    ? Math.max(state.gridSize, layout.bodyHeight)
     : undefined;
   const rowRepeat = computeHeatmapRowRepeat(state.gridSize, ui.displayMode, compactLayout, availableMapRows);
   const preferredHeatmapHeight = isMapDisplay
     ? Math.max(state.gridSize * rowRepeat + 1, availableMapRows ?? 0)
     : state.gridSize * rowRepeat + (compactLayout ? 5 : 4);
-  const cellWidth = computeActiveCellWidth(width - 12, state.gridSize, metrics.cellWidth);
+  const cellWidth = computeActiveCellWidth(width - 12, state.gridSize, layout.heatmap.cellWidth);
   if (isAuxDisplay) {
     const modePanel = new BoxRenderable(renderer, {
       flexDirection: "column",
-      width: centeredAuxMode ? Math.min(width - 6, 96) : "100%",
+      width: centeredAuxMode ? layout.modePanel.width : "100%",
       flexGrow: centeredAuxMode ? 0 : 1,
-      border: true,
+      border: false,
       borderColor: COLORS.border,
       backgroundColor: COLORS.headerBg,
       paddingTop: 0,
       paddingBottom: 0,
-      paddingLeft: 1,
-      paddingRight: 1,
+      paddingLeft: 0,
+      paddingRight: 0,
       height: ui.displayMode === "graphs"
-        ? Math.min(Math.max(18, height - metrics.headerHeight - metrics.statsHeight - metrics.footerHeight - 3), 22)
+        ? Math.min(Math.max(18, layout.bodyHeight - 2), 22)
         : ui.displayMode === "config"
-          ? Math.min(Math.max(16, height - metrics.headerHeight - metrics.statsHeight - metrics.footerHeight - 3), 19)
+          ? Math.min(Math.max(16, layout.bodyHeight - 2), 19)
         : ui.displayMode === "detail"
-          ? Math.min(Math.max(18, height - metrics.headerHeight - metrics.statsHeight - metrics.footerHeight - 3), 22)
-        : Math.max(12, height - metrics.headerHeight - metrics.statsHeight - metrics.footerHeight - 3),
-      title: ui.displayMode === "config" ? " runtime config " : ui.displayMode === "graphs" ? " speed & stats " : " drone detail ",
-      titleAlignment: "left",
+          ? Math.min(Math.max(18, layout.bodyHeight - 2), 22)
+        : Math.max(12, layout.bodyHeight - 2),
     });
     const modeLines: TextRenderable[] = [];
     for (let index = 0; index < 16; index += 1) {
@@ -217,7 +217,7 @@ export async function renderMonitorTestFrame({
     syncMonitorAuxPanel({ displayMode: ui.displayMode, state, history, modeLines, availableWidth: width, selectedDrone: ui.selectedDrone, selectedIndex: ui.selectedEvent });
     body.add(modePanel);
   } else {
-    const heatmap = new BoxRenderable(renderer, { flexDirection: "column", width: "100%", height: isMapDisplay ? "auto" : compactLayout ? Math.max(9, preferredHeatmapHeight) : Math.max(12, preferredHeatmapHeight), flexGrow: 0, border: true, borderColor: COLORS.border, backgroundColor: COLORS.headerBg, padding: 0, title: compactLayout ? " mission grid " : " mission grid · uncertainty ", titleAlignment: "left" });
+    const heatmap = new BoxRenderable(renderer, { flexDirection: "column", width: "100%", height: isMapDisplay ? "auto" : compactLayout ? Math.max(9, preferredHeatmapHeight) : Math.max(12, preferredHeatmapHeight), flexGrow: 0, border: false, borderColor: COLORS.border, backgroundColor: COLORS.headerBg, padding: 0 });
     if (!compactLayout) {
       heatmap.add(new TextRenderable(renderer, { content: buildLegend(compactLayout), fg: PANEL_THEME.textMuted, bg: COLORS.headerBg, wrapMode: "none", truncate: true }));
     }
@@ -239,11 +239,11 @@ export async function renderMonitorTestFrame({
   }
 
   if (!isMapDisplay && !isAuxDisplay) {
-    const side = new BoxRenderable(renderer, { flexDirection: compactLayout ? "column" : "row", width: "100%", gap: 1, backgroundColor: COLORS.headerBg, flexGrow: 1 });
-    const contextColumn = new BoxRenderable(renderer, { flexDirection: "column", width: compactLayout ? "100%" : Math.max(34, Math.floor(width * 0.36)), gap: 1, backgroundColor: COLORS.headerBg });
+    const side = new BoxRenderable(renderer, { flexDirection: layout.side.direction, width: "100%", gap: layout.gap, backgroundColor: COLORS.headerBg, flexGrow: 1 });
+    const contextColumn = new BoxRenderable(renderer, { flexDirection: "column", width: compactLayout ? "100%" : layout.side.width, gap: layout.gap, backgroundColor: COLORS.headerBg });
     side.add(contextColumn);
     if (!(compactLayout && ui.displayMode === "detail")) {
-      const roster = new BoxRenderable(renderer, { flexDirection: "column", border: true, borderColor: COLORS.border, backgroundColor: COLORS.headerBg, padding: 1, title: compactLayout ? " drones " : " active drones ", titleAlignment: "left", height: compactLayout ? 4 : 5 });
+      const roster = new BoxRenderable(renderer, { flexDirection: "column", border: false, borderColor: COLORS.border, backgroundColor: COLORS.headerBg, padding: layout.panelPadding, height: layout.roster.height });
       for (let i = 0; i < state.drones.length; i += 1) {
         roster.add(new TextRenderable(renderer, {
           content: renderDroneRow({ drone: state.drones[i]!, selected: ui.focusedPanel === "roster" && ui.selectedDrone === i, focusedPanel: ui.focusedPanel === "roster" }),
@@ -257,15 +257,14 @@ export async function renderMonitorTestFrame({
     }
     if (ui.displayMode !== "overview") {
       const [a, b, c] = buildDetailSummary(state, ui.focusedPanel, ui.cursorX, ui.cursorY, ui.selectedDrone, ui.selectedEvent);
-      const detail = new BoxRenderable(renderer, { flexDirection: "column", border: true, borderColor: COLORS.border, backgroundColor: COLORS.headerBg, padding: 1, title: " detail ", titleAlignment: "left", height: compactLayout ? Math.max(6, Math.floor(height * 0.22)) : 6, flexGrow: compactLayout ? 1 : 0 });
-      detail.title = compactLayout ? " focus " : " focus detail ";
+      const detail = new BoxRenderable(renderer, { flexDirection: "column", border: false, borderColor: COLORS.border, backgroundColor: COLORS.headerBg, padding: layout.panelPadding, height: layout.detail.height, flexGrow: compactLayout ? 1 : 0 });
       detail.add(new TextRenderable(renderer, { content: a, fg: PANEL_THEME.textPrimary, bg: COLORS.headerBg, wrapMode: "none", truncate: true }));
       detail.add(new TextRenderable(renderer, { content: b, fg: PANEL_THEME.textSecondary, bg: COLORS.headerBg, wrapMode: "none", truncate: true }));
       detail.add(new TextRenderable(renderer, { content: c, fg: PANEL_THEME.textMuted, bg: COLORS.headerBg, wrapMode: "none", truncate: true }));
       contextColumn.add(detail);
     }
     if (!(compactLayout && ui.displayMode === "detail")) {
-      const events = new BoxRenderable(renderer, { flexDirection: "column", flexGrow: 1, border: true, borderColor: COLORS.border, backgroundColor: COLORS.headerBg, padding: 1, title: compactLayout ? " alerts " : " attention & timeline ", titleAlignment: "left" });
+      const events = new BoxRenderable(renderer, { flexDirection: "column", flexGrow: 1, border: false, borderColor: COLORS.border, backgroundColor: COLORS.headerBg, padding: layout.panelPadding });
       for (let i = 0; i < state.events.length; i += 1) {
         events.add(new TextRenderable(renderer, {
           content: renderEventRow({ event: state.events[i]!, selected: ui.focusedPanel === "events" && ui.selectedEvent === i, focusedPanel: ui.focusedPanel === "events" }),
@@ -284,7 +283,7 @@ export async function renderMonitorTestFrame({
     flexDirection: "column",
     width: "100%",
     backgroundColor: COLORS.headerBg,
-    height: isMapDisplay ? 1 : metrics.footerHeight,
+    height: isMapDisplay ? 1 : layout.footerHeight,
     padding: 0,
   });
   footer.add(new TextRenderable(renderer, {

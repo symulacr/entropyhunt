@@ -3,12 +3,12 @@ import { bg as withBg, bold as withBold, fg as withFg, t } from "@opentui/core";
 import type { DisplayMode, FocusPanel, ViewState } from "./tui_monitor_model.ts";
 import { entropy as cellEntropy } from "./tui_heatmap.ts";
 import { buildHeaderLine as buildHeaderLineShared } from "./tui_sidebar.ts";
-import { COLORS, HEADER_THEME, HTML_V2_CSS_VARS, INTERACTION_THEME, MESH_MODE_THEME, MODE_CHIP_THEME, PANEL_THEME, isSourceMode } from "./tui_theme.ts";
+import { COLORS, HEADER_THEME, INTERACTION_THEME, MESH_MODE_THEME, MODE_CHIP_THEME, PANEL_THEME, isSourceMode } from "./tui_theme.ts";
 
 export function buildHeaderLine(state: ViewState): ReturnType<typeof t> {
   const modeToken = isSourceMode(state.sourceLabel) ? MODE_CHIP_THEME[state.sourceLabel] : HEADER_THEME.tags.mode;
   const meshToken = MESH_MODE_THEME[state.meshMode];
-  const bftToken = { fg: COLORS.warning, bg: HTML_V2_CSS_VARS.backgroundWarning, label: `bft ${state.bftRounds}` };
+  const bftToken = { fg: COLORS.warning, bg: COLORS.bgWarningDim, label: `bft ${state.bftRounds}` };
   return buildHeaderLineShared("entropy hunt", "track 2 · search & rescue", [
     t`${withBg(modeToken.bg)(withFg(modeToken.fg)(withBold(` ${modeToken.label.toUpperCase()} `)))}`,
     t`${withBg(meshToken.bg)(withFg(meshToken.fg)(withBold(` ${meshToken.label.toUpperCase()} `)))}`,
@@ -23,7 +23,7 @@ export function buildCompactHeaderLine(state: ViewState): ReturnType<typeof t> {
   return buildHeaderLineShared("ehunt", "track 2", [
     t`${withBg(modeToken.bg)(withFg(modeToken.fg)(withBold(` ${compactModeLabel} `)))}`,
     t`${withBg(meshToken.bg)(withFg(meshToken.fg)(withBold(` ${state.meshMode.toUpperCase()} `)))}`,
-    t`${withBg(HTML_V2_CSS_VARS.backgroundWarning)(withFg(COLORS.warning)(withBold(` B${state.bftRounds} `)))}`,
+    t`${withBg(COLORS.bgWarningDim)(withFg(COLORS.warning)(withBold(` B${state.bftRounds} `)))}`,
   ]);
 }
 
@@ -93,8 +93,8 @@ const DISPLAY_MODE_LABELS: Record<DisplayMode, { compact: string; full: string }
 
 export function buildDisplayModeChip(mode: DisplayMode, active: boolean, compact = false): ReturnType<typeof t> {
   const palette = active
-    ? { fg: HTML_V2_CSS_VARS.textPrimary, bg: HTML_V2_CSS_VARS.backgroundHighlight }
-    : { fg: PANEL_THEME.textSecondary, bg: HTML_V2_CSS_VARS.backgroundMutedBlue };
+    ? { fg: COLORS.text, bg: COLORS.bgHighlight }
+    : { fg: PANEL_THEME.textSecondary, bg: COLORS.bgMutedBlue };
   const label = compact ? DISPLAY_MODE_LABELS[mode].compact : DISPLAY_MODE_LABELS[mode].full;
   return t`${withBg(palette.bg)(withFg(palette.fg)(withBold(label)))}`;
 }

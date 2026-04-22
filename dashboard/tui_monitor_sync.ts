@@ -6,7 +6,7 @@ import {
   type ViewState,
   MAX_GRID_DIMENSION,
   computeHeatmapRowRepeat,
-  computeLayoutMetrics,
+  computeMonitorLayout,
 } from "./tui_monitor_model.ts";
 import { syncMonitorStats } from "./tui_monitor_stats.ts";
 import { syncMonitorHeatmap } from "./tui_monitor_heatmap.ts";
@@ -42,14 +42,6 @@ export function syncMonitorFrame(args: {
     state,
     rendererWidth,
     rendererHeight,
-    compactLayout,
-    eventRowCount,
-    heatmapWidth,
-    rosterHeight,
-    headerHeight,
-    statsHeight,
-    footerHeight,
-    cellWidth,
     ui,
     lastTickLatencyMs,
     survivorStartedAt,
@@ -60,27 +52,32 @@ export function syncMonitorFrame(args: {
     requestRender,
   } = args;
 
-  const layout = computeLayoutMetrics(rendererWidth, rendererHeight);
   const activeGridSize = Math.max(1, Math.min(state.gridSize ?? MAX_GRID_DIMENSION, MAX_GRID_DIMENSION));
-  const legendRows = layout.compactLayout ? 0 : 1;
+  const layout = computeMonitorLayout(
+    rendererWidth,
+    rendererHeight,
+    ui.displayMode,
+    activeGridSize,
+    state.drones.length,
+    state.events.length,
+  );
+  const compactLayout = layout.breakpoint === "compact";
+
+  const legendRows = compactLayout ? 0 : 1;
   const availableMapRows = ui.displayMode === "map"
-    ? Math.max(activeGridSize, rendererHeight - layout.headerHeight - layout.statsHeight - 4)
+    ? Math.max(activeGridSize, rendererHeight - layout.headerHeight - layout.statsHeight - layout.footerHeight)
     : undefined;
-  const rowRepeat = computeHeatmapRowRepeat(activeGridSize, ui.displayMode, layout.compactLayout, availableMapRows);
+  const rowRepeat = computeHeatmapRowRepeat(activeGridSize, ui.displayMode, compactLayout, availableMapRows);
   const preferredHeatmapHeight = ui.displayMode === "map"
     ? Math.max(activeGridSize * rowRepeat + legendRows + 1, availableMapRows ?? 0)
-    : activeGridSize * rowRepeat + legendRows + (layout.compactLayout ? 5 : 3);
+    : activeGridSize * rowRepeat + legendRows + 1;
+
+  layout.heatmap.height = Math.min(layout.heatmap.height, preferredHeatmapHeight);
+  layout.heatmap.rowRepeat = rowRepeat;
 
   applyMonitorLayout({
-    compactLayout: layout.compactLayout,
+    layout,
     displayMode: ui.displayMode,
-    terminalWidth: rendererWidth,
-    terminalHeight: rendererHeight,
-    headerHeight: layout.headerHeight,
-    statsHeight: layout.statsHeight,
-    footerHeight: layout.footerHeight,
-    preferredHeatmapHeight,
-    eventRowCount: layout.eventRowCount,
     body: scene.body,
     headerBox: scene.headerBox,
     statsRow: scene.statsRow,
@@ -101,14 +98,14 @@ export function syncMonitorFrame(args: {
   const clampedUi = clampMonitorFocus(ui, state);
   syncMonitorHeader({
     state,
-    compactLayout: layout.compactLayout,
+    compactLayout,
     displayMode: clampedUi.displayMode,
     headerLine: scene.headerLine,
     subheaderLine: scene.subheaderLine,
     viewTabs: scene.viewTabs,
   });
   syncMonitorStats({
-    compactLayout: layout.compactLayout,
+    compactLayout,
     state,
     tickLatencyMs: lastTickLatencyMs,
     compactStatsText: scene.compactStatsText,
@@ -118,11 +115,11 @@ export function syncMonitorFrame(args: {
   });
   const nextCellWidth = syncMonitorHeatmap({
     state,
-    compactLayout: layout.compactLayout,
+    compactLayout,
     displayMode: clampedUi.displayMode,
     gridFrameWidth: scene.gridFrame.width,
     terminalWidth: rendererWidth,
-    fallbackCellWidth: cellWidth,
+    fallbackCellWidth: layout.heatmap.cellWidth,
     axisTop: scene.axisTop,
     heatmapLegend: scene.heatmapLegend,
     heatmapHint: scene.heatmapHint,
@@ -140,7 +137,7 @@ export function syncMonitorFrame(args: {
     cursorY: clampedUi.cursorY,
     selectedDrone: clampedUi.selectedDrone,
     selectedEvent: clampedUi.selectedEvent,
-    eventRowCount: layout.eventRowCount,
+    eventRowCount: layout.events.rowCount,
     detailTitle: scene.detailTitle,
     detailLine1: scene.detailLine1,
     detailLine2: scene.detailLine2,
@@ -160,7 +157,7 @@ export function syncMonitorFrame(args: {
   }
   scene.footerLine.content = buildFooterLineShared(buildMonitorFooterMessage({
     state,
-    compactLayout: layout.compactLayout,
+    compactLayout,
     displayMode: ui.displayMode,
     controlStatus,
     focusedPanel: clampedUi.focusedPanel,
@@ -173,7 +170,16 @@ export function syncMonitorFrame(args: {
   syncFocusedPanel({ focusedPanel: clampedUi.focusedPanel, panelBindings, requestRender });
 
   return {
-    layout,
+    layout: {
+      compactLayout,
+      eventRowCount: layout.events.rowCount,
+      heatmapWidth: layout.heatmap.width,
+      rosterHeight: layout.roster.height,
+      headerHeight: layout.headerHeight,
+      statsHeight: layout.statsHeight,
+      footerHeight: layout.footerHeight,
+      cellWidth: nextCellWidth,
+    },
     ui: clampedUi,
     cellWidth: nextCellWidth,
   };

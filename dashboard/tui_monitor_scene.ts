@@ -61,6 +61,7 @@ export function createMonitorScene(args: {
     height: "100%",
     flexDirection: "column",
     backgroundColor: COLORS.bg,
+    border: false,
     padding: 0,
   });
   renderer.root.add(root);
@@ -71,8 +72,7 @@ export function createMonitorScene(args: {
     height: "100%",
     flexDirection: "column",
     backgroundColor: COLORS.headerBg,
-    border: true,
-    borderColor: COLORS.border,
+    border: false,
     focusable: true,
     gap: 0,
     padding: 0,
@@ -83,7 +83,7 @@ export function createMonitorScene(args: {
     id: "header-box",
     flexDirection: "column",
     backgroundColor: COLORS.headerBg,
-    padding: 1,
+    padding: 0,
     gap: 0,
     height: headerHeight,
   });
@@ -104,10 +104,10 @@ export function createMonitorScene(args: {
     id: "body",
     flexDirection: "row",
     flexGrow: 1,
-    gap: 1,
+    gap: 0,
     backgroundColor: COLORS.headerBg,
-    paddingLeft: 1,
-    paddingRight: 1,
+    paddingLeft: 0,
+    paddingRight: 0,
   });
   shell.add(body);
 
@@ -115,13 +115,11 @@ export function createMonitorScene(args: {
     id: "heatmap-panel",
     width: heatmapWidth,
     flexDirection: "column",
-    border: true,
+    border: false,
     borderColor: COLORS.border,
     backgroundColor: COLORS.headerBg,
-    padding: 1,
-    gap: 1,
-    title: " mission grid · uncertainty ",
-    titleAlignment: "left",
+    padding: 0,
+    gap: 0,
   });
   body.add(heatmapPanel);
 
@@ -131,10 +129,10 @@ export function createMonitorScene(args: {
   const gridFrame = new BoxRenderable(renderer, {
     id: "grid-frame",
     flexDirection: "column",
-    border: true,
+    border: false,
     borderColor: COLORS.border,
     backgroundColor: COLORS.panelBg,
-    padding: 1,
+    padding: 0,
     gap: 0,
     flexGrow: 0,
   });
@@ -153,28 +151,26 @@ export function createMonitorScene(args: {
     id: "mode-panel",
     width: "100%",
     flexDirection: "column",
-    border: true,
+    border: false,
     borderColor: COLORS.border,
     backgroundColor: COLORS.headerBg,
     paddingTop: 0,
     paddingBottom: 0,
-    paddingLeft: 1,
-    paddingRight: 1,
+    paddingLeft: 0,
+    paddingRight: 0,
     gap: 0,
-    title: " mode ",
-    titleAlignment: "left",
     visible: false,
     flexGrow: 1,
   });
   const modeLines = createTextRows({ renderer, parent: modePanel, count: 16, prefix: "mode-line", fg: PANEL_THEME.textPrimary, bg: COLORS.headerBg });
   body.add(modePanel);
 
-  const side = new BoxRenderable(renderer, { id: "side", flexDirection: "column", flexGrow: 1, gap: 1, backgroundColor: COLORS.headerBg });
+  const side = new BoxRenderable(renderer, { id: "side", flexDirection: "column", flexGrow: 1, gap: 0, backgroundColor: COLORS.headerBg });
   body.add(side);
   const contextColumn = new BoxRenderable(renderer, {
     id: "context-column",
     flexDirection: "column",
-    gap: 1,
+    gap: 0,
     backgroundColor: COLORS.headerBg,
   });
   side.add(contextColumn);
@@ -182,14 +178,12 @@ export function createMonitorScene(args: {
   const rosterBox = new BoxRenderable(renderer, {
     id: "roster-box",
     flexDirection: "column",
-    border: true,
+    border: false,
     borderColor: COLORS.border,
     backgroundColor: COLORS.headerBg,
-    padding: 1,
+    padding: 0,
     gap: 0,
     height: rosterHeight,
-    title: " active drones ",
-    titleAlignment: "left",
   });
   contextColumn.add(rosterBox);
   const droneRows = createTextRows({ renderer, parent: rosterBox, count: MAX_DRONE_LINES, prefix: "drone-row", fg: PANEL_THEME.textPrimary, bg: COLORS.headerBg });
@@ -198,13 +192,11 @@ export function createMonitorScene(args: {
     id: "events-box",
     flexDirection: "column",
     flexGrow: 1,
-    border: true,
+    border: false,
     borderColor: COLORS.border,
     backgroundColor: COLORS.headerBg,
-    padding: 1,
+    padding: 0,
     gap: 0,
-    title: " attention & timeline ",
-    titleAlignment: "left",
   });
   side.add(eventsBox);
   const eventRows = createTextRows({ renderer, parent: eventsBox, count: MAX_EVENT_LINES, prefix: "event-row", fg: PANEL_THEME.textPrimary, bg: COLORS.headerBg });
@@ -212,13 +204,11 @@ export function createMonitorScene(args: {
   const detailBox = new BoxRenderable(renderer, {
     id: "detail-box",
     flexDirection: "column",
-    border: true,
+    border: false,
     borderColor: COLORS.border,
     backgroundColor: COLORS.headerBg,
-    padding: 1,
+    padding: 0,
     gap: 0,
-    title: " detail ",
-    titleAlignment: "left",
     height: 3,
   });
   contextColumn.add(detailBox);
@@ -229,7 +219,7 @@ export function createMonitorScene(args: {
   detailBox.add(detailLine1);
   detailBox.add(detailLine2);
 
-  const footerBox = new BoxRenderable(renderer, { id: "footer-box", backgroundColor: COLORS.headerBg, padding: 1, height: footerHeight });
+  const footerBox = new BoxRenderable(renderer, { id: "footer-box", backgroundColor: COLORS.headerBg, padding: 0, height: footerHeight });
   footerBox.width = "100%";
   shell.add(footerBox);
   const footerLine = new TextRenderable(renderer, { id: "footer-line", content: "", fg: PANEL_THEME.textMuted, bg: COLORS.headerBg, wrapMode: "none", truncate: true });
@@ -241,10 +231,10 @@ export function createMonitorScene(args: {
     height: "100%",
     flexDirection: "column",
     backgroundColor: COLORS.headerBg,
-    border: true,
+    border: false,
     borderColor: COLORS.border,
-    padding: 2,
-    gap: 1,
+    padding: 0,
+    gap: 0,
   });
   root.add(waitingShell);
   waitingShell.visible = false;

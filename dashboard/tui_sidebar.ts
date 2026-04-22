@@ -44,10 +44,9 @@ function droneShortId(droneId: string): string {
 function focusWrap(content: StyledText, _selected: boolean, _focusedPanel: boolean): StyledText {
   if (!_selected) return content;
   const token = _focusedPanel ? FOCUS_THEME.cells.active : FOCUS_THEME.cells.focused;
-  const rowChunks: TextChunk[] = [
-    withBg(token.bg)(withFg(token.fg)("▶ ")),
-    ...content.chunks.map((chunk) => withBg(token.bg)(chunk)),
-  ];
+  const rowChunks: TextChunk[] = content.chunks.map((chunk) =>
+    withBg(token.bg)(withFg(token.fg)(withBold(chunk.text)))
+  );
   return new StyledText(rowChunks);
 }
 
@@ -93,17 +92,20 @@ export function renderEventRow({
   event,
   selected = false,
   focusedPanel = false,
+  availableWidth,
 }: {
   event: NormalizedEvent;
   selected?: boolean;
   focusedPanel?: boolean;
+  availableWidth?: number;
 }): StyledText {
   const tone = isEventToneKey(event.type) ? EVENT_TONE_MAP[event.type] : "info";
   const chip = EVENT_TONE_THEME[tone];
   const badge = withBg(chip.bg)(withFg(chip.fg)(withBold(` ${padCell(chip.label, 4)} `)));
   const time = withFg(PANEL_THEME.textMuted)(withDim(`${String(event.t).padStart(3, "0")}`));
   const bodyColor = tone === "stale" ? chip.accent : tone === "found" ? chip.accent : PANEL_THEME.textSecondary;
-  const body = withFg(bodyColor)(padCell(clip(compressEventMessage(event.msg), EVENT_MESSAGE_WIDTH), EVENT_MESSAGE_WIDTH));
+  const messageWidth = availableWidth && availableWidth > 20 ? Math.max(12, availableWidth - 10) : EVENT_MESSAGE_WIDTH;
+  const body = withFg(bodyColor)(padCell(clip(compressEventMessage(event.msg), messageWidth), messageWidth));
   const row = t`${time} ${badge} ${body}`;
   return focusWrap(row, selected, focusedPanel);
 }

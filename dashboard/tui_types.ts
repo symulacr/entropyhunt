@@ -84,6 +84,7 @@ export interface SnapshotDrone {
   readonly ty?: number | null;
   readonly battery?: number;
   readonly role?: string;
+  readonly subzone?: string;
 }
 
 export interface SnapshotEvent {
@@ -109,11 +110,10 @@ export interface SnapshotStats {
   readonly elapsed?: number;
   readonly duration_elapsed?: number;
   readonly mesh_peers?: readonly string[];
-  readonly pending_claims?: number;
   readonly consensus_rounds?: number;
 }
 
-export interface SnapshotSummary extends SnapshotStats {
+export interface SnapshotSummary extends Omit<SnapshotStats, "pending_claims"> {
   readonly peer_id?: string;
   readonly mesh?: string;
   readonly target?: GridTuple | number[];
@@ -121,6 +121,10 @@ export interface SnapshotSummary extends SnapshotStats {
   readonly survivor_found?: boolean;
   readonly mesh_messages?: number;
   readonly survivor_receipts?: number;
+  readonly peer_count?: number;
+  readonly pending_claims?: unknown[];
+  readonly consensus?: unknown[];
+  readonly failures?: unknown[];
 }
 
 export interface SnapshotConfig {
@@ -128,6 +132,7 @@ export interface SnapshotConfig {
   readonly mesh_mode?: MeshMode;
   readonly transport?: string;
   readonly grid_size?: number;
+  readonly grid?: number;
   readonly drone_count?: number;
   readonly tick_seconds?: number;
   readonly tick_delay_seconds?: number;
@@ -135,6 +140,10 @@ export interface SnapshotConfig {
   readonly control_url?: string;
   readonly control_capabilities?: Record<string, string>;
   readonly source_mode?: SourceMode;
+  readonly duration?: number;
+  readonly battery_levels?: Record<string, number>;
+  readonly drone_roles?: Record<string, string>;
+  readonly drone_subzones?: Record<string, string>;
 }
 
 export interface RuntimeSnapshot {
@@ -323,6 +332,9 @@ export type NormalizedDrone = {
   offline: boolean;
   entropy: number;
   searchedCells: number;
+  battery?: number;
+  role?: string;
+  subzone?: string;
 };
 export type NormalizedEvent = { t: number; type: string; msg: string };
 export type MonitorState = {
@@ -340,6 +352,13 @@ export type MonitorState = {
   events: NormalizedEvent[];
   survivorFound: boolean;
   staleData: boolean;
+  meshPeers?: string[];
+  pendingClaims?: number;
+  consensusRounds?: number;
+  failureEvents?: Array<{ type: string; t: number }>;
+  batteryLevels?: Record<string, number>;
+  droneRoles?: Record<string, string>;
+  droneSubzones?: Record<string, string>;
 };
 
 export function isObject(value: unknown): value is Record<string, unknown> {

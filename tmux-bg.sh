@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-SESSION="entropyhunt"
+SESSION="entropyhunt-bg"
 REPO="/home/ubuntu/entropyhunt"
 
 cd "$REPO"
@@ -17,7 +17,7 @@ tmux new-session -d -s "$SESSION" -n demo
 tmux split-window -h -t "$SESSION:0"
 
 tmux send-keys -t "$SESSION:0.0" \
-    "cd $REPO && ./demo.sh --no-interactive --duration 60 2>&1 | tee /tmp/entropyhunt_sim.log" \
+    "cd $REPO && ./demo.sh --no-interactive --duration 600 2>&1 | tee /tmp/entropyhunt_sim.log" \
     C-m
 
 tmux send-keys -t "$SESSION:0.1" \
@@ -34,4 +34,6 @@ tmux send-keys -t "$SESSION:0.1" \
 
 tmux resize-pane -t "$SESSION:0.0" -x 45%
 
-tmux attach -t "$SESSION"
+echo "Tmux session '$SESSION' started."
+echo "Attach: tmux attach -t $SESSION"
+echo "Kill:   tmux kill-session -t $SESSION"
