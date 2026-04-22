@@ -186,3 +186,4 @@ docs/SPRINT_REPORT.md
 /vertex-node/*.pub
 *.key
 *.pem
+.vercel
