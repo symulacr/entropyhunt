@@ -64,7 +64,7 @@ flowchart TD
 
 | Mission Control | Live Dashboard | TUI | Survivor Found |
 |:---:|:---:|:---:|:---:|
-| ![MC](docs/screenshots/mission-control.png) | ![Live](docs/screenshots/live-dashboard.png) | ![TUI](docs/screenshots/tui.png) | ![Survivor](docs/screenshots/survivor-found.png) |
+| ![MC](docs/screenshots/mission-eh.png) | ![Live](docs/screenshots/live-eh.png) | ![TUI](docs/screenshots/tui.png) | ![Survivor](docs/screenshots/control-eh.png) |
 
 ## Config
 
